@@ -1,22 +1,23 @@
-﻿using MongoDB.Bson;
+﻿using BooMBooK.Models.User;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 using System.Threading.Tasks;
 
-namespace BooMBooK.Models.Article
+namespace BooMBooK.Services
 {
-    public class ArticleService
+    public class UserService
     {
         IGridFSBucket gridFS;
-        IMongoCollection<Article> Articles;
-        public ArticleService()
+        IMongoCollection<User> Users;
+        public UserService()
         {
             string connectionString = "mongodb://127.0.0.1:27017";
             MongoUrlBuilder connection = new MongoUrlBuilder(connectionString);
             MongoClient client = new MongoClient(connectionString);
             IMongoDatabase database = client.GetDatabase(connection.DatabaseName);
             gridFS = new GridFSBucket(database);
-            Articles = database.GetCollection<Article>("Articles");
+            Users = database.GetCollection<User>("Users");
         }
 
         //public async Task<IEnumerable<User>> GetUsers(int? minPrice, int? maxPrice, string name)
@@ -40,24 +41,24 @@ namespace BooMBooK.Models.Article
         //    return await Products.Find(filter).ToListAsync();
         //}
 
-        public async Task<Article> GetArticle(string id)
+        public async Task<User> GetUser(string id)
         {
-            return await Articles.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
+            return await Users.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
         }
 
-        public async Task AddArticle(Article article)
+        public async Task AddUser(User user)
         {
-            await Articles.InsertOneAsync(article);
+            await Users.InsertOneAsync(user);
         }
 
-        public async Task UpdateArticle(Article article)
+        public async Task UpdateUser(User user)
         {
-            await Articles.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(article.ArticleId)), article);
+            await Users.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(user.UserId)), user);
         }
 
-        public async Task DeleteArticle(string id)
+        public async Task DeleteUser(string id)
         {
-            await Articles.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
+            await Users.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
         }
 
         public async Task<byte[]> GetImage(string id)
