@@ -1,7 +1,6 @@
 ﻿using BooMBooK.Models.Article;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.GridFS;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Services
@@ -36,11 +35,6 @@ namespace BooMBooK.Services
         public async Task DeleteArticle(string id)
         {
             await Articles.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
-        }
-
-        public async Task<byte[]> GetImage(string id)
-        {
-            return await gridFS.DownloadAsBytesAsync(new ObjectId(id));
         }
     }
 }
