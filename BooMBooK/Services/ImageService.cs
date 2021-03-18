@@ -1,7 +1,6 @@
 ﻿using BooMBooK.Models.Image;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.GridFS;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Services
