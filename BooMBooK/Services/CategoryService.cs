@@ -1,25 +1,23 @@
-﻿using MongoDB.Bson;
+﻿using BooMBooK.Models.Category;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace BooMBooK.Models.Comment
+namespace BooMBooK.Services
 {
-    public class CommentService
+    public class CategoryService
     {
         IGridFSBucket gridFS;
-        IMongoCollection<Comment> Comments;
-        public CommentService()
+        IMongoCollection<Category> Categories;
+        public CategoryService()
         {
             string connectionString = "mongodb://127.0.0.1:27017";
             MongoUrlBuilder connection = new MongoUrlBuilder(connectionString);
             MongoClient client = new MongoClient(connectionString);
             IMongoDatabase database = client.GetDatabase(connection.DatabaseName);
             gridFS = new GridFSBucket(database);
-            Comments = database.GetCollection<Comment>("Articles");
+            Categories = database.GetCollection<Category>("Categories");
         }
 
         //public async Task<IEnumerable<User>> GetUsers(int? minPrice, int? maxPrice, string name)
@@ -43,24 +41,24 @@ namespace BooMBooK.Models.Comment
         //    return await Products.Find(filter).ToListAsync();
         //}
 
-        public async Task<Comment> GetComment(string id)
+        public async Task<Category> GetCategories(string id)
         {
-            return await Comments.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
+            return await Categories.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
         }
 
-        public async Task AddComment(Comment comment)
+        public async Task AddCategory(Category category)
         {
-            await Comments.InsertOneAsync(comment);
+            await Categories.InsertOneAsync(category);
         }
 
-        public async Task UpdateComment(Comment comment)
+        public async Task UpdateCategory(Category category)
         {
-            await Comments.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(comment.ArticleId)), comment);
+            await Categories.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(category.CategoryId)), category);
         }
 
-        public async Task DeleteComment(string id)
+        public async Task DeleteCategory(string id)
         {
-            await Comments.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
+            await Categories.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
         }
 
         public async Task<byte[]> GetImage(string id)

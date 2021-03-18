@@ -1,0 +1,41 @@
+﻿using BooMBooK.Models.Comment;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
+using System.Threading.Tasks;
+
+namespace BooMBooK.Services
+{
+    public class CommentService
+    {
+        IMongoCollection<Comment> Comments;
+        public CommentService()
+        {
+            string connectionString = "mongodb://127.0.0.1:27017";
+            MongoUrlBuilder connection = new MongoUrlBuilder(connectionString);
+            MongoClient client = new MongoClient(connectionString);
+            IMongoDatabase database = client.GetDatabase(connection.DatabaseName);
+            Comments = database.GetCollection<Comment>("Articles");
+        }
+
+        public async Task<Comment> GetComment(string id)
+        {
+            return await Comments.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
+        }
+
+        public async Task AddComment(Comment comment)
+        {
+            await Comments.InsertOneAsync(comment);
+        }
+
+        public async Task UpdateComment(Comment comment)
+        {
+            await Comments.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(comment.ArticleId)), comment);
+        }
+
+        public async Task DeleteComment(string id)
+        {
+            await Comments.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
+        }
+    }
+}
