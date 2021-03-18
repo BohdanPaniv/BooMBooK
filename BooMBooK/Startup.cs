@@ -1,9 +1,4 @@
-using BooMBooK.Models.Article;
-using BooMBooK.Models.ArticleComment;
-using BooMBooK.Models.Category;
-using BooMBooK.Models.Comment;
-using BooMBooK.Models.Image;
-using BooMBooK.Models.User;
+using BooMBooK.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;

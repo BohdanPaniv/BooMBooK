@@ -1,12 +1,10 @@
-﻿using MongoDB.Bson;
+﻿using BooMBooK.Models.Comment;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace BooMBooK.Models.Comment
+namespace BooMBooK.Services
 {
     public class CommentService
     {

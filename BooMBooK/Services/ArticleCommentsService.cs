@@ -1,22 +1,23 @@
-﻿using MongoDB.Bson;
+﻿using BooMBooK.Models.ArticleComment;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 using System.Threading.Tasks;
 
-namespace BooMBooK.Models.User
+namespace BooMBooK.Services
 {
-    public class UserService
+    public class ArticleCommentsService
     {
         IGridFSBucket gridFS;
-        IMongoCollection<User> Users;
-        public UserService()
+        IMongoCollection<ArticleComment> ArticleComments;
+        public ArticleCommentsService()
         {
             string connectionString = "mongodb://127.0.0.1:27017";
             MongoUrlBuilder connection = new MongoUrlBuilder(connectionString);
             MongoClient client = new MongoClient(connectionString);
             IMongoDatabase database = client.GetDatabase(connection.DatabaseName);
             gridFS = new GridFSBucket(database);
-            Users = database.GetCollection<User>("Users");
+            ArticleComments = database.GetCollection<ArticleComment>("ArticleComments");
         }
 
         //public async Task<IEnumerable<User>> GetUsers(int? minPrice, int? maxPrice, string name)
@@ -40,24 +41,24 @@ namespace BooMBooK.Models.User
         //    return await Products.Find(filter).ToListAsync();
         //}
 
-        public async Task<User> GetUser(string id)
+        public async Task<ArticleComment> GetArticleComment(string id)
         {
-            return await Users.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
+            return await ArticleComments.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
         }
 
-        public async Task AddUser(User user)
+        public async Task AddArticleComment(ArticleComment articleComment)
         {
-            await Users.InsertOneAsync(user);
+            await ArticleComments.InsertOneAsync(articleComment);
         }
 
-        public async Task UpdateUser(User user)
+        public async Task UpdateArticleComments(ArticleComment articleComment)
         {
-            await Users.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(user.UserId)), user);
+            await ArticleComments.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(articleComment.ArticleId)), articleComment);
         }
 
-        public async Task DeleteUser(string id)
+        public async Task DeleteArticleComments(string id)
         {
-            await Users.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
+            await ArticleComments.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
         }
 
         public async Task<byte[]> GetImage(string id)
