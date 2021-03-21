@@ -6,7 +6,8 @@ using System.Linq;
 
 namespace BooMBooK.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiController]
+    [Route("[controller]")]
     public class UsersController : Controller
     {
         static readonly List<User> users;
