@@ -234,5 +234,3 @@ _Pvt_Extensions
 # Configuration file
 App.config
 
-# IntelliJ IDEA
-**/idea
