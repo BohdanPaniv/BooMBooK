@@ -8,13 +8,10 @@ namespace BooMBooK.Services
     public class ArticleCommentsService
     {
         IMongoCollection<ArticleComment> ArticleComments;
+
         public ArticleCommentsService()
         {
-            string connectionString = "mongodb://127.0.0.1:27017";
-            MongoUrlBuilder connection = new MongoUrlBuilder(connectionString);
-            MongoClient client = new MongoClient(connectionString);
-            IMongoDatabase database = client.GetDatabase(connection.DatabaseName);
-            ArticleComments = database.GetCollection<ArticleComment>("ArticleComments");
+            ArticleComments = DataBaseService.GetMongoCollection<ArticleComment>("ArticleComments");
         }
 
         public async Task<ArticleComment> GetArticleComment(string id)

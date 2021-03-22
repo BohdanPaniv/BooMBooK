@@ -12,7 +12,7 @@ namespace BooMBooK.Models.Image
     {
         [BsonRepresentation(BsonType.ObjectId)]
         public string ImageId { get; set; }
-        [Display(Name = "ImageSource")]
+
         public string ImageSource { get; set; }
     }
 }
