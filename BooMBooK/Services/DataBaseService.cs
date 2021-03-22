@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using System.Configuration;
 
 namespace BooMBooK.Services
 {
@@ -6,7 +7,7 @@ namespace BooMBooK.Services
     {
         public static IMongoCollection<T> GetMongoCollection<T>(string tableName)
         {
-            string connectionString = "mongodb+srv://admin:qwe123@cluster1.wf06f.mongodb.net/test";
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             MongoUrlBuilder connection = new MongoUrlBuilder(connectionString);
             MongoClient client = new MongoClient(connectionString);
             IMongoDatabase database = client.GetDatabase(connection.DatabaseName);
