@@ -1,0 +1,13 @@
+.AuthenticationForm{
+    text-align: center;
+    justify-content: center;
+}
+
+button{
+
+}
+
+.activeButton{
+    background: forestgreen;
+    color: white;
+}
