@@ -23,11 +23,10 @@ namespace BooMBooK.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(object user)
+        public IActionResult Post(User user)
         {
-            Console.WriteLine(user.ToString());
-            //user.UserId = Guid.NewGuid().ToString();
-            //users.Add(user);
+            user.UserId = Guid.NewGuid().ToString();
+            users.Add(user);
             return Ok(user);
         }
 
@@ -36,7 +35,7 @@ namespace BooMBooK.Controllers
         public IActionResult Delete(string id)
         {
             User user = users.FirstOrDefault(x => x.UserId == id);
-            
+
             if (user == null)
             {
                 return NotFound();

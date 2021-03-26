@@ -4,10 +4,12 @@ import "./CSS/AuthenticationPage.css"
 export class AuthenticationPage extends Component {
     static displayName = AuthenticationPage.name;
 
+    errorList = {}
+
     constructor (props) {
         super(props);
-        this.loadData();
-        console.log(props);
+        //console.log(props);
+
         this.state = {
             FirstName: "",
             LastName:"",
@@ -39,20 +41,6 @@ export class AuthenticationPage extends Component {
         this.setState({Password: event.target.value});
     }
 
-    showSignIn = () =>{
-        this.setState({
-                isSignUp: false
-            }
-        );
-    };
-
-    showSignUp = () =>{
-        this.setState({
-                isSignUp: true
-            }
-        );
-    };
-
     showForm = (line) =>{
         //console.log(line);
         switch (line){
@@ -71,14 +59,14 @@ export class AuthenticationPage extends Component {
             }
             case "signUp": {
                 if (this.state.isSignUp !== true)
-                this.setState({
-                    FirstName: "",
-                    LastName:"",
-                    Email:"",
-                    Login:"",
-                    Password:"",
-                    isSignUp: true
-                });
+                    this.setState({
+                        FirstName: "",
+                        LastName:"",
+                        Email:"",
+                        Login:"",
+                        Password:"",
+                        isSignUp: true
+                    });
                 break;
             }
             default:{
@@ -87,46 +75,67 @@ export class AuthenticationPage extends Component {
         }
     };
 
-    handleSubmit = (event, line) =>{
+    errorsValidator(line){
+        let  errorList = {};
 
-        let xhr = new XMLHttpRequest();
+        if (this.state.Login === "") errorList["Login"] = "You don`t set your Login";
+        if (this.state.Password === "") errorList["Password"] = "You don`t set your Password";
 
-        let user = new FormData();
-
-        switch (line){
-            case "new": {
-
-                user.append("FirstName", this.state.FirstName);
-                user.append("LastName", this.state.LastName);
-                user.append("Email", this.state.Email);
-                user.append("Login", this.state.Login);
-                user.append("Password", this.state.Password);
-
-                console.log(this.props.match.url);
-                xhr.open("post","api/users/1", true);
-                xhr.onload = function () {
-                    if (xhr.status === 200) {
-                        console.log(xhr.responseText);
-                    }
-                };
-                xhr.send(user);
-
-                console.log(xhr);
-                break;
-            }
-            case "old": {
-                // user = {
-                //     "Login": this.state.Login,
-                //     "Password": this.state.Password
-                // }
-                break;
-            }
-            default:{
-                break;
-            }
+        if (line === "new"){
+            if (this.state.FirstName === "") errorList["FirstName"] = "You don`t set your First Name";
+            if (this.state.LastName === "") errorList["LastName"] = "You don`t set your Last Name";
+            if (this.state.Email === "") errorList["Email"] = "You don`t set your Email";
         }
 
-        console.log(user);
+        return errorList;
+    }
+
+    handleSubmit = (event, line) =>{
+        let xhr = new XMLHttpRequest();
+
+        this.errorList = this.errorsValidator(line);
+
+        if (Object.keys(this.errorList).length === 0){
+            switch (line){
+                case "new": {
+
+                    xhr.open("post","api/users", true);
+                    xhr.setRequestHeader("Content-Type", "application/json");
+
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            console.log(xhr.responseText);
+                        }
+                    };
+
+                    xhr.send(JSON.stringify({
+                        FirstName: this.state.Login,
+                        LastName: this.state.Login,
+                        Email: this.state.Email,
+                        Login: this.state.Login,
+                        Password: this.state.Password
+                    }));
+
+                    console.log(xhr);
+                    break;
+                }
+                case "old": {
+                    xhr.open("post","api/users", true);
+                    xhr.setRequestHeader("Content-Type", "application/json");
+
+                    xhr.send(JSON.stringify({
+                        Login: this.state.Login,
+                        Password: this.state.Password
+                    }));
+
+                    console.log(xhr);
+                    break;
+                }
+                default:{
+                    break;
+                }
+            }
+        }
         event.preventDefault();
     }
 
@@ -135,8 +144,7 @@ export class AuthenticationPage extends Component {
         xhr.open("get", "api/users", true);
         xhr.onload = function () {
             var data = JSON.parse(xhr.responseText);
-            console.log(data);
-           // this.setState({ phones: data });
+            // this.setState({ phones: data });
         }
         xhr.send();
     }
@@ -221,16 +229,16 @@ export class AuthenticationPage extends Component {
                             <p>Login</p>
                             <p>
                                 <input type="text"
-                                value={this.state.Login}
-                                onChange={this.loginNameChanged}/>
+                                       value={this.state.Login}
+                                       onChange={this.loginNameChanged}/>
                             </p>
                             <p>
                                 Password
                             </p>
                             <p>
                                 <input type="password"
-                                value={this.state.Password}
-                                onChange={this.passwordNameChanged}/>
+                                       value={this.state.Password}
+                                       onChange={this.passwordNameChanged}/>
                             </p>
                             <p>
                                 <input type="submit"
@@ -242,6 +250,5 @@ export class AuthenticationPage extends Component {
             );
         }
     }
-
 }
 

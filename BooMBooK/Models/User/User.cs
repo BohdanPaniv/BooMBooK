@@ -16,6 +16,8 @@ namespace BooMBooK.Models.User
         [BsonIgnoreIfNull]
         public byte[] Image { get; set; }
 
+        public string Login { get; set; }
+
         public string Email { get; set; }
 
         public string Password { get; set; }

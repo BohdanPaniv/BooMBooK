@@ -5,6 +5,11 @@ html,body{
   width: 100%;
 }
 
+
+div .page {
+vertical-align: middle;
+}
+
 #root,.main{
   height: 100%;
   width: 100%;
