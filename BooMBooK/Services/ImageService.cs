@@ -10,11 +10,7 @@ namespace BooMBooK.Services
         IMongoCollection<Image> Images;
         public ImageService()
         {
-            string connectionString = "mongodb://127.0.0.1:27017";
-            MongoUrlBuilder connection = new MongoUrlBuilder(connectionString);
-            MongoClient client = new MongoClient(connectionString);
-            IMongoDatabase database = client.GetDatabase(connection.DatabaseName);
-            Images = database.GetCollection<Image>("Images");
+            Images = DataBaseService.GetMongoCollection<Image>("Images");
         }
         public async Task<Image> GetComment(string id)
         {

@@ -7,7 +7,7 @@ using System.Linq;
 namespace BooMBooK.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UsersController : Controller
     {
         static readonly List<User> users;
@@ -30,11 +30,12 @@ namespace BooMBooK.Controllers
             return Ok(user);
         }
 
+
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
             User user = users.FirstOrDefault(x => x.UserId == id);
-            
+
             if (user == null)
             {
                 return NotFound();
