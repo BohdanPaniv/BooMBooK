@@ -1,8 +1,7 @@
 ﻿using BooMBooK.Models.Image;
+using BooMBooK.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace BooMBooK.Controllers
 {
@@ -10,39 +9,26 @@ namespace BooMBooK.Controllers
     [Route("api/[controller]")]
     public class ImagesController : Controller
     {
-        static readonly List<Image> images;
-        static ImagesController()
+        private readonly ImageService imageService;
+        public ImagesController(ImageService imageService)
         {
-            images = new List<Image>();
+            this.imageService = imageService;
         }
 
-        [HttpGet]
-        public IEnumerable<Image> Get()
+        public IActionResult Create()
         {
-            return images;
+            return View();
         }
 
         [HttpPost]
-        public IActionResult Post(Image image)
+        public async Task<IActionResult> Create(Image image)
         {
-            image.ImageId = Guid.NewGuid().ToString();
-            images.Add(image);
-            return Ok(image);
-        }
-
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
-        {
-            Image image = images.FirstOrDefault(x => x.ImageId == id);
-
-            if (image == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                await imageService.Create(image);
+                return RedirectToAction("Index");
             }
-
-            images.Remove(image);
-            return Ok(image);
+            return View(image);
         }
     }
 }

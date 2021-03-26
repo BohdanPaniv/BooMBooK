@@ -1,9 +1,6 @@
 ﻿using BooMBooK.Models.User;
 using BooMBooK.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Controllers
@@ -18,11 +15,6 @@ namespace BooMBooK.Controllers
             this.userService = userService;
         }
 
-        //[HttpGet]
-        //public IEnumerable<User> Get()
-        //{
-        //    //return userService.GetAll();
-        //}
         public IActionResult Create()
         {
             return View();
@@ -39,19 +31,5 @@ namespace BooMBooK.Controllers
             }
             return View(user);
         }
-
-
-        //[HttpDelete("{id}")]
-        //public IActionResult Delete(string id)
-        //{
-        //    User user = users.FirstOrDefault(x => x.UserId == id);
-
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    users.Remove(user);
-        //    return Ok(user);
-        //}
     }
 }
