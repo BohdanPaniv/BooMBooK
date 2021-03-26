@@ -7,7 +7,7 @@ using System.Linq;
 namespace BooMBooK.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UsersController : Controller
     {
         static readonly List<User> users;
@@ -23,18 +23,20 @@ namespace BooMBooK.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(User user)
+        public IActionResult Post(object user)
         {
-            user.UserId = Guid.NewGuid().ToString();
-            users.Add(user);
+            Console.WriteLine(user.ToString());
+            //user.UserId = Guid.NewGuid().ToString();
+            //users.Add(user);
             return Ok(user);
         }
+
 
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
             User user = users.FirstOrDefault(x => x.UserId == id);
-            
+
             if (user == null)
             {
                 return NotFound();
