@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System.ComponentModel.DataAnnotations;
 
 namespace BooMBooK.Models.User
 {
@@ -19,6 +18,8 @@ namespace BooMBooK.Models.User
         public string Login { get; set; }
 
         public string Email { get; set; }
+
+        public string Login { get; set; }
 
         public string Password { get; set; }
 

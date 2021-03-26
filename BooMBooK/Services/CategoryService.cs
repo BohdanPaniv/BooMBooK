@@ -10,11 +10,7 @@ namespace BooMBooK.Services
         IMongoCollection<Category> Categories;
         public CategoryService()
         {
-            string connectionString = "mongodb://127.0.0.1:27017";
-            MongoUrlBuilder connection = new MongoUrlBuilder(connectionString);
-            MongoClient client = new MongoClient(connectionString);
-            IMongoDatabase database = client.GetDatabase(connection.DatabaseName);
-            Categories = database.GetCollection<Category>("Categories");
+            Categories = DataBaseService.GetMongoCollection<Category>("Categories");
         }
 
         public async Task<Category> GetCategories(string id)

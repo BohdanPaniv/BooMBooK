@@ -10,11 +10,7 @@ namespace BooMBooK.Services
         IMongoCollection<User> Users;
         public UserService()
         {
-            string connectionString = "mongodb://127.0.0.1:27017";
-            MongoUrlBuilder connection = new MongoUrlBuilder(connectionString);
-            MongoClient client = new MongoClient(connectionString);
-            IMongoDatabase database = client.GetDatabase(connection.DatabaseName);
-            Users = database.GetCollection<User>("Users");
+            Users = DataBaseService.GetMongoCollection<User>("Users");
         }
 
         public async Task<User> GetUser(string id)
