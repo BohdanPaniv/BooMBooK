@@ -10,11 +10,7 @@ namespace BooMBooK.Services
         IMongoCollection<Comment> Comments;
         public CommentService()
         {
-            string connectionString = "mongodb://127.0.0.1:27017";
-            MongoUrlBuilder connection = new MongoUrlBuilder(connectionString);
-            MongoClient client = new MongoClient(connectionString);
-            IMongoDatabase database = client.GetDatabase(connection.DatabaseName);
-            Comments = database.GetCollection<Comment>("Articles");
+            Comments = DataBaseService.GetMongoCollection<Comment>("Comments");
         }
 
         public async Task<Comment> GetComment(string id)

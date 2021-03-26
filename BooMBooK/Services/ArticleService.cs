@@ -10,11 +10,7 @@ namespace BooMBooK.Services
         IMongoCollection<Article> Articles;
         public ArticleService()
         {
-            string connectionString = "mongodb://127.0.0.1:27017";
-            MongoUrlBuilder connection = new MongoUrlBuilder(connectionString);
-            MongoClient client = new MongoClient(connectionString);
-            IMongoDatabase database = client.GetDatabase(connection.DatabaseName);
-            Articles = database.GetCollection<Article>("Articles");
+            Articles = DataBaseService.GetMongoCollection<Article>("Article");
         }
 
         public async Task<Article> GetArticle(string id)
