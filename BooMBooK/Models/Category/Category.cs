@@ -9,7 +9,6 @@ namespace BooMBooK.Models.Category
         [BsonRepresentation(BsonType.ObjectId)]
         public string CategoryId { get; set; }
 
-        [Display(Name = "CategoryName")]
         public string CategoryName { get; set; }
     }
 }

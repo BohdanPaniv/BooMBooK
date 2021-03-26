@@ -27,11 +27,6 @@ namespace BooMBooK.Services
             await Comments.InsertOneAsync(comment);
         }
 
-        public async Task UpdateComment(Comment comment)
-        {
-            await Comments.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(comment.ArticleId)), comment);
-        }
-
         public async Task DeleteComment(string id)
         {
             await Comments.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
