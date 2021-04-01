@@ -127,7 +127,7 @@ export function AuthenticationPage(){
 
                     console.log(user);
                     console.log(user["Login"]);
-                    xhr.open("get","api/users/"+loginField.get()+","+passwordField.get(), true);
+                    xhr.open("get","api/users/"+user, true);
                     xhr.setRequestHeader("Content-Type", "application/json");
 
                     xhr.onload = function () {
