@@ -5,6 +5,7 @@ namespace BooMBooK.Models.User
 {
     public class User
     {
+        [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string UserId { get; set; }
 
@@ -26,10 +27,5 @@ namespace BooMBooK.Models.User
 
         [BsonIgnoreIfNull]
         public double Rating { get; set; }
-
-        //public bool HasImage()
-        //{
-        //    return !String.IsNullOrWhiteSpace(Image);
-        //}
     }
 }
