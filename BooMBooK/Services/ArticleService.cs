@@ -13,6 +13,11 @@ namespace BooMBooK.Services
             Articles = DataBaseService.GetMongoCollection<Article>("Article");
         }
 
+        public async Task Create(Article article)
+        {
+            await Articles.InsertOneAsync(article);
+        }
+
         public async Task<Article> GetArticle(string id)
         {
             return await Articles.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();

@@ -18,6 +18,11 @@ namespace BooMBooK.Services
             return await Users.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
         }
 
+        public async Task Create(User user)
+        {
+            await Users.InsertOneAsync(user);
+        }
+
         public async Task AddUser(User user)
         {
             await Users.InsertOneAsync(user);

@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import {Collapse, Container, Label, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink} from 'reactstrap';
+import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import UserIcon from "./Images/user.png"
-import './CSS/NavMenu.css';
+import './NavMenu.css';
+import {ModalWindow} from "./ModalWindow/ModalWindow";
+import {AuthenticationPage} from "./AuthenticationPage";
 
-// const useStyles =  ({
-//   menuItemTitle :{
-//     alignItems: "center"
-//   },
-// });
+
+
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -16,13 +15,13 @@ export class NavMenu extends Component {
   constructor (props) {
     super(props);
 
-    // this.imageResize = this.imageResize.bind(this);
-
     this.toggleNavbar = this.toggleNavbar.bind(this);
 
     this.state = {
+      isPressed:false,
       collapsed: true,
-      visibility: false
+      visibility: false,
+      active:false
     };
   }
 
@@ -30,6 +29,12 @@ export class NavMenu extends Component {
     this.setState({
       collapsed: !this.state.collapsed,
       visibility: !this.state.visibility
+    });
+  }
+
+  setActive(value){
+    this.setState({
+      active:value
     });
   }
 
@@ -42,12 +47,25 @@ export class NavMenu extends Component {
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2"/>
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
+                {/*<NavItem>*/}
+                {/*  <NavLink tag={Link} className="text-dark"  to="/Authentication">*/}
+                {/*    <img className="menuItemIcon center" src= { UserIcon } alt="UserIcon"/>*/}
+                {/*    <Label className="menuItemTitle center">Profile</Label>*/}
+                {/*  </NavLink>*/}
+                {/*</NavItem>*/}
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark"  to="/Authentication">
-                    <img className="menuItemIcon center" src= { UserIcon } alt="UserIcon"/>
-                    {/*<img className="menuItemIcon" src= { UserIcon } alt="UserIcon" width={this.state.width}/>*/}
-                    <Label className="menuItemTitle center">Profile</Label>
-                  </NavLink>
+                  <div onClick={()=>this.setActive(true)}>
+                    <img src={UserIcon}
+                         className="menuItemIcon center"
+                         alt="UserIcon"/>
+                    <label className="menuItemTitle center">
+                      Profile
+                    </label>
+                  </div>
+                  <ModalWindow active = {this.state.active}
+                      setActive={()=> this.setActive()}>
+                    <AuthenticationPage/>
+                  </ModalWindow>
                 </NavItem>
               </ul>
             </Collapse>

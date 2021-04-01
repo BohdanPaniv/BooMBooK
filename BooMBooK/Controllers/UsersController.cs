@@ -1,8 +1,7 @@
 ﻿using BooMBooK.Models.User;
+using BooMBooK.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace BooMBooK.Controllers
 {
@@ -10,38 +9,35 @@ namespace BooMBooK.Controllers
     [Route("api/[controller]")]
     public class UsersController : Controller
     {
-        static readonly List<User> users;
-        static UsersController()
+        private readonly UserService userService;
+        public UsersController(UserService userService)
         {
-            users = new List<User>();
+            this.userService = userService;
         }
 
-        [HttpGet]
-        public IEnumerable<User> Get()
+        public IActionResult Create()
         {
-            return users;
+            return View();
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> Create(User user)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        await userService.Create(user);
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    return View(user);
+        //}
 
         [HttpPost]
-        public IActionResult Post(User user)
+        public async Task<ActionResult<User>> Create(User user)
         {
-            user.UserId = Guid.NewGuid().ToString();
-            users.Add(user);
-            return Ok(user);
-        }
+            await userService.Create(user);
 
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
-        {
-            User user = users.FirstOrDefault(x => x.UserId == id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-            users.Remove(user);
-            return Ok(user);
+            return CreatedAtRoute("GetUser", new { id = user.UserId.ToString() }, user);
         }
     }
 }

@@ -1,13 +1,17 @@
-import React, { Component } from "react";
+import React from "react";
 
-export class Home extends Component {
-  static displayName = Home.name;
 
-  render () {
+// const useFormField = (initialValue= '') => {
+//     const [value, setValue] = React.useState(initialValue);
+//     const onChange = React.useCallback((e) => setValue(e.target.value), []);
+//     return { value, onChange };
+// };
+
+export function Home() {
+
     return (
-        <div>
-            dasadsdaadas;
-        </div>
+    <div>
+        It`s home page!
+    </div>
     );
-  }
 }
