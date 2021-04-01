@@ -26,7 +26,7 @@ namespace BooMBooK.Controllers
             if (ModelState.IsValid)
             {
                 await userService.Create(user);
-                return RedirectToAction("Index");
+                return Ok(true); //magic
             }
 
             return View(user);
