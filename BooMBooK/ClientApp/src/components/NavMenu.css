@@ -24,32 +24,32 @@ html {
 }
 
 img.menuItemIcon{
+  cursor: pointer;
   height: 35px;
   width: 35px;
   float: right;
-  margin-left: 5px;
 }
 
-label.menuItemTitle {
-  visibility: hidden;
-}
+/*label.menuItemTitle {*/
+/*  visibility: hidden;*/
+/*}*/
 
 @media (max-width: 575.98px){
 
-  img.menuItemIcon{
-    height: 35px;
-    width: 35px;
-    float: right;
-  }
+  /*img.menuItemIcon{*/
+  /*  height: 35px;*/
+  /*  width: 35px;*/
+  /*  float: right;*/
+  /*}*/
 
-  label.menuItemTitle {
-    visibility: visible;
-    float: right;
-    cursor: pointer;
-    text-align: center;
-    height: 30px;
-    width: 30px;
-  }
+  /*label.menuItemTitle {*/
+  /*  visibility: visible;*/
+  /*  float: right;*/
+  /*  cursor: pointer;*/
+  /*  text-align: center;*/
+  /*  height: 30px;*/
+  /*  width: 30px;*/
+  /*}*/
 
   .center {
     display: flex;

@@ -19,7 +19,7 @@ const useFormField = (initialValue) => {
 export function AuthenticationPage(){
 
     const [isSignUp,SetIsSignUp] = React.useState(false);
-    const [errorList, SetErrorList] = React.useState({});
+    const [errorList, setErrorList] = React.useState({});
 
     let firstNameField = useFormField("");
     let lastNameField = useFormField("");
@@ -28,8 +28,7 @@ export function AuthenticationPage(){
     let passwordField = useFormField("");
 
     function showForm (line){
-
-        SetErrorList({});
+        setErrorList({});
 
         firstNameField.set("");
         lastNameField.set("");
@@ -60,6 +59,7 @@ export function AuthenticationPage(){
     function errorsValidator(line){
         let errors = {};
 
+        // console.log(Boolean(!loginField.get().trim()));
         if (!loginField.get().trim()) errors["Login"] = true;
         if (!passwordField.get().trim()) errors["Password"] = true;
 
@@ -68,31 +68,42 @@ export function AuthenticationPage(){
             if (!lastNameField.get().trim()) errors["LastName"] = true;
             if (!eMailField.get().trim()) errors["Email"] = true;
         }
-
+        // console.log("errors");
+        // console.log(errors);
         return errors;
     }
 
     function saveUserToLocal(xhr,user){
         console.log(xhr);
 
+        console.log(Boolean(xhr.responseText));
+
         if (Boolean(xhr.responseText)){
             localStorage.setItem("User", user);
+            window.location.reload();
         }
     }
 
     function handleSubmit (event, line){
         let xhr = new XMLHttpRequest();
 
-        SetErrorList(errorsValidator(line));
+        let err = errorsValidator(line);
 
-        if (Object.keys(errorList).length === 0){
+        setErrorList(err);
+
+        //console.log(errorList);
+
+        if (Object.keys(err).length === 0){
 
             let user = JSON.stringify({
+                UserId:"",
                 FirstName: firstNameField.get(),
                 LastName: lastNameField.get(),
                 Email: eMailField.get(),
                 Login: loginField.get(),
                 Password: passwordField.get()});
+
+            console.log(user);
 
             switch (line){
                 case "new": {
@@ -136,15 +147,12 @@ export function AuthenticationPage(){
 
     let formPickerMenu = (
         <div className="formPicker">
-            {/*<div>*/}
-
-            {/*</div>*/}
                 <button onClick={ () => showForm("signIn") }
-                        className={isSignUp ? null : " activeButton" }>
+                        className={isSignUp ? "nonActive" : " active" }>
                     SignIn
                 </button>
                 <button onClick={ () => showForm("signUp") }
-                        className={ isSignUp ? " activeButton" : null }>
+                        className={ isSignUp ? " active" : "nonActive" }>
                     SignUp
                 </button>
         </div>
@@ -156,17 +164,13 @@ export function AuthenticationPage(){
                 {formPickerMenu}
                 <div>
                     <form onSubmit={event => handleSubmit(event,"old")}>
-                        <p>
-                            Login
-                        </p>
+                        <p>Login</p>
                         <p>
                             <input className={ errorList["Login"] ? "notSetValue" : ""}
                                    name="Login"
                                    type="text" {...loginField.bind}/>
                         </p>
-                        <p>
-                            Password
-                        </p>
+                        <p>Password</p>
                         <p>
                             <input className={ errorList["Password"] ? "notSetValue" : ""}
                                    name="Password"
@@ -187,25 +191,19 @@ export function AuthenticationPage(){
                 {formPickerMenu}
                 <div>
                     <form onSubmit={event => handleSubmit(event,"new")}>
-                        <p>
-                            First Name
-                        </p>
+                        <p>First Name</p>
                         <p>
                             <input className={ errorList["FirstName"] ? "notSetValue" : ""}
                                    name="FirstName"
                                    type="text" {...firstNameField.bind}/>
                         </p>
-                        <p>
-                            Last Name
-                        </p>
+                        <p>Last Name</p>
                         <p>
                             <input className={ errorList["LastName"] ? "notSetValue" : ""}
                                    name="LastName"
                                    type="text" {...lastNameField.bind}/>
                         </p>
-                        <p>
-                            Mail
-                        </p>
+                        <p>Mail</p>
                         <p>
                             <input className={ errorList["Email"] ? "notSetValue" : ""}
                                    name= "Email"
@@ -217,9 +215,7 @@ export function AuthenticationPage(){
                                    name= "Login"
                                    type="text" {...loginField.bind}/>
                         </p>
-                        <p>
-                            Password
-                        </p>
+                        <p>Password</p>
                         <p>
                             <input className={ errorList["Password"] ? "notSetValue" : ""}
                                    name="Password"
