@@ -79,8 +79,8 @@ export function AuthenticationPage(){
         console.log(Boolean(xhr.responseText));
 
         if (Boolean(xhr.responseText)){
-            localStorage.setItem("User", user);
-            window.location.reload();
+            //localStorage.setItem("User", user);
+          //  window.location.reload();
         }
     }
 
