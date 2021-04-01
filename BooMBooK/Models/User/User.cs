@@ -6,7 +6,6 @@ namespace BooMBooK.Models.User
     public class User
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         public string UserId { get; set; }
 
         public string FirstName { get; set; }
