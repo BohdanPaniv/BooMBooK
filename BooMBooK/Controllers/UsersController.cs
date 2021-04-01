@@ -32,15 +32,15 @@ namespace BooMBooK.Controllers
             return View(user);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get(User user)
+        [HttpGet("{login},{password}")]
+        public async Task<IActionResult> Get(string login,string password)
         {
-            if(await userService.LogIn(user))
-            {
-                return Ok(true);
-            }
+            //if(await userService.LogIn(user))
+            //{
+            //    return Ok(true);
+            //}
 
-            return Ok(false);
+            return Ok($"{login} + {password}");
         }
     }
 }

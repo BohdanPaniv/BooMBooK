@@ -1,5 +1,6 @@
 import React from "react";
 import "./AuthenticationPage.css"
+import axios from "axios";
 
 const useFormField = (initialValue) => {
     const [value, setValue] = React.useState(initialValue);
@@ -74,15 +75,15 @@ export function AuthenticationPage(){
     }
 
     function saveUserToLocal(xhr,user){
-        // console.log(xhr);
+        console.log(xhr);
         //
         // console.log(Boolean(xhr.responseText));
         var isTrue = (xhr.responseText == "true");
         console.log(isTrue);
-        if (isTrue){
-            localStorage.setItem("User", user);
-            window.location.reload();
-        }
+        // if (isTrue){
+        //     localStorage.setItem("User", user);
+        //     window.location.reload();
+        // }
     }
 
     function handleSubmit (event, line){
@@ -104,7 +105,7 @@ export function AuthenticationPage(){
                 Login: loginField.get(),
                 Password: passwordField.get()});
 
-            console.log(user);
+            //console.log(user);
 
             switch (line){
                 case "new": {
@@ -123,7 +124,10 @@ export function AuthenticationPage(){
                     break;
                 }
                 case "old": {
-                    xhr.open("get","api/users", true);
+
+                    console.log(user);
+                    console.log(user["Login"]);
+                    xhr.open("get","api/users/"+loginField.get()+","+passwordField.get(), true);
                     xhr.setRequestHeader("Content-Type", "application/json");
 
                     xhr.onload = function () {
@@ -132,7 +136,7 @@ export function AuthenticationPage(){
                         }
                     };
 
-                    xhr.send(user);
+                    xhr.send();
 
                     break;
                 }
