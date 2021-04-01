@@ -74,13 +74,14 @@ export function AuthenticationPage(){
     }
 
     function saveUserToLocal(xhr,user){
-        console.log(xhr);
-
-        console.log(Boolean(xhr.responseText));
-
-        if (Boolean(xhr.responseText)){
-            //localStorage.setItem("User", user);
-          //  window.location.reload();
+        // console.log(xhr);
+        //
+        // console.log(Boolean(xhr.responseText));
+        var isTrue = (xhr.responseText == "true");
+        console.log(isTrue);
+        if (isTrue){
+            localStorage.setItem("User", user);
+            window.location.reload();
         }
     }
 
