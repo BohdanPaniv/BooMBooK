@@ -72,18 +72,28 @@ export function AuthenticationPage(){
         return errors;
     }
 
+    function saveUserToLocal(xhr,user){
+        console.log(xhr);
+
+        if (Boolean(xhr.responseText)){
+            localStorage.setItem("User", user);
+        }
+    }
+
     function handleSubmit (event, line){
         let xhr = new XMLHttpRequest();
 
-        let user;
-
-        console.log(Boolean(errorList["Login"]));
-
         SetErrorList(errorsValidator(line));
 
-        console.log(errorList);
-
         if (Object.keys(errorList).length === 0){
+
+            let user = JSON.stringify({
+                FirstName: firstNameField.get(),
+                LastName: lastNameField.get(),
+                Email: eMailField.get(),
+                Login: loginField.get(),
+                Password: passwordField.get()});
+
             switch (line){
                 case "new": {
 
@@ -92,41 +102,26 @@ export function AuthenticationPage(){
 
                     xhr.onload = function () {
                         if (xhr.status === 200) {
-                            console.log(xhr.responseText);
+                            saveUserToLocal(xhr,user);
                         }
                     };
 
-                    user = JSON.stringify({
-                        FirstName: firstNameField.get(),
-                        LastName: lastNameField.get(),
-                        Email: eMailField.get(),
-                        Login: loginField.get(),
-                        Password: passwordField.get()
-                    });
-
                     xhr.send(user);
 
-                    console.log(xhr);
                     break;
                 }
                 case "old": {
-                    xhr.open("post","api/users", true);
+                    xhr.open("get","api/users", true);
                     xhr.setRequestHeader("Content-Type", "application/json");
-
-                    user = JSON.stringify({
-                        Login: loginField.get(),
-                        Password: passwordField.get()
-                    });
 
                     xhr.onload = function () {
                         if (xhr.status === 200) {
-                            console.log(xhr.responseText);
+                            saveUserToLocal(xhr,user);
                         }
                     };
 
                     xhr.send(user);
 
-                    console.log(xhr);
                     break;
                 }
                 default:{
@@ -134,10 +129,8 @@ export function AuthenticationPage(){
                 }
             }
         }
+        //console.log(Boolean(xhr.responseText));
 
-        if (Boolean(xhr.responseText)){
-            localStorage.setItem("User", user);
-        }
         event.preventDefault();
     }
 
