@@ -78,12 +78,12 @@ export function AuthenticationPage(){
         console.log(xhr);
         //
         // console.log(Boolean(xhr.responseText));
-        var isTrue = (xhr.responseText == "true");
+        let isTrue = xhr.responseText === "true";
         console.log(isTrue);
-        // if (isTrue){
-        //     localStorage.setItem("User", user);
-        //     window.location.reload();
-        // }
+        if (isTrue){
+            localStorage.setItem("User", user);
+            window.location.reload();
+        }
     }
 
     function handleSubmit (event, line){
