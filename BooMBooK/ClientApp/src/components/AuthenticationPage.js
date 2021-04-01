@@ -28,7 +28,7 @@ export function AuthenticationPage(){
     let passwordField = useFormField("");
 
     function showForm (line){
-        //console.log(line);
+
         SetErrorList({});
 
         firstNameField.set("");
@@ -75,6 +75,8 @@ export function AuthenticationPage(){
     function handleSubmit (event, line){
         let xhr = new XMLHttpRequest();
 
+        let user;
+
         console.log(Boolean(errorList["Login"]));
 
         SetErrorList(errorsValidator(line));
@@ -94,13 +96,15 @@ export function AuthenticationPage(){
                         }
                     };
 
-                    xhr.send(JSON.stringify({
+                    user = JSON.stringify({
                         FirstName: firstNameField.get(),
                         LastName: lastNameField.get(),
                         Email: eMailField.get(),
                         Login: loginField.get(),
                         Password: passwordField.get()
-                    }));
+                    });
+
+                    xhr.send(user);
 
                     console.log(xhr);
                     break;
@@ -109,10 +113,18 @@ export function AuthenticationPage(){
                     xhr.open("post","api/users", true);
                     xhr.setRequestHeader("Content-Type", "application/json");
 
-                    xhr.send(JSON.stringify({
+                    user = JSON.stringify({
                         Login: loginField.get(),
                         Password: passwordField.get()
-                    }));
+                    });
+
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            console.log(xhr.responseText);
+                        }
+                    };
+
+                    xhr.send(user);
 
                     console.log(xhr);
                     break;
@@ -121,6 +133,10 @@ export function AuthenticationPage(){
                     break;
                 }
             }
+        }
+
+        if (Boolean(xhr.responseText)){
+            localStorage.setItem("User", user);
         }
         event.preventDefault();
     }
