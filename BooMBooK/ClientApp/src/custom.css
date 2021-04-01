@@ -1,19 +1,20 @@
 /* Provide sufficient contrast against white background */
 html,body{
   margin: 0;
-  height: 100%;
-  width: 100%;
+  flex: auto;
+  /*height: 100%;*/
+  /*width: 100%;*/
 }
 
 
-div .page {
-vertical-align: middle;
-}
+/*div .page {*/
+/*vertical-align: middle;*/
+/*}*/
 
-#root,.main{
-  height: 100%;
-  width: 100%;
-}
+/*#root,.main{*/
+/*  height: 100%;*/
+/*  width: 100%;*/
+/*}*/
 
 a {
   color: #0366d6;
