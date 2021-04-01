@@ -26,16 +26,21 @@ namespace BooMBooK.Controllers
             if (ModelState.IsValid)
             {
                 await userService.Create(user);
-                return RedirectToAction("Index");
+                return Ok(true);
             }
 
             return View(user);
         }
 
         [HttpGet]
-        public async Task<bool> Get(User user)
+        public async Task<IActionResult> Get(User user)
         {
-            return await userService.LogIn(user); 
+            if(await userService.LogIn(user))
+            {
+                return Ok(true);
+            }
+
+            return Ok(false);
         }
     }
 }
