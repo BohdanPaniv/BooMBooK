@@ -1,6 +1,7 @@
 ﻿using BooMBooK.Models.User;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Services
@@ -18,14 +19,9 @@ namespace BooMBooK.Services
             return await Users.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
         }
 
-        public User Create(User user)
+        public async Task Create(User user)
         {
-            Users.InsertOneAsync(user);
-            return user;
-        }
-
-        public async Task AddUser(User user)
-        {
+            user.UserId = Guid.NewGuid().ToString();
             await Users.InsertOneAsync(user);
         }
 
