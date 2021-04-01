@@ -1,13 +1,14 @@
 ﻿using BooMBooK.Models.User;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Services
 {
     public class UserService
     {
-        IMongoCollection<User> Users;
+        private readonly IMongoCollection<User> Users;
         public UserService()
         {
             Users = DataBaseService.GetMongoCollection<User>("Users");
@@ -20,11 +21,7 @@ namespace BooMBooK.Services
 
         public async Task Create(User user)
         {
-            await Users.InsertOneAsync(user);
-        }
-
-        public async Task AddUser(User user)
-        {
+            user.UserId = Guid.NewGuid().ToString();
             await Users.InsertOneAsync(user);
         }
 

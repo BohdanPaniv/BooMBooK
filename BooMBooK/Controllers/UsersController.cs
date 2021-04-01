@@ -15,29 +15,16 @@ namespace BooMBooK.Controllers
             this.userService = userService;
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        //[HttpPost]
-        //public async Task<IActionResult> Create(User user)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        await userService.Create(user);
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(user);
-        //}
-
         [HttpPost]
-        public async Task<ActionResult<User>> Create(User user)
+        public async Task<bool> Create(User user)
         {
-            await userService.Create(user);
+            if (ModelState.IsValid)
+            {
+                await userService.Create(user);
+                return true;
+            }
 
-            return CreatedAtRoute("GetUser", new { id = user.UserId.ToString() }, user);
+            return false;
         }
     }
 }
