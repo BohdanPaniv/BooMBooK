@@ -9,15 +9,30 @@ html {
   font-size: 14px;
 }
 
+.nav-item{
+  padding: 10px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
 img.menuItemIcon{
   height: 35px;
   width: 35px;
   float: right;
+  margin-left: 5px;
 }
 
 label.menuItemTitle {
-   visibility: hidden;
- }
+  visibility: hidden;
+}
 
 @media (max-width: 575.98px){
 
@@ -45,15 +60,4 @@ label.menuItemTitle {
   }
 
 }
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
 
