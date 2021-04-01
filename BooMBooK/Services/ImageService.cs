@@ -17,6 +17,11 @@ namespace BooMBooK.Services
             return await Images.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
         }
 
+        public async Task Create(Image image)
+        {
+            await Images.InsertOneAsync(image);
+        }
+
         public async Task AddComment(Image image)
         {
             await Images.InsertOneAsync(image);

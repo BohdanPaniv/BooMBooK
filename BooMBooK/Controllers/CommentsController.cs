@@ -1,8 +1,7 @@
 ﻿using BooMBooK.Models.Comment;
+using BooMBooK.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace BooMBooK.Controllers
 {
@@ -10,39 +9,26 @@ namespace BooMBooK.Controllers
     [Route("api/[controller]")]
     public class CommentsController : Controller
     {
-        static readonly List<Comment> comments;
-        static CommentsController()
+        private readonly CommentService commentService;
+        public CommentsController(CommentService commentService)
         {
-            comments = new List<Comment>();
+            this.commentService = commentService;
         }
 
-        [HttpGet]
-        public IEnumerable<Comment> Get()
+        public IActionResult Create()
         {
-            return comments;
+            return View();
         }
 
         [HttpPost]
-        public IActionResult Post(Comment comment)
+        public async Task<IActionResult> Create(Comment comment)
         {
-            comment.CommentId = Guid.NewGuid().ToString();
-            comments.Add(comment);
-            return Ok(comment);
-        }
-
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
-        {
-            Comment comment = comments.FirstOrDefault(x => x.CommentId == id);
-
-            if (comment == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                await commentService.Create(comment);
+                return RedirectToAction("Index");
             }
-
-            comments.Remove(comment);
-            return Ok(comment);
+            return View(comment);
         }
     }
 }

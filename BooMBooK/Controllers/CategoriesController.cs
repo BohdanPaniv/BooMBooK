@@ -1,8 +1,7 @@
 ﻿using BooMBooK.Models.Category;
+using BooMBooK.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace BooMBooK.Controllers
 {
@@ -10,39 +9,26 @@ namespace BooMBooK.Controllers
     [Route("api/[controller]")]
     public class CategoriesController : Controller
     {
-        static readonly List<Category> categories;
-        static CategoriesController()
+        private readonly CategoryService categoryService;
+        public CategoriesController(CategoryService categoryService)
         {
-            categories = new List<Category>();
+            this.categoryService = categoryService;
         }
 
-        [HttpGet]
-        public IEnumerable<Category> Get()
+        public IActionResult Create()
         {
-            return categories;
+            return View();
         }
 
         [HttpPost]
-        public IActionResult Post(Category category)
+        public async Task<IActionResult> Create(Category category)
         {
-            category.CategoryId = Guid.NewGuid().ToString();
-            categories.Add(category);
-            return Ok(category);
-        }
-
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
-        {
-            Category category = categories.FirstOrDefault(x => x.CategoryId == id);
-
-            if (category == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                await categoryService.Create(category);
+                return RedirectToAction("Index");
             }
-
-            categories.Remove(category);
-            return Ok(category);
+            return View(category);
         }
     }
 }

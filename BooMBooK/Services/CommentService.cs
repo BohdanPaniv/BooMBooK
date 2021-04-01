@@ -13,6 +13,11 @@ namespace BooMBooK.Services
             Comments = DataBaseService.GetMongoCollection<Comment>("Comments");
         }
 
+        public async Task Create(Comment comment)
+        {
+            await Comments.InsertOneAsync(comment);
+        }
+
         public async Task<Comment> GetComment(string id)
         {
             return await Comments.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();

@@ -13,6 +13,11 @@ namespace BooMBooK.Services
             Categories = DataBaseService.GetMongoCollection<Category>("Categories");
         }
 
+        public async Task Create(Category category)
+        {
+            await Categories.InsertOneAsync(category);
+        }
+
         public async Task<Category> GetCategories(string id)
         {
             return await Categories.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();

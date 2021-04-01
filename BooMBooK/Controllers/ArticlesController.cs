@@ -1,8 +1,7 @@
 ﻿using BooMBooK.Models.Article;
+using BooMBooK.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace BooMBooK.Controllers
 {
@@ -10,39 +9,26 @@ namespace BooMBooK.Controllers
     [Route("api/[controller]")]
     public class ArticlesController : Controller
     {
-        static readonly List<Article> articles;
-        static ArticlesController()
+        private readonly ArticleService articleService;
+        public ArticlesController(ArticleService articleService)
         {
-            articles = new List<Article>();
+            this.articleService = articleService;
         }
 
-        [HttpGet]
-        public IEnumerable<Article> Get()
+        public IActionResult Create()
         {
-            return articles;
+            return View();
         }
 
         [HttpPost]
-        public IActionResult Post(Article article)
+        public async Task<IActionResult> Create(Article article)
         {
-            article.ArticleId = Guid.NewGuid().ToString();
-            articles.Add(article);
-            return Ok(article);
-        }
-
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
-        {
-            Article article = articles.FirstOrDefault(x => x.ArticleId == id);
-
-            if (article == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                await articleService.Create(article);
+                return RedirectToAction("Index");
             }
-
-            articles.Remove(article);
-            return Ok(article);
+            return View(article);
         }
     }
 }
