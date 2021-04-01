@@ -28,14 +28,13 @@ namespace BooMBooK.Controllers
         //        await userService.Create(user);
         //        return RedirectToAction("Index");
         //    }
-
         //    return View(user);
         //}
 
         [HttpPost]
-        public async Task<ActionResult<User>> Create(User user)
+        public  ActionResult<User> Create(User user)
         {
-            await userService.Create(user);
+            userService.Create(user);
 
             return CreatedAtRoute("GetUser", new { id = user.UserId.ToString() }, user);
         }

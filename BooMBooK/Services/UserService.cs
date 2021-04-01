@@ -7,7 +7,7 @@ namespace BooMBooK.Services
 {
     public class UserService
     {
-        IMongoCollection<User> Users;
+        private readonly IMongoCollection<User> Users;
         public UserService()
         {
             Users = DataBaseService.GetMongoCollection<User>("Users");
@@ -18,9 +18,10 @@ namespace BooMBooK.Services
             return await Users.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
         }
 
-        public async Task Create(User user)
+        public User Create(User user)
         {
-            await Users.InsertOneAsync(user);
+            Users.InsertOneAsync(user);
+            return user;
         }
 
         public async Task AddUser(User user)
