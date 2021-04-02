@@ -15,16 +15,19 @@ namespace BooMBooK.Services
             Users = DataBaseService.GetMongoCollection<User>("Users");
         }
 
-        //public async Task<User> GetUser(string id)
-        //{
-        //    return await Users.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
-        //}
-
-        public async Task Create(User user)
+        public async Task<bool> Create(User user)
         {
             user.UserId = Guid.NewGuid().ToString();
+            List<User> foundUser = await Users.Find(x => x.Login == user.Login &&
+                x.Password == user.Email).ToListAsync();
+            
+            if (foundUser.Count == 0)
+            {
+                await Users.InsertOneAsync(user);
+                return true;
+            }
 
-            await Users.InsertOneAsync(user);
+            return false;
         }
 
         public async Task<bool> LogIn(string login, string password)

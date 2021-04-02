@@ -16,32 +16,21 @@ namespace BooMBooK.Controllers
             this.userService = userService;
         }
 
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-
         [HttpPost]
         public async Task<IActionResult> Create(User user)
         {
             if (ModelState.IsValid)
             {
-                await userService.Create(user);
-                return Ok(true);
+                return Ok(await userService.Create(user));
             }
 
-            return View(user);
+            return Ok(false);
         }
 
         [HttpGet("{login},{password}")]
         public async Task<IActionResult> Get(string login,string password)
         {
-            if (await userService.LogIn(login, password))
-            {
-                return Ok(true);
-            }
-
-            return Ok(false);
+            return Ok(await userService.LogIn(login, password));
         }
     }
 }
