@@ -36,14 +36,10 @@ namespace BooMBooK.Controllers
         [HttpGet("{login},{password}")]
         public async Task<IActionResult> Get(string login,string password)
         {
-
-            if (await userService.LogIn(new User()
-                {
-                    Login = login,
-                    Password = password
-                })
-            ) return Ok(true);
-
+            if (await userService.LogIn(login, password))
+            {
+                return Ok(true);
+            }
 
             return Ok(false);
         }

@@ -39,10 +39,10 @@ namespace BooMBooK.Services
             await Users.InsertOneAsync(user);
         }
 
-        public async Task<bool> LogIn(User user)
+        public async Task<bool> LogIn(string login, string password)
         {
-            List<User> foundUser = await Users.Find(x => x.Login == user.Login &&
-                x.Password == user.Password).ToListAsync();
+            List<User> foundUser = await Users.Find(x => x.Login == login &&
+                x.Password == password).ToListAsync();
 
             if (foundUser.Count == 0)
             {
