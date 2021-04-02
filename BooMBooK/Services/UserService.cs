@@ -18,7 +18,7 @@ namespace BooMBooK.Services
         public async Task<bool> Create(User user)
         {
             user.UserId = Guid.NewGuid().ToString();
-            List<User> foundUser = await Users.Find(x => x.Login == user.Login &&
+            List<User> foundUser = await Users.Find(x => x.Login == user.Login ||
                 x.Password == user.Email).ToListAsync();
             
             if (foundUser.Count == 0)
