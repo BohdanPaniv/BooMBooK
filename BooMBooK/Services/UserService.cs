@@ -22,19 +22,7 @@ namespace BooMBooK.Services
 
         public async Task Create(User user)
         {
-            string newId;
-
-            while(true)
-            {
-                newId = Guid.NewGuid().ToString();
-                List<User> foundUser = await Users.Find(x => x.UserId == newId).ToListAsync();
-
-                if (foundUser.Count == 0)
-                {
-                    user.UserId = newId;
-                    break;
-                }
-            }
+            user.UserId = Guid.NewGuid().ToString();
 
             await Users.InsertOneAsync(user);
         }
