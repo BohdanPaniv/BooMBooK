@@ -1,6 +1,5 @@
 import React from "react";
 import "./AuthenticationPage.css"
-import axios from "axios";
 
 const useFormField = (initialValue) => {
     const [value, setValue] = React.useState(initialValue);
