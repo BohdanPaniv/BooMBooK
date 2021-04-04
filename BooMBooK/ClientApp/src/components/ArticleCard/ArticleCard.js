@@ -5,8 +5,9 @@ import {Card, CardBody, CardTitle} from "reactstrap";
  function ArticleCard(props){
 
      return(
-         <Card className="articleBody"  >
+         <Card className="articleBody">
              <CardTitle>
+                 <p>{props.index}</p>
                  {props.article.title}
              </CardTitle>
             <CardBody>

@@ -1,3 +1,9 @@
-.articleBody{
-    max-width: 320px;
+.card{
+    /*min-width: 200px;*/
+    /*max-width: 300px;*/
+    text-align: left;
+    height: 280px;
+    width: 320px;
+    border: 1px solid rgba(0, 0, 0, 0.300);
+    overflow: auto;
 }
