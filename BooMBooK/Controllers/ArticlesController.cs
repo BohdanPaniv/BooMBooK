@@ -1,6 +1,8 @@
 ﻿using BooMBooK.Models.Article;
 using BooMBooK.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Controllers
@@ -15,20 +17,31 @@ namespace BooMBooK.Controllers
             this.articleService = articleService;
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         [HttpPost]
         public async Task<IActionResult> Create(Article article)
         {
             if (ModelState.IsValid)
             {
                 await articleService.Create(article);
-                return RedirectToAction("Index");
+                return Ok(true);
             }
-            return View(article);
+
+            return Ok(false);
+        }
+
+        [HttpGet]
+        public async Task<List<Article>> GetArticles()
+        {
+            return await articleService.GetArticles();
+        }
+
+        [HttpGet("{firstNumber}.{secondNumber}")]
+        public async Task<List<Article>> GetArticles(string firstNumber, string secondNumber)
+        {
+            int first = Convert.ToInt32(firstNumber);
+            int second = Convert.ToInt32(secondNumber);
+
+            return await articleService.GetArticles(first, second);
         }
     }
 }

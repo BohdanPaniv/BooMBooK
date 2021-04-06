@@ -1,13 +1,11 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace BooMBooK.Models.Article
 {
     public class Article
     {
-        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonId]
         public string ArticleId { get; set; }
 
         public string UserId { get; set; }

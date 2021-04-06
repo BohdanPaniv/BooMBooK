@@ -1,13 +1,15 @@
 ﻿using BooMBooK.Models.Article;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Services
 {
     public class ArticleService
     {
-        IMongoCollection<Article> Articles;
+        private readonly IMongoCollection<Article> Articles;
         public ArticleService()
         {
             Articles = DataBaseService.GetMongoCollection<Article>("Article");
@@ -15,17 +17,23 @@ namespace BooMBooK.Services
 
         public async Task Create(Article article)
         {
-            await Articles.InsertOneAsync(article);
+            article.ArticleId = Guid.NewGuid().ToString();
+            List<Article> findArticle = await Articles.Find(x => x.ArticleId == article.ArticleId).ToListAsync();
+
+            if (findArticle.Count == 0)
+            {
+                await Articles.InsertOneAsync(article);
+            }
         }
 
-        public async Task<Article> GetArticle(string id)
+        public async Task<List<Article>> GetArticles()
         {
-            return await Articles.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
+            return await Articles.Find(x => true).ToListAsync();
         }
 
-        public async Task AddArticle(Article article)
+        public async Task<List<Article>> GetArticles(int firstNumber, int secondNumber)
         {
-            await Articles.InsertOneAsync(article);
+            return await Articles.Find(x => true).Skip(firstNumber).Limit(secondNumber - firstNumber).ToListAsync();
         }
 
         public async Task UpdateArticle(Article article)
