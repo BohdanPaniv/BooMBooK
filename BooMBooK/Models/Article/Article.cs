@@ -15,7 +15,7 @@ namespace BooMBooK.Models.Article
         [BsonIgnoreIfNull]
         public int Rating { get; set; }
 
-        public byte[] Body_Article { get; set; }
+        public string Body_Article { get; set; }
 
         public bool Status { get; set; }
 
