@@ -20,20 +20,59 @@
 /*    border: 1px solid black;*/
 /*}*/
 
-.articleList .box{
-    text-align: left;
+.box{
     border: 1px solid gray;
     min-width: 200px;
     max-height: 450px;
     margin: 0 0 20px 0;
-    padding: 10px;
+    /*padding: 10px;*/
     background: #fff;
-    overflow: hidden;
     break-inside: avoid;
     width: calc(100% - 10px);
     transition: 0.3s;
+    overflow:hidden;
 }
-.articleList .box:hover{
+.box:hover{
     transition: 0.3s;
     border: 1px solid black;
+}
+
+.box div{
+    margin: 10px;
+}
+
+.cardTitle{
+    font-size: 22px;
+    text-overflow: ellipsis;
+    overflow:hidden;
+    white-space: break-spaces;
+    max-width: 50ch;
+    /*white-space: nowrap;*/
+}
+
+.cardText{
+    position: relative;
+    top: 200px;
+    -webkit-user-select: none;
+    transition: 0.3s;
+    text-overflow: ellipsis;
+    overflow:hidden;
+    max-width: 100ch;
+    opacity: 0;
+}
+.box:hover .cardText{
+    transition: 0.3s;
+    top: 0;
+    opacity: 1;
+    -webkit-user-select: text;
+    animation: 0.4s ease-in hiddenToVisible;
+}
+
+@keyframes hiddenToVisible {
+    0%{
+        -webkit-user-select: none;
+    }
+    100%{
+        -webkit-user-select: text;
+    }
 }

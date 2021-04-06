@@ -1,14 +1,14 @@
 import React from "react";
 import "./ArticleCard.css"
-import {Card, CardBody, CardTitle} from "reactstrap";
+import {Button} from "reactstrap";
 
  function ArticleCard(props){
 
      return(
-         <div className="box">
-             <p>{props.article.id} {props.article.title}</p>
-             <p>{props.article.text}</p>
-             <p><button onClick={()=> {console.log(props.article.id)}}>Залупа</button></p>
+         <div className="box text-center">
+             <div className="cardTitle">{props.article.id} {props.article.title}</div>
+             <div className="cardText">{props.article.text}</div>
+             <p><Button onClick={()=> {console.log(props.article.id)}}>Читати...</Button></p>
          </div>
          // <Card className="articleBody">
          //     <CardTitle>
