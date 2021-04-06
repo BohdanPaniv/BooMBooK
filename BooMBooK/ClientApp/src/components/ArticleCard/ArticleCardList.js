@@ -4,28 +4,42 @@ import ArticleCard from "./ArticleCard";
 import {Grid, makeStyles} from "@material-ui/core";
 import {Button, Card, CardBody, CardColumns, CardImg, CardSubtitle, CardText, CardTitle} from "reactstrap";
 
-const useStyles = makeStyles({
-
-});
 
  function ArticleCardList({ArticleList}) {
-    const classes = useStyles();
 
      return (
-         <div className="articleGrid">
-             <Grid container  spacing={1}
-             justify={"center"}>
+         <div className="articleListArea">
+             <div className="articleList">
                  {ArticleList.map((article, index) => {
                      return (
-                         <Grid item xs={12} xl={2}  sm={6} md={4}>
-                             <ArticleCard key = {article.id}
-                                          article = {article}
-                                          index = {index}/>
-                         </Grid>
-                     )
-                 })}
-             </Grid>
+                         <ArticleCard key = {article.id}
+                                      article = {article}
+                                      index = {index}/>
+                     )})}
+             </div>
          </div>
+
+         // <div className="articleGrid">
+         //     <Grid container
+         //           spacing={2}
+         //           justify={"center"}
+         //           alignItems={"center"}>
+         //         {ArticleList.map((article, index) => {
+         //             return (
+         //                 <Grid item
+         //                       xs={12}
+         //                       xl={4}
+         //                       sm={12}
+         //                       md={6}
+         //                       key = {article.id}>
+         //                     <ArticleCard key = {article.id}
+         //                                  article = {article}
+         //                                  index = {index}/>
+         //                 </Grid>
+         //             )
+         //         })}
+         //     </Grid>
+         // </div>
          // <CardColumns className="articleList">
          //     {ArticleList.map((article, index) => {
          //         return (

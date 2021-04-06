@@ -7,10 +7,10 @@ export class Layout extends Component {
   render () {
     return (
         <div className="page">
-          <NavMenu />
-          <div className="main">
-            {this.props.children}
-          </div>
+            <NavMenu/>
+            <div className="main">
+                {this.props.children}
+            </div>
         </div>
     );
   }
