@@ -19,7 +19,7 @@ namespace BooMBooK.Services
         {
             user.UserId = Guid.NewGuid().ToString();
             List<User> foundUser = await Users.Find(x => x.Login == user.Login ||
-                x.Password == user.Email).ToListAsync();
+                x.Email == user.Email).ToListAsync();
             
             if (foundUser.Count == 0)
             {
