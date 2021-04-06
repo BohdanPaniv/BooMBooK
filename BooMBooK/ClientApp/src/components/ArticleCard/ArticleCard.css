@@ -1,9 +1,39 @@
-.card{
-    /*min-width: 200px;*/
-    /*max-width: 300px;*/
+/*.card{*/
+/*    !*min-width: 200px;*!*/
+/*    !*max-width: 300px;*!*/
+/*    text-align: left;*/
+/*    height: 280px;*/
+/*    !*width: 500px;*!*/
+/*    max-width: calc(100% / 1.10);*/
+/*    border: 1px solid rgba(0, 0, 0, 0.300);*/
+/*    overflow: auto;*/
+/*    transition: 0.2s;*/
+/*}*/
+
+/*@media (max-width: 1050px) {*/
+/*    .card{*/
+/*        height: 300px;*/
+/*    }*/
+/*}*/
+
+/*.card{*/
+/*    border: 1px solid black;*/
+/*}*/
+
+.articleList .box{
     text-align: left;
-    height: 280px;
-    width: 320px;
-    border: 1px solid rgba(0, 0, 0, 0.300);
-    overflow: auto;
+    border: 1px solid gray;
+    min-width: 200px;
+    max-height: 450px;
+    margin: 0 0 20px 0;
+    padding: 10px;
+    background: #fff;
+    overflow: hidden;
+    break-inside: avoid;
+    width: calc(100% - 10px);
+    transition: 0.3s;
+}
+.articleList .box:hover{
+    transition: 0.3s;
+    border: 1px solid black;
 }

@@ -1,6 +1,13 @@
-.home{
-    margin-top: 10px;
-    margin-bottom: 10px;
-    height: calc(100% - 20px);
-    /*width: calc(100% - 16px);*/
+/*.home{*/
+/*    margin-top: 10px;*/
+/*    margin-bottom: 10px;*/
+/*    height: calc(100% - 20px);*/
+/*    !*width: calc(100% - 16px);*!*/
+/*}*/
+
+.Home {
+    height: 100%;
+    width: 100%;
 }
+
+
