@@ -21,7 +21,7 @@
 /*}*/
 
 .box{
-    border: 1px solid gray;
+    border: 1px solid #b8b8b8;
     min-width: 200px;
     max-height: 450px;
     margin: 0 0 20px 0;
@@ -31,6 +31,7 @@
     width: calc(100% - 10px);
     transition: 0.3s;
     overflow:hidden;
+    border-radius: 10px;
 }
 .box:hover{
     transition: 0.3s;
@@ -43,21 +44,14 @@
 
 .cardTitle{
     font-size: 22px;
-    text-overflow: ellipsis;
-    overflow:hidden;
-    white-space: break-spaces;
-    max-width: 50ch;
     /*white-space: nowrap;*/
 }
 
 .cardText{
     position: relative;
-    top: 200px;
+    top: 12px;
     -webkit-user-select: none;
     transition: 0.3s;
-    text-overflow: ellipsis;
-    overflow:hidden;
-    max-width: 100ch;
     opacity: 0;
 }
 .box:hover .cardText{

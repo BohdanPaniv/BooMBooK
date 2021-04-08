@@ -12,7 +12,7 @@ import {Button, Card, CardBody, CardColumns, CardImg, CardSubtitle, CardText, Ca
              <div className="articleList">
                  {ArticleList.map((article, index) => {
                      return (
-                         <ArticleCard key = {article.id}
+                         <ArticleCard key = {article.articleId}
                                       article = {article}
                                       index = {index}/>
                      )})}

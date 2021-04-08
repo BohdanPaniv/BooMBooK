@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import ArticleCardList from "./ArticleCard/ArticleCardList";
 import "./Home.css"
 import {Card, CardColumns} from "reactstrap";
@@ -11,7 +11,7 @@ import {Card, CardColumns} from "reactstrap";
 // };
 
 export function Home() {
-
+    const [articleList,setArticleList] = useState([]);
     let array = [
         {
             id: 1,
@@ -76,24 +76,59 @@ export function Home() {
         ];
 
     function getArticles(){
-        var xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
 
-        xhr.open("get","api/articles/0,10", true);
+        xhr.open("get","api/articles/0,12", true);
         xhr.setRequestHeader("Content-Type", "application/json");
 
         xhr.onload = function () {
             if (xhr.status === 200) {
-               console.log(xhr.responseText);
+                setArticleList(JSON.parse(xhr.responseText));
             }
         };
+        xhr.send();
         console.log(xhr);
     }
+    let val = 0;
+    function setArticle() {
+        let xhr = new XMLHttpRequest();
+        let date =  new Date();
+
+        let news = JSON.stringify({
+            ArticleId:"",
+            UserId: "d12s",
+            DateTime: date,
+            Body_Article: "<div>Текст статі: "+val+"</div>",
+            Status: false,
+            Title: "Заголовок статі" + val
+        });
+
+        xhr.open("post","api/articles/", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                console.log(xhr.responseText);
+                val = val + 1;
+            }
+        };
+        xhr.send(news);
+        console.log(xhr);
+    }
+    useEffect(()=>{
+       if (articleList.length === 0) getArticles();
+
+       console.log(1)
+    })
+    // window.onload = getArticles();
 
     return (
         <div className="Home">
             <div>
+                {/*<button onClick={()=> getArticles()}>Get</button>*/}
+                <button onClick={()=> setArticle()}>Set</button>
             </div>
-            <ArticleCardList ArticleList={array}/>
+            <ArticleCardList ArticleList={articleList}/>
         </div>
 
     );
