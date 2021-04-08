@@ -47,20 +47,37 @@
     /*white-space: nowrap;*/
 }
 
-.cardText{
+.cardText {
     position: relative;
     top: 12px;
+    height: 100px;
     -webkit-user-select: none;
     transition: 0.3s;
     opacity: 0;
+    overflow: hidden;
+    width: calc(100% - 30px);
 }
-.box:hover .cardText{
+.box:hover .cardText {
+    position: inherit;
     transition: 0.3s;
     top: 0;
     opacity: 1;
+    height: 100px;
     -webkit-user-select: text;
     animation: 0.4s ease-in hiddenToVisible;
+    overflow: visible;
+    width: calc(100% - 10px);
 }
+    .box:hover .cardText > * {
+        position: relative;
+        overflow: hidden;
+        width: calc(100% - 10px);
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        -ms-text-overflow: ellipsis;
+        height: 100px;
+    }
+
 
 @keyframes hiddenToVisible {
     0%{
