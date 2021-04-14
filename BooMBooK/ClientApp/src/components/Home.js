@@ -89,7 +89,9 @@ export function Home() {
         xhr.send();
         console.log(xhr);
     }
+
     let val = 0;
+
     function setArticle() {
         let xhr = new XMLHttpRequest();
         let date =  new Date();
