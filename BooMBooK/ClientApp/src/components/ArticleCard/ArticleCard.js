@@ -2,10 +2,10 @@ import React from "react";
 import "./ArticleCard.css";
 import { Button } from "reactstrap";
 import {useHistory} from "react-router-dom";
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser';
  function ArticleCard(props){
 
-     console.log(props.article);
+     // console.log(props.article);
      const history = useHistory();
 
      return(
