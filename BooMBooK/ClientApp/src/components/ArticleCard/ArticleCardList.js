@@ -1,8 +1,8 @@
 import React from "react";
 import "./AtricleCardList.css"
 import ArticleCard from "./ArticleCard";
-import {Grid, makeStyles} from "@material-ui/core";
-import {Button, Card, CardBody, CardColumns, CardImg, CardSubtitle, CardText, CardTitle} from "reactstrap";
+// import {Grid, makeStyles} from "@material-ui/core";
+// import {Button, Card, CardBody, CardColumns, CardImg, CardSubtitle, CardText, CardTitle} from "reactstrap";
 
 
  function ArticleCardList({ArticleList}) {
@@ -16,6 +16,7 @@ import {Button, Card, CardBody, CardColumns, CardImg, CardSubtitle, CardText, Ca
                                       article = {article}
                                       index = {index}/>
                      )})}
+                 <div className="list-showMore">Show more</div>
              </div>
          </div>
 

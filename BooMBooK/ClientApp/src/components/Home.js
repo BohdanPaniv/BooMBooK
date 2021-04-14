@@ -18,7 +18,7 @@ export function Home() {
         function getArticles(){
             let xhr = new XMLHttpRequest();
 
-            xhr.open("get","api/articles/0,12", true);
+            xhr.open("get","api/articles/0,11", true);
             xhr.setRequestHeader("Content-Type", "application/json");
 
             xhr.onload = function () {
