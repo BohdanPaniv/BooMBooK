@@ -19,7 +19,7 @@ export default class App extends Component {
             <Route exact path='/Settings' component={UserSetting} />
             <Route path='/ArticlePage' component={ArticlePage} />
         {/*<Route exact path='/Authentication' component={AuthenticationPage}/>*/}
-        <Route exact path='/Profile' component={Profile}/>
+            <Route exact path='/Profile' component={Profile}/>
       {/*  <Route path='/counter' component={Counter} />*/}
       {/*  <Route path='/fetch-data' component={FetchData} />*/}
       </Layout>

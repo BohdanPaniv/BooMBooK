@@ -5,20 +5,31 @@ import logo from './DefAvatar.jpg';
 
 export function Profile() {
 
-    let user = JSON.parse(localStorage.getItem('User'));
-    //console.log(user);
+    const [user,setUser] = useState();
 
+    useEffect(()=>{
+        setUser(JSON.parse(JSON.parse(localStorage.getItem('User'))));
+    },[])
 
     return (
+        <>
+            {user
+                ? (
+                    <div className="profile-box">
+                        <div className ="heading">Profile</div>
+                        <img className="avatar" src={logo} alt="Logo" /><br />
+                        <div className="names">{user.firstName + ' ' + user.lastName}</div>
+                        <div className="your-articles">Your article`s</div>
+                        <div className="articles-box">
+                        </div>
+                    </div>
+                )
+                : (
+                    <div>loading</div>
+                )
+            }
 
-        <div className="profile-box">
-            <div className ="heading">Profile</div>
-            <img className="avatar" src={logo} alt="Logo" /><br />
-            <div className="names">{user.FirstName + ' ' + user.LastName}</div>
-            <div className="your-articles">Your article`s</div>
-            <div className="articles-box">
-            </div>
-        </div>
+        </>
     );
 
 }
