@@ -124,10 +124,6 @@ export function Home() {
 
     return (
         <div className="Home">
-            <div>
-                {/*<button onClick={()=> getArticles()}>Get</button>*/}
-                <button onClick={()=> setArticle()}>Set</button>
-            </div>
             <ArticleCardList ArticleList={articleList}/>
         </div>
 
