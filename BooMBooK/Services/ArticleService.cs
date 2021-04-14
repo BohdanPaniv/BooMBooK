@@ -26,6 +26,11 @@ namespace BooMBooK.Services
             }
         }
 
+        public async Task<Article> GetArticleById(string articleId)
+        {
+            return await Articles.Find(x => x.ArticleId == articleId).FirstOrDefaultAsync();
+        }
+
         public async Task<List<Article>> GetArticles()
         {
             return await Articles.Find(x => true).ToListAsync();
