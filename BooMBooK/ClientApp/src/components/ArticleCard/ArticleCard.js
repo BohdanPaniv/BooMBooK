@@ -1,20 +1,19 @@
 import React from "react";
-import "./ArticleCard.css"
+import "./ArticleCard.css";
 import { Button } from "reactstrap";
-import { Link } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
  function ArticleCard(props){
 
      console.log(props.article);
+     const history = useHistory();
 
      return(
          <div className="box text-center">
              <div className="cardTitle">{props.index} {props.article.title}</div>
              <div className="cardText">{ReactHtmlParser(props.article.body_Article)}</div>
              <p>
-                 <Link to="/ArticlePage">
-                     <Button>Читати...</Button>
-                 </Link>
+                <Button onClick={() => { history.push(`/ArticlePage/${props.article.articleId}`);}}>Читати...</Button>
              </p>
          </div>
          // <Card className="articleBody">
