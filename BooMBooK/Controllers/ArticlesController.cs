@@ -40,7 +40,6 @@ namespace BooMBooK.Controllers
         {
             int first = Convert.ToInt32(firstNumber);
             int second = Convert.ToInt32(secondNumber);
-            var temp = await articleService.GetArticles(first, second);
             return await articleService.GetArticles(first, second);
         }
     }
