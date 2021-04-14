@@ -3,7 +3,9 @@ import "./UserSetting.css"
 
 export function UserSetting() {
 
+    let user = JSON.parse(localStorage.getItem("User"));
+
     return(
-        <div>{localStorage.getItem("User")}</div>
+        <div>{user}</div>
     );
 }

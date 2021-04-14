@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from "react";
 import ArticleCardList from "./ArticleCard/ArticleCardList";
-import "./Home.css"
-import {Card, CardColumns} from "reactstrap";
-
+import "./Home.css";
 
 // const useFormField = (initialValue= '') => {
 //     const [value, setValue] = React.useState(initialValue);
@@ -11,117 +9,59 @@ import {Card, CardColumns} from "reactstrap";
 // };
 
 export function Home() {
+
+
     const [articleList,setArticleList] = useState([]);
-    let array = [
-        {
-            id: 1,
-            title : "Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1",
-            text: "Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1"
-        },
-        {
-            id: 2,
-            title: "Заголовок 2",
-            text: "Текст 2"
-        },
-        {
-            id: 3,
-            title: "Заголовок 3",
-            text: "Текст 3"
-        },
-        {
-            id: 4,
-            title: "Заголовок 4",
-            text: "Текст 4"
-        },
-        {
-            id: 5,
-            title: "Заголовок 4",
-            text: "Текст 4"
-        },
-        {
-            id: 6,
-            title: "Заголовок 4",
-            text: "Текст 4"
-        },
-        {
-            id: 7,
-            title: "Заголовок 4",
-            text: "Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4Текст 4"
-        },
-        {
-            id: 8,
-            title: "Заголовок 4",
-            text: "Текст 4"
-        },
-        {
-            id: 9,
-            title : "Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1",
-            text: "Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1"
-        },
-        {
-            id: 10,
-            title : "Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1",
-            text: "Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1"
-        },
-        {
-            id: 11,
-            title : "Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1",
-            text: "Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1"
-        },
-        {
-            id: 12,
-            title : "Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1Заголовок 1 Заголовок 1",
-            text: "Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1Текст 1"
-        },
-        ];
 
-    function getArticles(){
-        let xhr = new XMLHttpRequest();
 
-        xhr.open("get","api/articles/0,12", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                setArticleList(JSON.parse(xhr.responseText));
-            }
-        };
-        xhr.send();
-        console.log(xhr);
-    }
-
-    let val = 0;
-
-    function setArticle() {
-        let xhr = new XMLHttpRequest();
-        let date =  new Date();
-
-        let news = JSON.stringify({
-            ArticleId:"",
-            UserId: "d12s",
-            DateTime: date,
-            Body_Article: "<div>Текст статі: "+val+"</div>",
-            Status: false,
-            Title: "Заголовок статі" + val
-        });
-
-        xhr.open("post","api/articles/", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                console.log(xhr.responseText);
-                val = val + 1;
-            }
-        };
-        xhr.send(news);
-        console.log(xhr);
-    }
     useEffect(()=>{
-       if (articleList.length === 0) getArticles();
+        function getArticles(){
+            let xhr = new XMLHttpRequest();
 
-       console.log(1)
-    })
+            xhr.open("get","api/articles/0,12", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    setArticleList(JSON.parse(xhr.responseText));
+                }
+            };
+            xhr.send();
+            console.log(xhr);
+        }
+        if (articleList.length === 0) getArticles();
+    },[articleList])
+
+
+
+    // let val = 0;
+
+    // function setArticle() {
+    //     let xhr = new XMLHttpRequest();
+    //     let date =  new Date();
+    //
+    //     let news = JSON.stringify({
+    //         ArticleId:"",
+    //         UserId: "d12s",
+    //         DateTime: date,
+    //         Body_Article: "<div>Текст статі: "+val+"</div>",
+    //         Status: false,
+    //         Title: "Заголовок статі" + val
+    //     });
+    //
+    //     xhr.open("post","api/articles/", true);
+    //     xhr.setRequestHeader("Content-Type", "application/json");
+    //
+    //     xhr.onload = function () {
+    //         if (xhr.status === 200) {
+    //             console.log(xhr.responseText);
+    //             val = val + 1;
+    //         }
+    //     };
+    //     xhr.send(news);
+    //     console.log(xhr);
+    // }
+
     // window.onload = getArticles();
 
     return (
