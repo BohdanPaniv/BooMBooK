@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from "react";
-// import ArticleCardList from "./../ArticleCard/ArticleCardList.js";
+import ArticleCardList from "./../ArticleCard/ArticleCardList.js";
 import "./Profile.css"
 import logo from './DefAvatar.jpg';
 
@@ -46,7 +46,9 @@ export function Profile() {
                         <div className="names">{user.firstName + ' ' + user.lastName}</div>
                         <div className="your-articles">Your article`s</div>
                         <div className="articles-box">
-                            
+                        <div className="articleListArea">
+                            <ArticleCardList ArticleList={articleList} />
+                        </div>)
                         </div>
                     </div>
                 )
