@@ -6,7 +6,7 @@ import {Spinner} from "reactstrap"
 export function ArticlePage() {
 
     const [article, setArticle] = useState();
-    const params = useParams().id;
+    const params = +useParams().id;
 
     useEffect(() => {
         if (!article) {
