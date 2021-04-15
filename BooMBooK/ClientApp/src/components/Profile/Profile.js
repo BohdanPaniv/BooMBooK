@@ -2,21 +2,34 @@
 import ArticleCardList from "./../ArticleCard/ArticleCardList.js";
 import "./Profile.css"
 import logo from './DefAvatar.jpg';
+import {Spinner} from "reactstrap";
 
 export function Profile() {
-    const [articleList, setArticleList] = useState([]);
+    const [articleList, setArticleList] = useState(null);
 
     const [user,setUser] = useState();
 
     useEffect(()=>{
-        setUser(JSON.parse(JSON.parse(localStorage.getItem('User'))));
+        if (!user) setUser(JSON.parse(JSON.parse(localStorage.getItem('User'))));
     },[])
+
+    useEffect(()=>{
+        if (!articleList && user) getArticles();
+    },[articleList,user])
 
     function getArticles() {
         let xhr = new XMLHttpRequest();
+        let string = "";
+        if (articleList && articleList?.length !== 0)
+        {
+            string = "api/articles/GetArticlesByUserId/"+ user.userId + ",0,"+ (parseInt(articleList.length,10) + 10);
 
-        console.log(user);
-        xhr.open("get", "api/articles/GetArticlesByUserId/" + user.userId, true);
+        }else
+        {
+            string = "api/articles/GetArticlesByUserId/"+ user.userId + ",0,1";
+        }
+
+        xhr.open("get", string , true);
         xhr.setRequestHeader("Content-Type", "application/json");
 
         xhr.onload = function () {
@@ -27,13 +40,10 @@ export function Profile() {
         xhr.send();
         console.log(xhr);
     }
+    
 
 
-    useEffect(() => {
-        if (articleList.length === 0 && user) getArticles();
 
-        console.log(1)
-    })
 
 
     return (
@@ -46,10 +56,14 @@ export function Profile() {
                         <div className="names">{user.firstName + ' ' + user.lastName}</div>
                         <div className="your-articles">Your article`s</div>
                         <div className="articles-box">
-                        <div className="articleListArea">
-                            <ArticleCardList ArticleList={articleList} />
+                        {
+                articleList 
+                    ? (<div className="articleListArea">
+                            <ArticleCardList ArticleList={articleList} getArticles={getArticles}/>
                         </div>)
-                        </div>
+                    : (<Spinner/>)
+            }
+                    </div>
                     </div>
                 )
                 : (
