@@ -36,14 +36,25 @@ namespace BooMBooK.Services
             return await Articles.Find(x => x.UserId == userId).ToListAsync();
         }
 
+        public async Task<List<Article>> GetArticlesByUserId(string userId, string firstNumber, string secondNumber)
+        {
+            int first = Convert.ToInt32(firstNumber);
+            int second = Convert.ToInt32(secondNumber);
+
+            return await Articles.Find(x => x.UserId == userId).Skip(first).Limit(second - first).ToListAsync();
+        }
+
         public async Task<List<Article>> GetArticles()
         {
             return await Articles.Find(x => true).ToListAsync();
         }
 
-        public async Task<List<Article>> GetArticles(int firstNumber, int secondNumber)
+        public async Task<List<Article>> GetArticles(string firstNumber, string secondNumber)
         {
-            return await Articles.Find(x => true).Skip(firstNumber).Limit(secondNumber - firstNumber).ToListAsync();
+            int first = Convert.ToInt32(firstNumber);
+            int second = Convert.ToInt32(secondNumber);
+
+            return await Articles.Find(x => true).Skip(first).Limit(second - first).ToListAsync();
         }
 
         public async Task UpdateArticle(Article article)

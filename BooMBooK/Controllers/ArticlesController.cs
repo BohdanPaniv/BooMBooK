@@ -38,9 +38,7 @@ namespace BooMBooK.Controllers
         [HttpGet("{firstNumber},{secondNumber}")]
         public async Task<List<Article>> GetArticles(string firstNumber, string secondNumber)
         {
-            int first = Convert.ToInt32(firstNumber);
-            int second = Convert.ToInt32(secondNumber);
-            return await articleService.GetArticles(first, second);
+            return await articleService.GetArticles(firstNumber, secondNumber);
         }
 
         [HttpGet("GetArticleByArticleId/{articleId}")]
@@ -53,6 +51,12 @@ namespace BooMBooK.Controllers
         public async Task<List<Article>> GetArticlesByUserId(string userId)
         {
             return await articleService.GetArticlesByUserId(userId);
+        }
+
+        [HttpGet("GetArticlesByUserId/{userId}{firstNumber},{secondNumber}")]
+        public async Task<List<Article>> GetArticlesByUserId(string userId, string firstNumber, string secondNumber)
+        {
+            return await articleService.GetArticlesByUserId(userId, firstNumber, secondNumber);
         }
     }
 }
