@@ -1,20 +1,21 @@
 ﻿import React, { useEffect, useState } from "react";
-import ArticleCardList from "./../ArticleCard/ArticleCardList.js";
+// import ArticleCardList from "./../ArticleCard/ArticleCardList.js";
 import "./Profile.css"
 import logo from './DefAvatar.jpg';
 
 export function Profile() {
     const [articleList, setArticleList] = useState([]);
 
-    let user = JSON.parse(localStorage.getItem('User'));
-    console.log(user);
     const [user,setUser] = useState();
 
-    function getArticles() {
-        let xhr = new XMLHttpRequest();
     useEffect(()=>{
         setUser(JSON.parse(JSON.parse(localStorage.getItem('User'))));
     },[])
+
+    function getArticles() {
+        let xhr = new XMLHttpRequest();
+
+
 
         xhr.open("get", "api/articles/0,12", true);
         xhr.setRequestHeader("Content-Type", "application/json");
@@ -28,33 +29,34 @@ export function Profile() {
         console.log(xhr);
     }
 
-    let val = 0;
+    // let val = 0;
 
-    function setArticle() {
-        let xhr = new XMLHttpRequest();
-        let date = new Date();
+    // function setArticle() {
+    //     let xhr = new XMLHttpRequest();
+    //     let date = new Date();
+    //
+    //     let news = JSON.stringify({
+    //         ArticleId: "",
+    //         UserId: "d12s",
+    //         DateTime: date,
+    //         Body_Article: "<div>Текст статі: " + val + "</div>",
+    //         Status: false,
+    //         Title: "Заголовок статі" + val
+    //     });
+    //
+    //     xhr.open("post", "api/articles/", true);
+    //     xhr.setRequestHeader("Content-Type", "application/json");
+    //
+    //     xhr.onload = function () {
+    //         if (xhr.status === 200) {
+    //             console.log(xhr.responseText);
+    //             val = val + 1;
+    //         }
+    //     };
+    //     xhr.send(news);
+    //     console.log(xhr);
+    // }
 
-        let news = JSON.stringify({
-            ArticleId: "",
-            UserId: "d12s",
-            DateTime: date,
-            Body_Article: "<div>Текст статі: " + val + "</div>",
-            Status: false,
-            Title: "Заголовок статі" + val
-        });
-
-        xhr.open("post", "api/articles/", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                console.log(xhr.responseText);
-                val = val + 1;
-            }
-        };
-        xhr.send(news);
-        console.log(xhr);
-    }
     useEffect(() => {
         if (articleList.length === 0) getArticles();
 
