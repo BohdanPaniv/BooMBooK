@@ -16,7 +16,7 @@ export function Profile() {
         let xhr = new XMLHttpRequest();
 
         console.log(user);
-        xhr.open("get", "api/articles/userId/" + user.userId, true);
+        xhr.open("get", "api/articles/GetArticlesByUserId/" + user.userId, true);
         xhr.setRequestHeader("Content-Type", "application/json");
 
         xhr.onload = function () {

@@ -6,13 +6,13 @@ import {Spinner} from "reactstrap"
 export function ArticlePage() {
 
     const [article, setArticle] = useState();
-    const params = +useParams().id;
+    const params = useParams().id;
 
     useEffect(() => {
         if (!article) {
             let xhr = new XMLHttpRequest();
 
-            xhr.open("get", "api/articles/" + params, true);
+            xhr.open("get", "api/articles/GetArticleByArticleId/" + params, true);
             xhr.setRequestHeader("Content-Type", "application/json");
 
             xhr.onload = function () {
