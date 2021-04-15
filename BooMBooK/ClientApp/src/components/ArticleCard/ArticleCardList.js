@@ -15,7 +15,11 @@ import ArticleCard from "./ArticleCard";
                                       article = {article}
                                       index = {index}/>
                      )})}
-                 <div className="list-showMore">Show more</div>
+                 <div className="showMore">
+                     <p className="title">
+                         ShowMore
+                     </p>
+                 </div>
              </div>
 
          // <div className="articleGrid">

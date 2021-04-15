@@ -66,3 +66,47 @@
         columns: 1;
     }
 }
+
+.showMore{
+    border: 1px solid #b8b8b8;
+    min-width: 200px;
+    max-height: 450px;
+    min-height: 188.8px;
+    margin: 0 0 20px 0;
+    /*padding: 10px;*/
+    background: #fff;
+    break-inside: avoid;
+    width: calc(100% - 10px);
+    transition: 0.3s;
+    overflow:hidden;
+    border-radius: 10px;
+    text-align: center;
+    background-color: lightslategray;
+    position: relative;
+    justify-content: center;
+}
+
+.showMore:hover{
+    background-color: lightslategray;
+}
+
+.title{
+    background-color: lightslategray;
+    color: white;
+    font-size: 30px;
+    margin-top: 70px;
+    vertical-align: middle;
+}
+
+.title:hover{
+    background-color: #6c757d;
+} 
+
+.showMore:hover{
+    transition: 0.3s;
+    border: 1px solid black;
+}
+
+.showMore div{
+    margin: auto;
+}
