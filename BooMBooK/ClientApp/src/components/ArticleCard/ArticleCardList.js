@@ -8,7 +8,6 @@ import {Button, Card, CardBody, CardColumns, CardImg, CardSubtitle, CardText, Ca
  function ArticleCardList({ArticleList}) {
 
      return (
-         <div className="articleListArea">
              <div className="articleList">
                  {ArticleList.map((article, index) => {
                      return (
@@ -17,7 +16,6 @@ import {Button, Card, CardBody, CardColumns, CardImg, CardSubtitle, CardText, Ca
                                       index = {index}/>
                      )})}
              </div>
-         </div>
 
          // <div className="articleGrid">
          //     <Grid container

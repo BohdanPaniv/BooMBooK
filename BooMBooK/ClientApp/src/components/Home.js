@@ -130,8 +130,11 @@ export function Home() {
                 {/*<button onClick={()=> getArticles()}>Get</button>*/}
                 <button onClick={()=> setArticle()}>Set</button>
             </div>
-            <ArticleCardList ArticleList={articleList}/>
+            <div className="articleListArea">
+                <ArticleCardList ArticleList={articleList}/>
+            </div>
         </div>
+
 
     );
 }
