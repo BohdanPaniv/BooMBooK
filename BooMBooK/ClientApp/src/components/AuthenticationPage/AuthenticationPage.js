@@ -74,15 +74,25 @@ export function AuthenticationPage(){
     }
 
     function saveUserToLocal(xhr,user){
+        console.log("test");
         console.log(xhr);
-        console.log(user);
+        let temp = JSON.parse(JSON.parse(user));
+
+        console.log(temp.userId);
         //
         // console.log(Boolean(xhr.responseText));
         // let isTrue = xhr.responseText === "true";
         // console.log(isTrue);
-        if (user){
+        if (temp.userId !== null){
             localStorage.setItem("User", user);
             window.location.reload();
+        }
+        else {
+            let errors = {};
+            errors["Login"] = true;
+            errors["Password"] = true;
+            errors["Email"] = true;
+            setErrorList(errors);
         }
     }
 
@@ -126,8 +136,6 @@ export function AuthenticationPage(){
                 }
                 case "old": {
 
-                    console.log(user);
-                    console.log(user["Login"]);
                     xhr.open("get","api/users/"+loginField.get()+","+passwordField.get(), true);
                     xhr.setRequestHeader("Content-Type", "application/json");
 

@@ -16,14 +16,9 @@ namespace BooMBooK.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(User user)
+        public async Task<User> Create(User user)
         {
-            if (ModelState.IsValid)
-            {
-                return Ok(await userService.Create(user));
-            }
-
-            return Ok(false);
+            return await userService.Create(user);
         }
 
         [HttpGet("{login},{password}")]
