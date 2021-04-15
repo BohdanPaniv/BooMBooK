@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import ArticleCardList from "./ArticleCard/ArticleCardList";
 import "./Home.css";
+import {Spinner} from "reactstrap";
 
 // const useFormField = (initialValue= '') => {
 //     const [value, setValue] = React.useState(initialValue);
@@ -66,8 +67,14 @@ export function Home() {
 
     return (
         <div className="Home">
-            <ArticleCardList ArticleList={articleList}/>
+            {
+                    articleList
+                        ? (<ArticleCardList ArticleList={articleList}/>)
+                        : (<Spinner/>)
+            }
+
         </div>
+
 
     );
 }

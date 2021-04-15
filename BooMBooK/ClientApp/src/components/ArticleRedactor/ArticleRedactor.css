@@ -1,0 +1,17 @@
+.article-text{
+    width: 100%;
+}
+
+.article-modal{
+    height: 100%;
+    width: 100%;
+    padding: 15px;
+}
+
+.article-modal-input{
+    width: 100%;
+    min-height: 30px;
+    height: max-content;
+    text-wrap: normal;
+
+}
