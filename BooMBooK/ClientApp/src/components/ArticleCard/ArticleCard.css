@@ -33,6 +33,7 @@
     overflow:hidden;
     border-radius: 10px;
 }
+
 .box:hover{
     transition: 0.3s;
     border: 1px solid black;
