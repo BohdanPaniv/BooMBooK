@@ -10,4 +10,13 @@
     width: 100%;
 }
 
+.articleListArea {
+    margin-top: 10px;
+    height: calc(100% - 39.6px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: -webkit-center;
+    padding: 15px;
+}
+
 

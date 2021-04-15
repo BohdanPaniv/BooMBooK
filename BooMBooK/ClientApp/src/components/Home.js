@@ -68,9 +68,11 @@ export function Home() {
     return (
         <div className="Home">
             {
-                    articleList
-                        ? (<ArticleCardList ArticleList={articleList}/>)
-                        : (<Spinner/>)
+                articleList !== []
+                    ? (<div className="articleListArea">
+                            <ArticleCardList ArticleList={articleList} />
+                        </div>)
+                    : (<Spinner/>)
             }
 
         </div>
