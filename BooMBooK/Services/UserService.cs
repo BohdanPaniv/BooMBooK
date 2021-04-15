@@ -30,17 +30,17 @@ namespace BooMBooK.Services
             return false;
         }
 
-        public async Task<bool> LogIn(string login, string password)
+        public async Task<User> LogIn(string login, string password)
         {
             List<User> foundUser = await Users.Find(x => x.Login == login &&
                 x.Password == password).ToListAsync();
 
             if (foundUser.Count == 0)
             {
-                return false;
+                return new User();
             }
 
-            return true;
+            return foundUser[0];
         }
 
         public async Task UpdateUser(User user)

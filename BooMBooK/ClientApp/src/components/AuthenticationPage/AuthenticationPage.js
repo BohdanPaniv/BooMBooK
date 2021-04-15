@@ -75,11 +75,12 @@ export function AuthenticationPage(){
 
     function saveUserToLocal(xhr,user){
         console.log(xhr);
+        console.log(user);
         //
         // console.log(Boolean(xhr.responseText));
-        let isTrue = xhr.responseText === "true";
-        console.log(isTrue);
-        if (isTrue){
+        // let isTrue = xhr.responseText === "true";
+        // console.log(isTrue);
+        if (user){
             localStorage.setItem("User", user);
             window.location.reload();
         }
@@ -114,7 +115,8 @@ export function AuthenticationPage(){
 
                     xhr.onload = function () {
                         if (xhr.status === 200) {
-                            saveUserToLocal(xhr,user);
+                            let responsedUser = JSON.stringify(xhr.responseText);
+                            saveUserToLocal(xhr,responsedUser);
                         }
                     };
 
@@ -131,7 +133,8 @@ export function AuthenticationPage(){
 
                     xhr.onload = function () {
                         if (xhr.status === 200) {
-                            saveUserToLocal(xhr,user);
+                            let responsedUser = JSON.stringify(xhr.responseText);
+                            saveUserToLocal(xhr,responsedUser);
                         }
                     };
 

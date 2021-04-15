@@ -8,9 +8,13 @@ export function Profile() {
 
     let user = JSON.parse(localStorage.getItem('User'));
     console.log(user);
+    const [user,setUser] = useState();
 
     function getArticles() {
         let xhr = new XMLHttpRequest();
+    useEffect(()=>{
+        setUser(JSON.parse(JSON.parse(localStorage.getItem('User'))));
+    },[])
 
         xhr.open("get", "api/articles/0,12", true);
         xhr.setRequestHeader("Content-Type", "application/json");
@@ -59,8 +63,26 @@ export function Profile() {
 
 
     return (
+        <>
+            {user
+                ? (
+                    <div className="profile-box">
+                        <div className ="heading">Profile</div>
+                        <img className="avatar" src={logo} alt="Logo" /><br />
+                        <div className="names">{user.firstName + ' ' + user.lastName}</div>
+                        <div className="your-articles">Your article`s</div>
+                        <div className="articles-box">
+                        </div>
+                    </div>
+                )
+                : (
+                    <div>loading</div>
+                )
+            }
 
-        <div className="profile-box">
+        </>
+
+        /*<div className="profile-box">
             <div className ="heading">Profile</div>
             <img className="avatar" src={logo} alt="Logo" />
             <div className="names">{user.FirstName + ' ' + user.LastName}</div>
@@ -68,7 +90,7 @@ export function Profile() {
             <div className="articleListArea">
                 <ArticleCardList ArticleList={articleList} />
             </div>
-        </div>
+        </div>*/
     );
 
 }

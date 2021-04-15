@@ -17,11 +17,11 @@ export function MainPopUpMenu(props){
               keepMounted
               open={Boolean(props.anchorEl)}
               onClose={props.handleClose} >
-            <MenuItem onClick={props.handleClose}>My account</MenuItem>
+            <NavLink tag={Link} to="/Profile">
+                <MenuItem onClick={props.handleClose}>My account</MenuItem>
+            </NavLink>
             <NavLink tag={Link} to="/Settings">
-                <div>
                     <MenuItem onClick={props.handleClose}>Settings</MenuItem>
-                </div>
             </NavLink>
             <MenuItem onClick={logOutHandler}>Logout</MenuItem>
         </Menu>

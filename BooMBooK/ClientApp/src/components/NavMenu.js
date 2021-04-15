@@ -1,16 +1,15 @@
 import React from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem } from 'reactstrap';
-import {Link, NavLink} from 'react-router-dom';
+import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
+import {Link} from 'react-router-dom';
 import UserIcon from "./Images/user.png"
 import './NavMenu.css';
 import {ModalWindow} from "./ModalWindow/ModalWindow";
 import {AuthenticationPage} from "./AuthenticationPage/AuthenticationPage";
-import {Button, Menu, MenuItem} from "@material-ui/core";
 import {MainPopUpMenu} from "./MainPopUpMenu/MainPopUpMenu";
 
 export function NavMenu() {
 
-  const [isLoggedIn,setIsLoggedIn] = React.useState(
+  const [isLoggedIn] = React.useState(
       Boolean(localStorage.getItem("User"))
   );
 
