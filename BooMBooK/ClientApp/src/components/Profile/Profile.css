@@ -1,7 +1,7 @@
 ﻿.heading {
-    text-align:center;
-    font-size:30px;
-    font-weight:bold;
+    width: max-content;
+    font-size: 30px;
+    font-weight: bold;
 }
 .profile-box {
     border: 1px solid #b8b8b8;
@@ -13,6 +13,7 @@
     transition: 0.3s;
     overflow: hidden;
     border-radius: 10px;
+    height:100%
 }
 .avatar {
     max-height: 300px;
@@ -24,3 +25,4 @@
     text-align:center;
     font-weight:bold;
 }
+
