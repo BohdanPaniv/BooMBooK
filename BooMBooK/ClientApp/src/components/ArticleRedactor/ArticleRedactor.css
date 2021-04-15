@@ -1,5 +1,49 @@
+#article-redactor{
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+.article-buttons{
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 10px;
+    border: none;
+    background: transparent;
+    height: 48px;
+    width: calc(100% - 30px);
+    font: 16px "Segoe UI";
+    -webkit-font-smoothing: subpixel-antialiased;
+    z-index: 1000;
+    pointer-events: none;
+    gap: 10px;
+}
+
+
+.article-buttons > button{
+    pointer-events: all;
+    height: 48px;
+    border: 1px gray solid;
+    background: white;
+    border-radius: 10px;
+}
+
+#article-dynamic-body{
+    margin-bottom: 50px;
+}
+
 .article-text{
     width: 100%;
+    word-break: break-word;
+}
+
+.article-img{
+    height: 500px;
+    width: 500px;
+    margin: auto;
 }
 
 .article-modal{
@@ -8,10 +52,35 @@
     padding: 15px;
 }
 
+.redactor-buttons{
+    height: max-content;
+    width: max-content;
+    display: flex;
+    margin: auto;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    gap: 10px;
+}
+
+.redactor-buttons > button {
+    height: 35px;
+    width: 75px;
+    border: 1px gray solid;
+    background: white;
+    border-radius: 10px;
+}
+
+
 .article-modal-input{
     width: 100%;
     min-height: 30px;
     height: max-content;
     text-wrap: normal;
+}
 
+.article-img-preview{
+    height: 300px;
+    width: 300px;
 }

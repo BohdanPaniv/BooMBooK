@@ -21,7 +21,7 @@ export default class App extends Component {
                 <Route path='/ArticlePage/:id' component={ArticlePage}/>
                 {/*<Route exact path='/Authentication' component={AuthenticationPage}/>*/}
                 <Route exact path='/Profile' component={Profile}/>
-                <Route exact path='/Redactor' component={ArticleRedactor}/>
+                <Route exact path='/Redactor/:id' component={ArticleRedactor}/>
                 {/*  <Route path='/counter' component={Counter} />*/}
                 {/*  <Route path='/fetch-data' component={FetchData} />*/}
             </Layout>

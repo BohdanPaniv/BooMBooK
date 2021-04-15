@@ -3,10 +3,11 @@ import ArticleCardList from "./../ArticleCard/ArticleCardList.js";
 import "./Profile.css"
 import logo from './DefAvatar.jpg';
 import {Spinner} from "reactstrap";
+import {useHistory} from "react-router-dom";
 
 export function Profile() {
     const [articleList, setArticleList] = useState(null);
-
+    const history = useHistory();
     const [user,setUser] = useState();
 
     useEffect(()=>{
@@ -54,6 +55,7 @@ export function Profile() {
                         <div className ="heading">Profile</div>
                         <img className="avatar" src={logo} alt="Logo" /><br />
                         <div className="names">{user.firstName + ' ' + user.lastName}</div>
+                        <button onClick={()=>{history.push("/Redactor/" + user.userId)}}>AddNews</button>
                         <div className="your-articles">Your article`s</div>
                         <div className="articles-box">
                         {
