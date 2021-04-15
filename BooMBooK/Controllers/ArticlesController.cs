@@ -49,7 +49,7 @@ namespace BooMBooK.Controllers
             return await articleService.GetArticleByArticleId(articleId);
         }
 
-        [HttpGet("{userId}")]
+        [HttpGet("{userId:int}")]
         public async Task<List<Article>> GetArticlesByUserId(string userId)
         {
             return await articleService.GetArticlesByUserId(userId);

@@ -27,9 +27,9 @@ namespace BooMBooK.Controllers
         }
 
         [HttpGet("{login},{password}")]
-        public async Task<IActionResult> Get(string login,string password)
+        public async Task<User> Get(string login,string password)
         {
-            return Ok(await userService.LogIn(login, password));
+            return await userService.LogIn(login, password);
         }
     }
 }
