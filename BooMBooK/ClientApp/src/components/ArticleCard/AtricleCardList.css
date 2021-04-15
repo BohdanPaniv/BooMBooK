@@ -81,7 +81,7 @@
     overflow:hidden;
     border-radius: 10px;
     text-align: center;
-    background-color: lightslategray;
+    background-color: #6c757d;
     position: relative;
     justify-content: center;
 }
@@ -91,19 +91,17 @@
 }
 
 .title{
-    background-color: lightslategray;
+    background-color: #fff;
     color: white;
     font-size: 30px;
     margin-top: 70px;
     vertical-align: middle;
+    background: transparent;
 }
-
-.title:hover{
-    background-color: #6c757d;
-} 
 
 .showMore:hover{
     transition: 0.3s;
+    background-color: #6A696C;
     border: 1px solid black;
 }
 
