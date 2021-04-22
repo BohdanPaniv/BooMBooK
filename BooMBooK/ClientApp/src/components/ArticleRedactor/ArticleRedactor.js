@@ -42,6 +42,9 @@ export function ArticleRedactor() {
 
     const [changedImage, setChangedImage] = useState();
 
+    const articleTitleField = useFormField("");
+    const articleDescriptionField = useFormField("");
+
     function showSlideModal(type) {
         setChooseType(type);
         // (document.getElementById("product-content").classList.add("overflow-hide"));
@@ -95,7 +98,7 @@ export function ArticleRedactor() {
         reader.readAsDataURL(file);
     }
 
-    function imageChangeHandler(){
+    function imageChangeHandler() {
         selElement.src = changedImage;
     }
 
@@ -118,7 +121,7 @@ export function ArticleRedactor() {
     }
 
     function createImgElement() {
-        if (image){
+        if (image) {
             let imageElement = document.createElement('img');
             imageElement.className = "article-img";
             imageElement.src = image;
@@ -146,11 +149,56 @@ export function ArticleRedactor() {
         reader.readAsDataURL(file);
     }
 
+    function articleSubmitHandler() {
+
+        if (articleTitleField.get() !== ""
+            && articleDescriptionField.get() !== ""
+            && redactor.childElementCount > 0) {
+
+            // console.log(redactor);
+
+            let date = new Date();
+
+            // this is the JavaScript date as a c# DateTime
+
+            let xhr = new XMLHttpRequest();
+
+            let article = JSON.stringify({
+                UserId: params,
+                DateTime: date.toJSON(),
+                Body_Article: redactor.outerHTML,
+                Status: false,
+                Title: articleTitleField.get(),
+                Description: articleDescriptionField.get()
+            });
+
+            xhr.open("post","api/articles", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(article);
+
+            console.log(xhr);
+
+        }
+    }
+
     // console.log(image);
     // console.log(redactor);
 
     return (
         <div id="article-redactor">
+            <div className="article-static-body">
+                <span>
+                    <label>Title</label>
+                    <input type="text"
+                           {...articleTitleField.bind}/>
+                </span>
+                <span>
+                    <label>Brief description</label>
+                    <textarea className={"article-description"}
+                              type={"textbox"}
+                              {...articleDescriptionField.bind}/>
+                </span>
+            </div>
             <div className="article-buttons">
                 <button onClick={() => {
                     showSlideModal("text")
@@ -160,6 +208,7 @@ export function ArticleRedactor() {
                     showSlideModal("img")
                 }}>Add image
                 </button>
+                <button className="article-submit" onClick={articleSubmitHandler}>Add article</button>
             </div>
             <div id="article-dynamic-body">
             </div>

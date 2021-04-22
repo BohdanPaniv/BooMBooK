@@ -5,13 +5,13 @@ import {useHistory} from "react-router-dom";
 import ReactHtmlParser from 'react-html-parser';
  function ArticleCard(props){
 
-     // console.log(props.article);
+     console.log(props.article);
      const history = useHistory();
 
      return(
          <div className="box text-center">
-             <div className="cardTitle">{props.index} {props.article.title}</div>
-             <div className="cardText">{ReactHtmlParser(props.article.body_Article)}</div>
+             <div className="cardTitle">{props.article.title}</div>
+             <div className="cardText">{props.article.description}</div>
              <p>
                 <Button onClick={() => { history.push(`/ArticlePage/${props.article.articleId}`);}}>Читати...</Button>
              </p>

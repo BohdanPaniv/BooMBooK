@@ -2,6 +2,7 @@
 import "./ArticlePage.css";
 import {useParams} from "react-router-dom";
 import {Spinner} from "reactstrap"
+import ReactHtmlParser from "react-html-parser";
 
 export function ArticlePage() {
 
@@ -31,7 +32,7 @@ export function ArticlePage() {
             {article
                 ? (
                     <>
-                        {article.body_Article}
+                        {ReactHtmlParser(article.body_Article)}
                     </>
                 )
                 : (

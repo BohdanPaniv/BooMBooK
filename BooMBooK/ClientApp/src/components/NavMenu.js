@@ -3,7 +3,7 @@ import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import UserIcon from "./Images/user.png"
 import LogoIcon from "./Images/LogoMain.png"
-import SearchIcon from "./Images/SearchLogo.png"
+// import SearchIcon from "./Images/SearchLogo.png"
 import './NavMenu.css';
 import {ModalWindow} from "./ModalWindow/ModalWindow";
 import {AuthenticationPage} from "./AuthenticationPage/AuthenticationPage";
@@ -55,12 +55,6 @@ export function NavMenu() {
             {/*<NavbarToggler onClick={toggleNavbar} className="mr-2"/>*/}
             {/*<Collapse className="d-sm-inline-flex flex-sm-row-reverse"*/}
               {/*          isOpen={!isCollapsed} navbar>*/}
-              <div className="Search">
-                  <input className="SearchBar"/>
-                   <img src={SearchIcon}
-                        className="SearchItemIcon center"
-                      alt="SearchIcon"/>
-              </div>
               <ul className="navbar-nav flex-grow">
                 {
                   !isLoggedIn &&
