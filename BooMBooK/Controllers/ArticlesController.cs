@@ -18,15 +18,9 @@ namespace BooMBooK.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Article article)
+        public async Task<Article> Create(Article article)
         {
-            if (ModelState.IsValid)
-            {
-                await articleService.Create(article);
-                return Ok(true);
-            }
-
-            return Ok(false);
+            return await articleService.Create(article);
         }
 
         [HttpGet]
@@ -57,6 +51,12 @@ namespace BooMBooK.Controllers
         public async Task<List<Article>> GetArticlesByUserId(string userId, string firstNumber, string secondNumber)
         {
             return await articleService.GetArticlesByUserId(userId, firstNumber, secondNumber);
+        }
+
+        [HttpGet("GetArticlesByTitle/{title}")]
+        public async Task<List<Article>> GetArticlesByTitle(string title)
+        {
+            return await articleService.GetArticlesByTitle(title);
         }
     }
 }

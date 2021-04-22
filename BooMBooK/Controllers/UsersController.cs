@@ -22,9 +22,15 @@ namespace BooMBooK.Controllers
         }
 
         [HttpGet("{login},{password}")]
-        public async Task<User> Get(string login,string password)
+        public async Task<User> GetUser(string login,string password)
         {
             return await userService.LogIn(login, password);
+        }
+
+        [HttpPut]
+        public async Task DeleteUser(string id)
+        {
+            await userService.DeleteUser(id);
         }
     }
 }

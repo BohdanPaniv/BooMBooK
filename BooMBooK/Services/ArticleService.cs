@@ -3,6 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Services
@@ -15,7 +16,7 @@ namespace BooMBooK.Services
             Articles = DataBaseService.GetMongoCollection<Article>("Article");
         }
 
-        public async Task Create(Article article)
+        public async Task<Article> Create(Article article)
         {
             article.ArticleId = Guid.NewGuid().ToString();
             List<Article> findArticle = await Articles.Find(x => x.ArticleId == article.ArticleId).ToListAsync();
@@ -23,7 +24,19 @@ namespace BooMBooK.Services
             if (findArticle.Count == 0)
             {
                 await Articles.InsertOneAsync(article);
+                return article;
             }
+
+            return new Article();
+        }
+
+        public async Task<List<Article>> GetArticlesByTitle(string title)
+        {
+            Regex regex = new Regex(@$"[\s\S]*{title}[\s\S]*", RegexOptions.IgnoreCase);
+            var filter = Builders<Article>.Filter.Regex("Title", new BsonRegularExpression(regex));
+            List<Article> articles = await Articles.Find(filter).ToListAsync();
+            return articles;
+
         }
 
         public async Task<Article> GetArticleByArticleId(string articleId)
@@ -59,12 +72,12 @@ namespace BooMBooK.Services
 
         public async Task UpdateArticle(Article article)
         {
-            await Articles.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(article.ArticleId)), article);
+            await Articles.ReplaceOneAsync(x => x.ArticleId == article.ArticleId, article);
         }
 
         public async Task DeleteArticle(string id)
         {
-            await Articles.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
+            await Articles.DeleteOneAsync(x => x.ArticleId == id);
         }
     }
 }

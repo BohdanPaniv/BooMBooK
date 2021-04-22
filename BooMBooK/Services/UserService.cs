@@ -45,12 +45,12 @@ namespace BooMBooK.Services
 
         public async Task UpdateUser(User user)
         {
-            await Users.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(user.UserId)), user);
+            await Users.ReplaceOneAsync(x => x.UserId == user.UserId, user);
         }
 
         public async Task DeleteUser(string id)
         {
-            await Users.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
+            await Users.DeleteOneAsync(x => x.UserId == id);
         }
     }
 }
