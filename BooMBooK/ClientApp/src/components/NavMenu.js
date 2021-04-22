@@ -2,6 +2,7 @@ import React from 'react';
 import { Navbar, NavbarBrand, NavItem } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import UserIcon from "./Images/user.png"
+import LogoIcon from "./Images/LogoMain.png"
 import './NavMenu.css';
 import {ModalWindow} from "./ModalWindow/ModalWindow";
 import {AuthenticationPage} from "./AuthenticationPage/AuthenticationPage";
@@ -43,7 +44,13 @@ export function NavMenu() {
         <Navbar className="ng-white border-bottom box-shadow" light>
         {/*<Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>*/}
         {/*  <Container>*/}
-            <NavbarBrand tag={Link} to="/">BooMBooK</NavbarBrand>
+              {/*<NavbarBrand tag={Link} to="/">BooMBooK</NavbarBrand>*/}
+              <NavbarBrand tag={Link} to="/">
+                    <img src={LogoIcon}
+                        className="LogoItemIcon center"
+                          alt="LogoIcon" />
+              </NavbarBrand>
+
             {/*<NavbarToggler onClick={toggleNavbar} className="mr-2"/>*/}
             {/*<Collapse className="d-sm-inline-flex flex-sm-row-reverse"*/}
             {/*          isOpen={!isCollapsed} navbar>*/}
