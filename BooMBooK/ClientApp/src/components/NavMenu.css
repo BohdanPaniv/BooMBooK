@@ -28,12 +28,29 @@ img.LogoItemIcon {
     border-radius: 10px;
     border: 1px solid #000000;
     top: -5px;
-    display: flex;
     position: relative;
 }
 
-.Logo {
+.SearchBar {
+    font-size: 20px;
+    width: 250px;
+    height: 3rem;
+    top: 5px;
+    position:relative;
 }
+.Search{
+    margin-left:auto;
+    display:block;
+}
+
+
+img.SearchItemIcon {
+    height: 3.5rem;
+    width: 3.5rem;
+    position: relative;
+    cursor: pointer;
+}
+
 
 img.menuItemIcon {
     cursor: pointer;
