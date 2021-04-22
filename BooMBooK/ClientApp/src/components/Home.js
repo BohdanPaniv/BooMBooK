@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import ArticleCardList from "./ArticleCard/ArticleCardList";
 import "./Home.css";
 import {Spinner} from "reactstrap";
@@ -15,7 +15,7 @@ export function Home() {
 
     const [articleList,setArticleList] = useState();
 
-    function getArticles(){
+    const getArticles = useCallback(()=>{
         let xhr = new XMLHttpRequest();
         let string = "";
         if (articleList && articleList?.length !== 0)
@@ -28,7 +28,7 @@ export function Home() {
         }
         xhr.open("get",string, true);
         xhr.setRequestHeader("Content-Type", "application/json");
-    
+
         xhr.onload = function () {
             if (xhr.status === 200) {
                 setArticleList(JSON.parse(xhr.responseText));
@@ -36,12 +36,11 @@ export function Home() {
         };
         xhr.send();
         console.log(xhr);
-    }
-
+    },[articleList])
 
     useEffect(()=>{
         if (!articleList) getArticles();
-    },[articleList])
+    },[articleList,getArticles])
 
 
 

@@ -20,6 +20,7 @@
     z-index: 1000;
     pointer-events: none;
     gap: 10px;
+    z-index: 99;
 }
 
 
@@ -29,6 +30,7 @@
     border: 1px gray solid;
     background: white;
     border-radius: 10px;
+    z-index: 99;
 }
 
 #article-dynamic-body{
@@ -41,9 +43,19 @@
 }
 
 .article-img{
-    height: 500px;
-    width: 500px;
+    max-height: 500px;
+    max-width: 500px;
     margin: auto;
+}
+.article-img, .article-text{
+    margin: 5px 0px;
+    transition: 0.3s;
+}
+
+
+.article-img:hover, .article-text:hover{
+    border: 1px red solid;
+    opacity: 85%;
 }
 
 .article-modal{
@@ -79,8 +91,8 @@
     height: max-content;
     text-wrap: normal;
 }
-
 .article-img-preview{
-    height: 300px;
-    width: 300px;
+    max-height: 300px;
+    max-width: 300px;
 }
+

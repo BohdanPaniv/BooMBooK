@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+﻿import React, {useCallback, useEffect, useState} from "react";
 import ArticleCardList from "./../ArticleCard/ArticleCardList.js";
 import "./Profile.css"
 import logo from './DefAvatar.jpg';
@@ -12,13 +12,9 @@ export function Profile() {
 
     useEffect(()=>{
         if (!user) setUser(JSON.parse(JSON.parse(localStorage.getItem('User'))));
-    },[])
+    },[user])
 
-    useEffect(()=>{
-        if (!articleList && user) getArticles();
-    },[articleList,user])
-
-    function getArticles() {
+    const getArticles = useCallback(() => {
         let xhr = new XMLHttpRequest();
         let string = "";
         if (articleList && articleList?.length !== 0)
@@ -40,12 +36,12 @@ export function Profile() {
         };
         xhr.send();
         console.log(xhr);
-    }
-    
+    },[articleList,user])
 
 
-
-
+    useEffect(()=>{
+        if (!articleList && user) getArticles();
+    },[articleList,user,getArticles])
 
     return (
         <>
