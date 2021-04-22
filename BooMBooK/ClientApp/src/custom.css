@@ -52,7 +52,7 @@ html, body, #root, .page{
 
 .main{
   padding: 10px;
-  height: calc(100% - 57px);
+  height: calc(100% - 95px);
   width: 100%;
   overflow: hidden;
 }

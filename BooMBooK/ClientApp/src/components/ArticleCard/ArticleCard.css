@@ -21,9 +21,11 @@
 /*}*/
 
 .box{
+    break-inside: avoid;
     border: 1px solid #b8b8b8;
     min-width: 200px;
     max-height: 450px;
+    
     margin: 0 0 20px 0;
     /*padding: 10px;*/
     background: #fff;

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import ArticleCardList from "./ArticleCard/ArticleCardList";
 import "./Home.css";
 import {Spinner} from "reactstrap";
@@ -9,29 +9,38 @@ import {Spinner} from "reactstrap";
 //     return { value, onChange };
 // };
 
+
 export function Home() {
 
 
-    const [articleList,setArticleList] = useState([]);
+    const [articleList,setArticleList] = useState();
 
+    const getArticles = useCallback(()=>{
+        let xhr = new XMLHttpRequest();
+        let string = "";
+        if (articleList && articleList?.length !== 0)
+        {
+            string = "api/articles/0," + (parseInt(articleList.length,10) + 10);
+
+        }else
+        {
+            string = "api/articles/0,11";
+        }
+        xhr.open("get",string, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                setArticleList(JSON.parse(xhr.responseText));
+            }
+        };
+        xhr.send();
+        console.log(xhr);
+    },[articleList])
 
     useEffect(()=>{
-        function getArticles(){
-            let xhr = new XMLHttpRequest();
-
-            xhr.open("get","api/articles/0,11", true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    setArticleList(JSON.parse(xhr.responseText));
-                }
-            };
-            xhr.send();
-            console.log(xhr);
-        }
-        if (articleList.length === 0) getArticles();
-    },[articleList])
+        if (!articleList) getArticles();
+    },[articleList,getArticles])
 
 
 
@@ -68,9 +77,9 @@ export function Home() {
     return (
         <div className="Home">
             {
-                articleList !== []
+                articleList 
                     ? (<div className="articleListArea">
-                            <ArticleCardList ArticleList={articleList} />
+                            <ArticleCardList ArticleList={articleList} getArticles={getArticles}/>
                         </div>)
                     : (<Spinner/>)
             }

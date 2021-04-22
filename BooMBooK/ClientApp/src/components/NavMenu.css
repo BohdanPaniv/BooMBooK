@@ -22,12 +22,41 @@
 /*.box-shadow {*/
 /*  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);*/
 /*}*/
+img.LogoItemIcon {
+    height: 4rem;
+    width: 166px;
+    border-radius: 10px;
+    border: 1px solid #000000;
+    top: -5px;
+    position: relative;
+}
 
-img.menuItemIcon{
-  cursor: pointer;
-  height: 35px;
-  width: 35px;
-  float: right;
+.SearchBar {
+    font-size: 20px;
+    width: 250px;
+    height: 3rem;
+    top: 5px;
+    position:relative;
+}
+.Search{
+    margin-left:auto;
+    display:block;
+}
+
+
+img.SearchItemIcon {
+    height: 3.5rem;
+    width: 3.5rem;
+    position: relative;
+    cursor: pointer;
+}
+
+
+img.menuItemIcon {
+    cursor: pointer;
+    height: 70px;
+    width: 70px;
+    float: right;
 }
 
 /*label.menuItemTitle {*/

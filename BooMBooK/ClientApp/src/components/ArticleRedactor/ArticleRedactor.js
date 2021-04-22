@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "./ArticleRedactor.css";
 import SlideModal from "../SlideModal/SlideModal";
+import {useParams} from "react-router-dom";
 
 const useFormField = (initialValue) => {
     const [value, setValue] = React.useState(initialValue);
@@ -8,7 +9,6 @@ const useFormField = (initialValue) => {
     const onChange = React.useCallback((e) => {
         setValue(e.target.value)
     }, []);
-
 
     return {
         bind: {
@@ -23,11 +23,24 @@ const useFormField = (initialValue) => {
 export function ArticleRedactor() {
     const [redactor, setReadactor] = useState();
 
+    const params = useParams().id;
+    // console.log(params);
+
+    const [image, setImage] = useState();
+
     const inputText = useFormField();
+
+    const changeText = useFormField();
 
     const [isSlideModalShow, setIsSlideModalShow] = useState(false);
 
     const [chooseType, setChooseType] = useState("");
+
+    const [selValue, setSelValue] = useState();
+
+    const [selElement, setSelElement] = useState();
+
+    const [changedImage, setChangedImage] = useState();
 
     function showSlideModal(type) {
         setChooseType(type);
@@ -40,26 +53,115 @@ export function ArticleRedactor() {
         if (!redactor) setReadactor(document.getElementById("article-dynamic-body"))
     }, [redactor, setReadactor])
 
-    function createTextElement() {
-        let div = document.createElement('label');
-        console.log(inputText.get());
-        let tempText = inputText.get().toString().replaceAll(" ", "&nbsp");
-        tempText = tempText.replaceAll("\n","<br>");
-        div.className = "article-text";
-        div.innerHTML = tempText;
-        redactor.append(div);
+    function selectElement(event) {
+        setSelElement(event.target);
+        console.log(event.target.className)
+        switch (event.target.className) {
+            case "article-img": {
+                setSelValue(event.target.src);
+                setChangedImage(event.target.src)
+                break;
+            }
+            case "article-text": {
+                setSelValue(event.target.textContent);
+                changeText.set(event.target.textContent);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+
+        showSlideModal(event.target.className);
+        // console.log(selValue);
     }
 
+    function changeTextHandler() {
+        selElement.textContent = changeText.get();
+    }
+
+    function imageChange(e) {
+        e.preventDefault();
+
+        let reader = new FileReader();
+        let file = e.target.files[0];
+
+        // console.log(reader.result);
+
+        reader.onloadend = () => {
+            setChangedImage(reader.result);
+        }
+
+        reader.readAsDataURL(file);
+    }
+
+    function imageChangeHandler(){
+        selElement.src = changedImage;
+    }
+
+    function deleteHandler() {
+        setSelElement(null);
+        redactor.removeChild(selElement);
+    }
+
+    function createTextElement() {
+        let labelElement = document.createElement("label");
+        // console.log(inputText.get());
+        let tempText = inputText.get().toString().replaceAll(" ", "&nbsp");
+        tempText = tempText.replaceAll("\n", "<br>");
+        labelElement.className = "article-text";
+        labelElement.innerHTML = tempText;
+        labelElement.addEventListener("click", event => {
+            selectElement(event)
+        });
+        redactor.append(labelElement);
+    }
+
+    function createImgElement() {
+        if (image){
+            let imageElement = document.createElement('img');
+            imageElement.className = "article-img";
+            imageElement.src = image;
+            imageElement.alt = "article-img";
+            imageElement.addEventListener("click", event => {
+                selectElement(event)
+            });
+
+            redactor.append(imageElement);
+        }
+    }
+
+    function imageSelect(e) {
+        e.preventDefault();
+
+        let reader = new FileReader();
+        let file = e.target.files[0];
+
+        // console.log(reader.result);
+
+        reader.onloadend = () => {
+            setImage(reader.result);
+        }
+
+        reader.readAsDataURL(file);
+    }
+
+    // console.log(image);
     // console.log(redactor);
 
     return (
         <div id="article-redactor">
-            <button onClick={() => {
-                showSlideModal("text")
-            }}>Add text
-            </button>
+            <div className="article-buttons">
+                <button onClick={() => {
+                    showSlideModal("text")
+                }}>Add text
+                </button>
+                <button onClick={() => {
+                    showSlideModal("img")
+                }}>Add image
+                </button>
+            </div>
             <div id="article-dynamic-body">
-
             </div>
             <SlideModal isActive={isSlideModalShow}
                         setActive={setIsSlideModalShow}>
@@ -67,11 +169,69 @@ export function ArticleRedactor() {
                     {chooseType === "text" && (
                         <>
                             <textarea className="article-modal-input" {...inputText.bind}/>
-                            <button>cancel</button>
-                            <button onClick={createTextElement}>add
-                            </button>
+                            <div className="redactor-buttons">
+                                <button onClick={() => {
+                                    inputText.set("");
+                                }}>Cancel
+                                </button>
+                                <button onClick={createTextElement}>Add
+                                </button>
+                            </div>
                         </>
                     )}
+                    {chooseType === "img" && (
+                        <>
+                            {image && (<img className="article-img-preview" src={image} alt={"img"}/>)}
+                            <input className="fileInput"
+                                   type="file"
+                                   onChange={event => imageSelect(event)}
+                            />
+                            <div className="redactor-buttons">
+                                <button>Cancel
+                                </button>
+                                <button onClick={createImgElement}>Add
+                                </button>
+                            </div>
+                        </>
+                    )}
+                    {chooseType === "article-img" && (
+                        <>
+                            {image && (<img className="article-img-preview" src={changedImage} alt={"img"}/>)}
+                            <input className="fileInput"
+                                   type="file"
+                                   onChange={event => imageChange(event)}
+                            />
+                            <div className="redactor-buttons">
+                                <button disabled={!selElement}>Cancel
+                                </button>
+                                <button disabled={!selElement}
+                                        onClick={imageChangeHandler}>Change
+                                </button>
+                                <button disabled={!selElement}
+                                        onClick={deleteHandler}>Delete
+                                </button>
+                            </div>
+                        </>
+                    )}
+                    {
+                        chooseType === "article-text" && (
+                            <>
+                                <textarea className={"article-modal-input"}
+                                          value={selValue}
+                                          {...changeText.bind}/>
+                                <div className="redactor-buttons">
+                                    <button disabled={!selElement}>Cancel
+                                    </button>
+                                    <button disabled={!selElement}
+                                            onClick={changeTextHandler}>Change
+                                    </button>
+                                    <button disabled={!selElement}
+                                            onClick={deleteHandler}>Delete
+                                    </button>
+                                </div>
+                            </>
+                        )
+                    }
                 </div>
             </SlideModal>
         </div>

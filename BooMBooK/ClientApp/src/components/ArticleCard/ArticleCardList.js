@@ -1,11 +1,13 @@
 import React from "react";
-import "./AtricleCardList.css"
+import "./AtricleCardList.css";
 import ArticleCard from "./ArticleCard";
+// import Button from "reactstrap/lib/Button";
+
 // import {Grid, makeStyles} from "@material-ui/core";
 // import {Button, Card, CardBody, CardColumns, CardImg, CardSubtitle, CardText, CardTitle} from "reactstrap";
 
 
- function ArticleCardList({ArticleList}) {
+ function ArticleCardList({ArticleList, getArticles}) {
 
      return (
              <div className="articleList">
@@ -15,10 +17,8 @@ import ArticleCard from "./ArticleCard";
                                       article = {article}
                                       index = {index}/>
                      )})}
-                 <div className="showMore">
-                     <p className="title">
-                         ShowMore
-                     </p>
+                 <div className="showMore" onClick={() => {getArticles()}} >
+                        <label className = "title">ShowMore</label>
                  </div>
              </div>
 

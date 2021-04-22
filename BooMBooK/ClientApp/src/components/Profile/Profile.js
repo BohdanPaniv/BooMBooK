@@ -1,22 +1,32 @@
-﻿import React, { useEffect, useState } from "react";
+﻿import React, {useCallback, useEffect, useState} from "react";
 import ArticleCardList from "./../ArticleCard/ArticleCardList.js";
 import "./Profile.css"
 import logo from './DefAvatar.jpg';
+import {Spinner} from "reactstrap";
+import {useHistory} from "react-router-dom";
 
 export function Profile() {
-    const [articleList, setArticleList] = useState([]);
-
+    const [articleList, setArticleList] = useState(null);
+    const history = useHistory();
     const [user,setUser] = useState();
 
     useEffect(()=>{
-        setUser(JSON.parse(JSON.parse(localStorage.getItem('User'))));
-    },[])
+        if (!user) setUser(JSON.parse(JSON.parse(localStorage.getItem('User'))));
+    },[user])
 
-    function getArticles() {
+    const getArticles = useCallback(() => {
         let xhr = new XMLHttpRequest();
+        let string = "";
+        if (articleList && articleList?.length !== 0)
+        {
+            string = "api/articles/GetArticlesByUserId/"+ user.userId + ",0,"+ (parseInt(articleList.length,10) + 10);
 
-        console.log(user);
-        xhr.open("get", "api/articles/GetArticlesByUserId/" + user.userId, true);
+        }else
+        {
+            string = "api/articles/GetArticlesByUserId/"+ user.userId + ",0,1";
+        }
+
+        xhr.open("get", string , true);
         xhr.setRequestHeader("Content-Type", "application/json");
 
         xhr.onload = function () {
@@ -26,15 +36,12 @@ export function Profile() {
         };
         xhr.send();
         console.log(xhr);
-    }
+    },[articleList,user])
 
 
-    useEffect(() => {
-        if (articleList.length === 0 && user) getArticles();
-
-        console.log(1)
-    })
-
+    useEffect(()=>{
+        if (!articleList && user) getArticles();
+    },[articleList,user,getArticles])
 
     return (
         <>
@@ -44,12 +51,17 @@ export function Profile() {
                         <div className ="heading">Profile</div>
                         <img className="avatar" src={logo} alt="Logo" /><br />
                         <div className="names">{user.firstName + ' ' + user.lastName}</div>
+                        <button onClick={()=>{history.push("/Redactor/" + user.userId)}}>AddNews</button>
                         <div className="your-articles">Your article`s</div>
                         <div className="articles-box">
-                        <div className="articleListArea">
-                            <ArticleCardList ArticleList={articleList} />
+                        {
+                articleList 
+                    ? (<div className="articleListArea">
+                            <ArticleCardList ArticleList={articleList} getArticles={getArticles}/>
                         </div>)
-                        </div>
+                    : (<Spinner/>)
+            }
+                    </div>
                     </div>
                 )
                 : (
