@@ -1,0 +1,5 @@
+MainPage https://www.figma.com/file/NdugYhOVdPRiRHH5QnHtkF/MainPage?node-id=0%3A1
+Settings https://www.figma.com/file/Z1aUiT5hK3s5xpi5tPpti9/Settings?node-id=0%3A1
+Heares https://www.figma.com/file/YhBqHAYNP26K3j9flT4RDD/Headers?node-id=2%3A39
+Editor https://www.figma.com/file/mJJk7Y2b5PUMFNBChN2nII/Editor?node-id=0%3A1
+Viewer https://www.figma.com/file/Dg4HdSl9699Or4Z4XsXcao/Viewer?node-id=0%3A1
