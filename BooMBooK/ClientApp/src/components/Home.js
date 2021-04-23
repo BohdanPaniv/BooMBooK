@@ -1,7 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import ArticleCardList from "./ArticleCard/ArticleCardList";
 import "./Home.css";
 import {Spinner} from "reactstrap";
+import SearchBar from "./SearchBar/SearchBar";
+
 
 // const useFormField = (initialValue= '') => {
 //     const [value, setValue] = React.useState(initialValue);
@@ -12,12 +14,13 @@ import {Spinner} from "reactstrap";
 
 export function Home() {
 
+    const [input, setInput] = useState('');
 
     const [articleList,setArticleList] = useState();
 
-    function getArticles(){
+    const getArticles = useCallback(()=>{
         let xhr = new XMLHttpRequest();
-        let string = "";
+        let string;
         if (articleList && articleList?.length !== 0)
         {
             string = "api/articles/0," + (parseInt(articleList.length,10) + 10);
@@ -28,7 +31,7 @@ export function Home() {
         }
         xhr.open("get",string, true);
         xhr.setRequestHeader("Content-Type", "application/json");
-    
+
         xhr.onload = function () {
             if (xhr.status === 200) {
                 setArticleList(JSON.parse(xhr.responseText));
@@ -36,51 +39,44 @@ export function Home() {
         };
         xhr.send();
         console.log(xhr);
-    }
-
+    },[articleList])
 
     useEffect(()=>{
         if (!articleList) getArticles();
-    },[articleList])
+    },[articleList,getArticles])
 
+    const updateInput = async (input) => {
+        if (input !== ""){
+            let xhr = new XMLHttpRequest();
+            xhr.open("get", "api/articles/GetArticlesByTitle/" + input, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    setArticleList(JSON.parse(xhr.responseText));
+                }
+            };
+            xhr.send();
 
-
-    // let val = 0;
-
-    // function setArticle() {
-    //     let xhr = new XMLHttpRequest();
-    //     let date =  new Date();
-    //
-    //     let news = JSON.stringify({
-    //         ArticleId:"",
-    //         UserId: "d12s",
-    //         DateTime: date,
-    //         Body_Article: "<div>Текст статі: "+val+"</div>",
-    //         Status: false,
-    //         Title: "Заголовок статі" + val
-    //     });
-    //
-    //     xhr.open("post","api/articles/", true);
-    //     xhr.setRequestHeader("Content-Type", "application/json");
-    //
-    //     xhr.onload = function () {
-    //         if (xhr.status === 200) {
-    //             console.log(xhr.responseText);
-    //             val = val + 1;
-    //         }
-    //     };
-    //     xhr.send(news);
-    //     console.log(xhr);
-    // }
-
-    // window.onload = getArticles();
+            console.log(xhr);
+        }
+        else {
+            getArticles();
+        }
+        setInput(input);
+    }
 
     return (
         <div className="Home">
+            <SearchBar
+                keyword={input}
+                setKeyword={updateInput}
+            />
             {
                 articleList 
                     ? (<div className="articleListArea">
-                            <ArticleCardList ArticleList={articleList} getArticles={getArticles}/>
+                            <ArticleCardList ArticleList={articleList}
+                                             getArticles={getArticles}
+                            />
                         </div>)
                     : (<Spinner/>)
             }

@@ -1,10 +1,10 @@
-#article-redactor{
+#article-redactor {
     height: 100%;
     width: 100%;
     overflow: auto;
 }
 
-.article-buttons{
+.article-buttons {
     display: flex;
     align-self: center;
     justify-content: center;
@@ -17,42 +17,93 @@
     width: calc(100% - 30px);
     font: 16px "Segoe UI";
     -webkit-font-smoothing: subpixel-antialiased;
-    z-index: 1000;
     pointer-events: none;
     gap: 10px;
+    z-index: 99;
 }
 
-
-.article-buttons > button{
+.article-buttons > button {
     pointer-events: all;
     height: 48px;
     border: 1px gray solid;
     background: white;
     border-radius: 10px;
+    z-index: 99;
 }
 
-#article-dynamic-body{
+.article-submit{
+    transition: 0.2s;
+}
+.article-submit:hover{
+    background: lightgreen;
+}
+
+.article-static-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+    text-align: -webkit-center;
+    gap: 10px;
+}
+
+.article-static-body span{
+    width: 100%;
+}
+
+.article-static-body label{
+    display: block;
+    justify-content: center;
+    justify-items: center;
+    justify-self: center;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+    margin: auto;
+}
+
+.article-description {
+    text-wrap: normal;
+    width: 80%;
+    min-height: 50px;
+    max-height: 150px;
+}
+
+#article-dynamic-body {
     margin-bottom: 50px;
 }
 
-.article-text{
+.article-text {
     width: 100%;
     word-break: break-word;
 }
 
-.article-img{
-    height: 500px;
-    width: 500px;
+.article-img {
+    max-height: 500px;
+    max-width: 500px;
     margin: auto;
 }
 
-.article-modal{
+.article-img, .article-text {
+    margin: 5px 0;
+    transition: 0.3s;
+}
+
+
+.article-img:hover, .article-text:hover {
+    border: 1px red solid;
+    opacity: 85%;
+}
+
+.article-modal {
     height: 100%;
     width: 100%;
     padding: 15px;
 }
 
-.redactor-buttons{
+.redactor-buttons {
     height: max-content;
     width: max-content;
     display: flex;
@@ -73,14 +124,15 @@
 }
 
 
-.article-modal-input{
+.article-modal-input {
     width: 100%;
     min-height: 30px;
     height: max-content;
     text-wrap: normal;
 }
 
-.article-img-preview{
-    height: 300px;
-    width: 300px;
+.article-img-preview {
+    max-height: 300px;
+    max-width: 300px;
 }
+
