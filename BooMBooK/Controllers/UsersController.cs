@@ -36,9 +36,9 @@ namespace BooMBooK.Controllers
         }
 
         [HttpGet("ChangeUserData/{fieldName}/{userId, newData}")]
-        public async Task ChangeUserData(string fieldName, string userId, string newData)
+        public async Task<User> ChangeUserData(string fieldName, string userId, string newData)
         {
-            await userService.ChangeUserData(fieldName, userId, newData);
+            return await userService.ChangeUserData(fieldName, userId, newData);
         }
     }
 }

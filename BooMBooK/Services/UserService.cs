@@ -43,10 +43,9 @@ namespace BooMBooK.Services
             return foundUser[0];
         }
 
-        public async Task ChangeUserData(string fieldName, string userId, string newData)
+        public async Task<User> ChangeUserData(string fieldName, string userId, string newData)
         {
             var filter = Builders<User>.Filter.Eq(x => x.UserId, userId);
-
             var update = Builders<User>.Update.Set(x => x.UserId, userId);
             
             switch (fieldName)
@@ -66,6 +65,15 @@ namespace BooMBooK.Services
             }
 
             await Users.UpdateOneAsync(filter,update);
+
+            List<User> foundUser = await Users.Find(x => x.UserId == userId).ToListAsync();
+
+            if (foundUser.Count == 0)
+            {
+                return new User();
+            }
+
+            return foundUser[0];
         }
 
         public async Task UpdateUser(User user)
