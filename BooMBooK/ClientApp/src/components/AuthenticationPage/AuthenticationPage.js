@@ -162,14 +162,14 @@ export function AuthenticationPage(){
 
     let formPickerMenu = (
         <div className="formPicker">
-                <button onClick={ () => showForm("signIn") }
-                        className={isSignUp ? "nonActive" : " active" }>
-                    SignIn
-                </button>
-                <button onClick={ () => showForm("signUp") }
-                        className={ isSignUp ? " active" : "nonActive" }>
-                    SignUp
-                </button>
+            <button onClick={ () => showForm("signIn") }
+                    className={ isSignUp ? "nonActive" : " active" }>
+                SignIn
+            </button>
+            <button onClick={ () => showForm("signUp") }
+                    className={ isSignUp ? " active" : "nonActive" }>
+                SignUp
+            </button>
         </div>
     );
 

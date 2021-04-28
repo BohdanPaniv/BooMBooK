@@ -33,7 +33,7 @@ namespace BooMBooK.Services
         public async Task<List<Article>> GetArticlesByTitle(string title)
         {
             Regex regex = new Regex(@$"[\s\S]*{title}[\s\S]*", RegexOptions.IgnoreCase);
-            var filter = Builders<Article>.Filter.Regex("Title", new BsonRegularExpression(regex));
+            var filter = Builders<Article>.Filter.Regex(x => x.Title, new BsonRegularExpression(regex));
             List<Article> articles = await Articles.Find(filter).ToListAsync();
             return articles;
 

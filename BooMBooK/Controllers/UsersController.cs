@@ -1,6 +1,8 @@
 ﻿using BooMBooK.Models.User;
 using BooMBooK.Services;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Controllers
@@ -22,7 +24,7 @@ namespace BooMBooK.Controllers
         }
 
         [HttpGet("{login},{password}")]
-        public async Task<User> GetUser(string login,string password)
+        public async Task<User> GetUser(string login, string password)
         {
             return await userService.LogIn(login, password);
         }
@@ -31,6 +33,12 @@ namespace BooMBooK.Controllers
         public async Task DeleteUser(string id)
         {
             await userService.DeleteUser(id);
+        }
+
+        [HttpGet("ChangeUserData/{fieldName}/{userId, newData}")]
+        public async Task ChangeUserData(string fieldName, string userId, string newData)
+        {
+            await userService.ChangeUserData(fieldName, userId, newData);
         }
     }
 }
