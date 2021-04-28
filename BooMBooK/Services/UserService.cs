@@ -50,21 +50,7 @@ namespace BooMBooK.Services
 
             for (int i = 0; i < fieldsArray.Length; i++)
             {
-                switch (fieldsArray[i, 0])
-                {
-                    case "Email":
-                        update.Set(x => x.Email, fieldsArray[i, 0]);
-                        break;
-                    case "Password":
-                        update.Set(x => x.Password, fieldsArray[i, 0]);
-                        break;
-                    case "FirstName":
-                        update.Set(x => x.FirstName, fieldsArray[i, 0]);
-                        break;
-                    case "LastName":
-                        update.Set(x => x.LastName, fieldsArray[i, 0]);
-                        break;
-                }
+                update.Set(fieldsArray[i, 0], fieldsArray[i, 1]);
             }
 
             await Users.UpdateOneAsync(filter,update);
