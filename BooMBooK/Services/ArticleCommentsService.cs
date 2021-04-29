@@ -22,7 +22,7 @@ namespace BooMBooK.Services
             articleComment.ArticleId = articleId;
             ArticleComment findMatch = await ArticleComments.Find(x => x.ArticleId == articleComment.ArticleId).FirstOrDefaultAsync();
 
-            if (findMatch != null)
+            if (findMatch == null)
             {
                 await ArticleComments.InsertOneAsync(articleComment);
                 return articleComment;

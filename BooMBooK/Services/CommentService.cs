@@ -20,9 +20,9 @@ namespace BooMBooK.Services
         {
             comment.CommentId = Guid.NewGuid().ToString();
 
-            Comment findMatch = await Comments.Find(x => x.UserId == comment.CommentId).FirstOrDefaultAsync();
+            Comment findMatch = await Comments.Find(x => x.CommentId == comment.CommentId).FirstOrDefaultAsync();
 
-            if(findMatch != null)
+            if(findMatch == null)
             {
                 await Comments.InsertOneAsync(comment);
                 return comment;

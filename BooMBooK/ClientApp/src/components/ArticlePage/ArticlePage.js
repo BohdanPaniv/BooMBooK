@@ -48,7 +48,7 @@ export function ArticlePage() {
                                 {article.description}
                             </h4>
                             {ReactHtmlParser(article.body_Article)}
-                            <CommentBlock/>
+                            <CommentBlock articleId = {article.articleId}/>
                         </div>
                 )
                 : (
