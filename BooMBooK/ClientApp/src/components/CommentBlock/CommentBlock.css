@@ -1,0 +1,28 @@
+.new-comment-container{
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+}
+
+.new-comment-container textarea{
+    width: 50%;
+    max-height: 100px;
+}
+
+.new-comment-container button{
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    border: 1px gray solid;
+    transition: background-color 150ms;
+}
+.new-comment-container button:active{
+    background: green;
+}
+
+.new-comment-container button:focus,.new-comment-container button:active {
+    outline: none;
+    border-radius: 50%;
+}

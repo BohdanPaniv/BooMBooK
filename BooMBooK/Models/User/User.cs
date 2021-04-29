@@ -12,7 +12,7 @@ namespace BooMBooK.Models.User
         public string LastName { get; set; }
 
         [BsonIgnoreIfNull]
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
 
         public string Login { get; set; }
 
