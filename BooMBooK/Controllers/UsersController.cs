@@ -35,10 +35,10 @@ namespace BooMBooK.Controllers
             await userService.DeleteUser(id);
         }
 
-        [HttpGet("ChangeUserData/{userId},{fieldsArray}")]
-        public async Task<User> ChangeUserData(string userId, string[,] fieldsArray)
+        [HttpGet("ChangeUserData/{fieldName}/{userId}, {newData}")]
+        public async Task<User> ChangeUserData(string fieldName, string userId, string newData)
         {
-            return await userService.ChangeUserData(userId, fieldsArray);
+            return await userService.ChangeUserData(fieldName, userId, newData);
         }
     }
 }

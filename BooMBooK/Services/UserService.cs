@@ -43,17 +43,29 @@ namespace BooMBooK.Services
             return foundUser[0];
         }
 
-        public async Task<User> ChangeUserData(string userId, string[,] fieldsArray)
+        public async Task<User> ChangeUserData(string fieldName, string userId, string newData)
         {
             var filter = Builders<User>.Filter.Eq(x => x.UserId, userId);
+
             var update = Builders<User>.Update.Set(x => x.UserId, userId);
 
-            for (int i = 0; i < fieldsArray.Length; i++)
+            switch (fieldName)
             {
-                update.Set(fieldsArray[i, 0], fieldsArray[i, 1]);
+                case "Email":
+                    update.Set(x => x.Email, newData);
+                    break;
+                case "Password":
+                    update.Set(x => x.Password, newData);
+                    break;
+                case "FirstName":
+                    update.Set(x => x.FirstName, newData);
+                    break;
+                case "LastName":
+                    update.Set(x => x.LastName, newData);
+                    break;
             }
 
-            await Users.UpdateOneAsync(filter,update);
+            await Users.FindOneAndUpdateAsync(filter, update);
 
             List<User> foundUser = await Users.Find(x => x.UserId == userId).ToListAsync();
 
@@ -63,8 +75,8 @@ namespace BooMBooK.Services
             }
 
             return foundUser[0];
-        }
 
+        }
         public async Task UpdateUser(User user)
         {
             await Users.ReplaceOneAsync(x => x.UserId == user.UserId, user);
