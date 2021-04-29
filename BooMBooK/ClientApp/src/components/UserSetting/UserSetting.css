@@ -1,0 +1,28 @@
+.SettingsForm{
+    font-family: -apple-system;
+    font-size: 20px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.user-setting-avatar{
+    max-height: 10rem;
+    max-width: 10rem;
+    border: 1px grey solid;
+    border-radius: 10px;
+}
+
+.SettingsForm input:not(.fileInput){
+   height: 2rem;
+    width: 10rem;
+    border: 1px gray solid;
+    border-radius: 5px;
+}
+
+.SettingsForm button{
+    background: deepskyblue;
+    height: 2rem;
+    width: 10rem;
+    border: 1px gray solid;
+    border-radius: 5px;
+}

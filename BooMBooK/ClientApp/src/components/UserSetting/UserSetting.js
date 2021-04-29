@@ -6,7 +6,7 @@ const useFormField = (initialValue) => {
 
     const onChange = React.useCallback((e) => setValue(e.target.value), []);
 
-    return{
+    return {
         bind: {
             value,
             onChange
@@ -18,14 +18,12 @@ const useFormField = (initialValue) => {
 
 export function UserSetting() {
     const [errorList, setErrorList] = React.useState({});
-    const [user,setUser] = useState();
-    //const [logo,setLogo] = useState();
-    const [logo, setImage] = useState();
+    const [user, setUser] = useState();
+    const [logo,setLogo] = useState();
 
-    useEffect(()=>{
+    useEffect(() => {
         if (!user) setUser(JSON.parse(JSON.parse(localStorage.getItem('User'))));
-    },[user])
-
+    }, [user])
 
     let EmailField = useFormField("");
     let PasswordOldField = useFormField("");
@@ -34,147 +32,149 @@ export function UserSetting() {
     let FirstNameField = useFormField("");
     let LastNameField = useFormField("");
 
-    function saveUserToLocal(xhr,user){
+    function saveUserToLocal(xhr, user) {
         let temp = JSON.parse(JSON.parse(user));
-        if (temp.userId !== null){
+        if (temp.userId !== null) {
             localStorage.setItem("User", user);
-            window.location.reload();
-        }
-        else {
+            // window.location.reload();
+        } else {
             let errors = {};
             errors["PassOld"] = true;
-            
+
             setErrorList(errors);
         }
     }
 
     function imageSelect(e) {
         e.preventDefault();
-    
+
         let reader = new FileReader();
         let file = e.target.files[0];
-    
+
         // console.log(reader.result);
-    
+
         reader.onloadend = () => {
-            setImage(reader.result);
+            setLogo(reader.result);
         }
-    
+
         reader.readAsDataURL(file);
     }
- 
 
-    
-    function errorsValidator(line){
-        let errors = {};
-        if (!EmailField.get().trim()) errors["Email"] = true;
-        if (!PasswordOldField.get().trim()) errors["PassOld"] = true;
-        if (!PasswordNewField.get().trim()) errors["PassNew"] = true;
-        if (!PasswordRField.get().trim()) errors["PassR"] = true;
-        if (!FirstNameField.get().trim()) errors["FirstName"] = true;
-        if (!LastNameField.get().trim()) errors["LastName"] = true;
-        return errors;
+    // function errorsValidator(line) {
+    //     let errors = {};
+    //     if (!EmailField.get().trim()) errors["Email"] = true;
+    //     if (!PasswordOldField.get().trim()) errors["PassOld"] = true;
+    //     if (!PasswordNewField.get().trim()) errors["PassNew"] = true;
+    //     if (!PasswordRField.get().trim()) errors["PassR"] = true;
+    //     if (!FirstNameField.get().trim()) errors["FirstName"] = true;
+    //     if (!LastNameField.get().trim()) errors["LastName"] = true;
+    //     return errors;
+    // }
+
+   async function OldPassCheck(oldpass) {
+       return new Promise(function (resolve, reject) {
+           let xhr = new XMLHttpRequest();
+           xhr.open("get", "api/users/" + user.login + "," + PasswordOldField.get(), true);
+           xhr.onload = function () {
+               if (this.status >= 200 && this.status < 300) {
+                   resolve(xhr.response);
+               } else {
+                   reject({
+                       status: this.status,
+                       statusText: xhr.statusText
+                   });
+               }
+           };
+           xhr.onerror = function () {
+               reject({
+                   status: this.status,
+                   statusText: xhr.statusText
+               });
+           };
+           xhr.send();
+       });
+        // console.log(check);
     }
 
-    function OldPassCheck (oldpass)
-    {
-        let xhr = new XMLHttpRequest();
-        let check = false;
-        xhr.open("get","api/users/"+user.login+","+PasswordOldField.get(), false);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        console.log(xhr);
+    function Change(user, field, value) {
 
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                let checkuser = JSON.parse(xhr.responseText);
-                console.log(checkuser);
-                if (checkuser.userId !== null)
-                {
-                    console.log("check = true");
-                    check = true;
-                }
-            }
-        };
-        xhr.send();
-        console.log(check);
-        return check;
-    }
-
-    
-    function Change(user, field, value)
-    {
-        
         let xhr = new XMLHttpRequest();
-        xhr.open("get","api/users/ChangeUserData/"+ field + "/" + user.userId + ", " + value, true);
+        xhr.open("put", "api/users/ChangeUserData/" + field + "/" + user.userId + ", " + value, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = function () {
             if (xhr.status === 200) {
-                    let responsedUser = JSON.stringify(xhr.responseText);
-                    saveUserToLocal(xhr,responsedUser);
+                let responsedUser = JSON.stringify(xhr.responseText);
+                saveUserToLocal(xhr, responsedUser);
             }
         };
         xhr.send();
     }
 
-    function handleSubmit (line){
+    async function handleSubmit(line) {
 
-        let err = errorsValidator(line);
-        setErrorList(err);
+        // let err = errorsValidator(line);
+        // setErrorList(err);
 
-
-            switch (line){
-                case "Email": {
-                    Change(user,"Email", EmailField.get());
-                    break;
-                }
-                case "Names": {
-                    Change(user,"FirstName", FirstNameField.get());
-                    Change(user,"LastName", LastNameField.get());
-                    break;
-                }
-                case "Password": {
-                    let check = OldPassCheck();
-                    console.log(check);
-                    if (check && (PasswordNewField.get() === PasswordRField.get()))
-                    {
-                        Change(user,"Password", PasswordNewField.get());
-                    }
-                    break;
-                }
-                default:{
-                    break;
-                }
+        switch (line) {
+            case "Email": {
+                Change(user, "Email", EmailField.get());
+                break;
             }
+            case "Names": {
+                Change(user, "FirstName", FirstNameField.get());
+                Change(user, "LastName", LastNameField.get());
+                break;
+            }
+            case "Password": {
+                let check = Boolean(JSON.parse(await OldPassCheck()).userId);
+
+                console.log(check);
+                if (check && (PasswordNewField.get() === PasswordRField.get())) {
+                    Change(user, "Password", PasswordNewField.get());
+                    PasswordOldField.set("")
+                    PasswordNewField.set("")
+                    PasswordRField.set("")
+                }
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
-
-    return(
+    console.log("rens")
+    return (
         <div className="SettingsForm">
             <div className="heading">Settings</div>
             <div className="avatarSet">
-                <img className="avatar" src={logo} alt="Logo" />
+                <img className="user-setting-avatar" src={ logo? logo : user?.image } alt="Logo"/>
                 <p/>
                 <input className="fileInput"
-                                   type="file"
-                                   onChange={event => imageSelect(event)}
-                            /><br />
-                            <p/>
+                       type="file"
+                       onChange={event => imageSelect(event)}
+                /><br/>
+                <p/>
                 <p>
-                <button onClick={()=>{handleSubmit("Email")}}>
-                    Change avatar
-                </button>
+                    <button onClick={() => {
+                        handleSubmit("Email")
+                    }}>
+                        Change avatar
+                    </button>
                 </p>
             </div>
             <div className="EmailSet">
                 Email
                 <br/>
-                    <input className={ errorList["Email"] ? "notSetValue" : ""}
-                           name="Email"
-                           type="text" {...EmailField.bind}/>
+                {/*className={errorList["Email"] ? "notSetValue" : ""}*/}
+                <input name="Email"
+                       type="email" {...EmailField.bind}/>
                 <br/>
                 <p/>
                 <p>
-                    <button onClick={()=>{handleSubmit("Email")}}>
+                    <button onClick={async () => {
+                        await handleSubmit("Email")
+                    }}>
                         Change Email
                     </button>
                 </p>
@@ -183,25 +183,26 @@ export function UserSetting() {
             <div className="PasswordSet">
                 Old Password
                 <br/>
-                    <input className={ errorList["PasswordOld"] ? "notSetValue" : ""}
-                           name="PasswordOld"
-                           type="text" {...PasswordOldField.bind}/>
-                           <br/>
+                {/*className={errorList["PasswordOld"] ? "notSetValue" : ""}*/}
+                <input name="PasswordOld"
+                       type="text" {...PasswordOldField.bind}/>
+                <br/>
                 New Password
                 <br/>
-                    <input className={ errorList["PasswordNew"] ? "notSetValue" : ""}
-                           name="PasswordNew"
-                           type="text" {...PasswordNewField.bind}/>
+                {/*className={errorList["PasswordNew"] ? "notSetValue" : ""}*/}
+                <input name="PasswordNew"
+                       type="text" {...PasswordNewField.bind}/>
                 <br/>
                 Repeat Password
                 <br/>
-                    <input className={ errorList["PasswordR"] ? "notSetValue" : ""}
-                           name="PasswordR"
-                           type="text" {...PasswordRField.bind}/>
+                <input name="PasswordR"
+                       type="text" {...PasswordRField.bind}/>
                 <br/>
                 <p/>
                 <p>
-                <button onClick={()=>{handleSubmit("Password")}}>
+                    <button onClick={async () => {
+                        await handleSubmit("Password")
+                    }}>
                         Change Password
                     </button>
                 </p>
@@ -209,20 +210,19 @@ export function UserSetting() {
             <div className="NamesSet">
                 FirstName
                 <br/>
-                    <input className={ errorList["FirstName"] ? "notSetValue" : ""}
-                           name="FirstName"
-                           type="text" {...FirstNameField.bind}/>
+                <input name="FirstName"
+                       type="text" {...FirstNameField.bind}/>
                 <br/>
                 SecondName
                 <br/>
-                    <input className={ errorList["LastName"] ? "notSetValue" : ""}
-                           name="LastName"
-                           type="text" {...LastNameField.bind}/>
+                <input name="LastName"
+                       type="text" {...LastNameField.bind}/>
                 <br/>
-
                 <p/>
                 <p>
-                <button onClick={()=>{handleSubmit("Names")}}>
+                    <button onClick={async () => {
+                        await handleSubmit("Names")
+                    }}>
                         Change Names
                     </button>
                 </p>
