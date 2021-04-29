@@ -20,20 +20,22 @@ namespace BooMBooK.Services
         {
             ArticleComment articleComment = new ArticleComment();
             articleComment.ArticleId = articleId;
-            ArticleComment findMatch = await ArticleComments.Find(x => x.ArticleId == articleComment.ArticleId).FirstOrDefaultAsync();
+            articleComment.CommentId = comment.CommentId;
+            await ArticleComments.InsertOneAsync(articleComment);
 
-            if (findMatch == null)
-            {
-                await ArticleComments.InsertOneAsync(articleComment);
-                return articleComment;
-            }
-
-            return new ArticleComment();
+            return articleComment;
         }
 
         public async Task<List<ArticleComment>> GetArticleComments(string articleId)
         {
-            return await ArticleComments.Find(x => x.ArticleId == articleId).ToListAsync();
+            List<ArticleComment> articleComments = await ArticleComments.Find(x => x.ArticleId == articleId).ToListAsync();
+
+            if (articleComments != null)
+            {
+                return articleComments;
+            }
+
+            return new List<ArticleComment>();
         }
     }
 }
