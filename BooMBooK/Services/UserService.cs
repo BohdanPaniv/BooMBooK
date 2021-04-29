@@ -52,20 +52,20 @@ namespace BooMBooK.Services
             switch (fieldName)
             {
                 case "Email":
-                    update.Set(x => x.Email, newData);
+                    update = update.Set(x => x.Email, newData);
                     break;
                 case "Password":
-                    update.Set(x => x.Password, newData);
+                    update = update.Set(x => x.Password, newData);
                     break;
                 case "FirstName":
-                    update.Set(x => x.FirstName, newData);
+                    update = update.Set(x => x.FirstName, newData);
                     break;
                 case "LastName":
-                    update.Set(x => x.LastName, newData);
+                    update = update.Set(x => x.LastName, newData);
                     break;
             }
 
-            await Users.FindOneAndUpdateAsync(filter, update);
+            await Users.UpdateOneAsync(filter, update);
 
             List<User> foundUser = await Users.Find(x => x.UserId == userId).ToListAsync();
 

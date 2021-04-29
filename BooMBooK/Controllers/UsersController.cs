@@ -22,7 +22,7 @@ namespace BooMBooK.Controllers
         {
             return await userService.Create(user);
         }
-
+         
         [HttpGet("{login},{password}")]
         public async Task<User> GetUser(string login, string password)
         {

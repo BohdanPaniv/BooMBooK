@@ -16,72 +16,87 @@ const useFormField = (initialValue) => {
     };
 };
 
-
 export function UserSetting() {
     const [errorList, setErrorList] = React.useState({});
     const [user,setUser] = useState();
+    //const [logo,setLogo] = useState();
+    const [logo, setImage] = useState();
 
-    
     useEffect(()=>{
         if (!user) setUser(JSON.parse(JSON.parse(localStorage.getItem('User'))));
     },[user])
+
 
     let EmailField = useFormField("");
     let PasswordOldField = useFormField("");
     let PasswordNewField = useFormField("");
     let PasswordRField = useFormField("");
     let FirstNameField = useFormField("");
-    let SecondNameField = useFormField("");
+    let LastNameField = useFormField("");
 
     function saveUserToLocal(xhr,user){
-        console.log("Saving to local storage");
-        console.log(xhr);
         let temp = JSON.parse(JSON.parse(user));
-
-        console.log(temp.userId);
-        //
-        // console.log(Boolean(xhr.responseText));
-        // let isTrue = xhr.responseText === "true";
-        // console.log(isTrue);
         if (temp.userId !== null){
             localStorage.setItem("User", user);
             window.location.reload();
         }
-        console.log(temp);
+        else {
+            let errors = {};
+            errors["PassOld"] = true;
+            
+            setErrorList(errors);
+        }
     }
 
+    function imageSelect(e) {
+        e.preventDefault();
+    
+        let reader = new FileReader();
+        let file = e.target.files[0];
+    
+        // console.log(reader.result);
+    
+        reader.onloadend = () => {
+            setImage(reader.result);
+        }
+    
+        reader.readAsDataURL(file);
+    }
+ 
 
-
+    
     function errorsValidator(line){
         let errors = {};
-
         if (!EmailField.get().trim()) errors["Email"] = true;
         if (!PasswordOldField.get().trim()) errors["PassOld"] = true;
         if (!PasswordNewField.get().trim()) errors["PassNew"] = true;
         if (!PasswordRField.get().trim()) errors["PassR"] = true;
         if (!FirstNameField.get().trim()) errors["FirstName"] = true;
-        if (!SecondNameField.get().trim()) errors["SecondName"] = true;
-        // console.log("errors");
-        // console.log(errors);
+        if (!LastNameField.get().trim()) errors["LastName"] = true;
         return errors;
     }
 
     function OldPassCheck (oldpass)
     {
         let xhr = new XMLHttpRequest();
-        let check;
-        xhr.open("get","api/users/"+user.Login+","+PasswordOldField.get(), true);
+        let check = false;
+        xhr.open("get","api/users/"+user.login+","+PasswordOldField.get(), false);
         xhr.setRequestHeader("Content-Type", "application/json");
+        console.log(xhr);
 
         xhr.onload = function () {
             if (xhr.status === 200) {
-                check = true;
-            }else
-            {
-                check = false;
+                let checkuser = JSON.parse(xhr.responseText);
+                console.log(checkuser);
+                if (checkuser.userId !== null)
+                {
+                    console.log("check = true");
+                    check = true;
+                }
             }
         };
         xhr.send();
+        console.log(check);
         return check;
     }
 
@@ -90,17 +105,14 @@ export function UserSetting() {
     {
         
         let xhr = new XMLHttpRequest();
-        //xhr.open("get","api/users/ChangeUserData/asd/ads/asd/das/asd", true);
         xhr.open("get","api/users/ChangeUserData/"+ field + "/" + user.userId + ", " + value, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = function () {
             if (xhr.status === 200) {
-                let responsedUser = JSON.stringify(xhr.responseText);
-                saveUserToLocal(xhr,responsedUser);
-                console.log("Succsesful");
+                    let responsedUser = JSON.stringify(xhr.responseText);
+                    saveUserToLocal(xhr,responsedUser);
             }
         };
-        console.log(xhr);
         xhr.send();
     }
 
@@ -116,39 +128,19 @@ export function UserSetting() {
                     break;
                 }
                 case "Names": {
-/*
-                    xhr.open("get","api/users/"+ user.userId + "/" + FirstNameField.get() + "/" + SecondNameField.get(), true);
-                    xhr.setRequestHeader("Content-Type", "application/json");
-
-                    xhr.onload = function () {
-                        if (xhr.status === 200) {
-                            let responsedUser = JSON.stringify(xhr.responseText);
-                            saveUserToLocal(xhr,responsedUser);
-                        }
-                    };
-
-                    xhr.send();
-*/
+                    Change(user,"FirstName", FirstNameField.get());
+                    Change(user,"LastName", LastNameField.get());
                     break;
                 }
                 case "Password": {
-/*
-                    if (OldPassCheck)
+                    let check = OldPassCheck();
+                    console.log(check);
+                    if (check && (PasswordNewField.get() === PasswordRField.get()))
                     {
-                        xhr.open("get","api/users/"+PasswordNewField.get(), true);
-                        xhr.setRequestHeader("Content-Type", "application/json");
-                                                    xhr.onload = function () {
-                            if (xhr.status === 200) {
-                                let responsedUser = JSON.stringify(xhr.responseText);
-                                saveUserToLocal(xhr,responsedUser);
-                            }
-                        };
-                                                
-                        xhr.send();
-*/
+                        Change(user,"Password", PasswordNewField.get());
                     }
                     break;
-                
+                }
                 default:{
                     break;
                 }
@@ -159,6 +151,20 @@ export function UserSetting() {
     return(
         <div className="SettingsForm">
             <div className="heading">Settings</div>
+            <div className="avatarSet">
+                <img className="avatar" src={logo} alt="Logo" />
+                <p/>
+                <input className="fileInput"
+                                   type="file"
+                                   onChange={event => imageSelect(event)}
+                            /><br />
+                            <p/>
+                <p>
+                <button onClick={()=>{handleSubmit("Email")}}>
+                    Change avatar
+                </button>
+                </p>
+            </div>
             <div className="EmailSet">
                 Email
                 <br/>
@@ -175,7 +181,6 @@ export function UserSetting() {
             </div>
             <br/>
             <div className="PasswordSet">
-                <form onSubmit={event => handleSubmit("Password")}>
                 Old Password
                 <br/>
                     <input className={ errorList["PasswordOld"] ? "notSetValue" : ""}
@@ -196,13 +201,12 @@ export function UserSetting() {
                 <br/>
                 <p/>
                 <p>
-                    <input type="submit"
-                           value="Change Password" />
+                <button onClick={()=>{handleSubmit("Password")}}>
+                        Change Password
+                    </button>
                 </p>
-                    </form>
             </div>
             <div className="NamesSet">
-                <form onSubmit={event => handleSubmit("Names")}>
                 FirstName
                 <br/>
                     <input className={ errorList["FirstName"] ? "notSetValue" : ""}
@@ -211,17 +215,17 @@ export function UserSetting() {
                 <br/>
                 SecondName
                 <br/>
-                    <input className={ errorList["SecondName"] ? "notSetValue" : ""}
-                           name="SecondName"
-                           type="text" {...SecondNameField.bind}/>
+                    <input className={ errorList["LastName"] ? "notSetValue" : ""}
+                           name="LastName"
+                           type="text" {...LastNameField.bind}/>
                 <br/>
 
                 <p/>
                 <p>
-                    <input type="submit"
-                           value="Change names" />
+                <button onClick={()=>{handleSubmit("Names")}}>
+                        Change Names
+                    </button>
                 </p>
-                    </form>
             </div>
 
 

@@ -79,10 +79,6 @@ export function AuthenticationPage(){
         let temp = JSON.parse(JSON.parse(user));
 
         console.log(temp.userId);
-        //
-        // console.log(Boolean(xhr.responseText));
-        // let isTrue = xhr.responseText === "true";
-        // console.log(isTrue);
         if (temp.userId !== null){
             localStorage.setItem("User", user);
             window.location.reload();
