@@ -1,6 +1,8 @@
-﻿using BooMBooK.Models.Comment;
+﻿using BooMBooK.Models.ArticleComment;
+using BooMBooK.Models.Comment;
 using BooMBooK.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Controllers
@@ -13,22 +15,6 @@ namespace BooMBooK.Controllers
         public CommentsController(CommentService commentService)
         {
             this.commentService = commentService;
-        }
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(Comment comment)
-        {
-            if (ModelState.IsValid)
-            {
-                await commentService.Create(comment);
-                return RedirectToAction("Index");
-            }
-            return View(comment);
         }
     }
 }

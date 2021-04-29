@@ -1,6 +1,8 @@
 ﻿using BooMBooK.Models.ArticleComment;
-using MongoDB.Bson;
+using BooMBooK.Models.Comment;
 using MongoDB.Driver;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Services
@@ -14,29 +16,17 @@ namespace BooMBooK.Services
             ArticleComments = DataBaseService.GetMongoCollection<ArticleComment>("ArticleComments");
         }
 
-        public async Task Create(ArticleComment articleComment)
+        public async Task<ArticleComment> CreateArticleComment(ArticleComment articleComment)
         {
-            await ArticleComments.InsertOneAsync(articleComment);
+            articleComment.ArticleId = Guid.NewGuid().ToString();
+            ArticleComment findMatch = await ArticleComments.Find(x => x.ArticleId == articleComment.ArticleId).FirstOrDefaultAsync();
+            
+            return findMatch != null ? articleComment : new ArticleComment();
         }
 
-        public async Task<ArticleComment> GetArticleComment(string id)
+        public async Task<List<ArticleComment>> GetArticleComments(string articleId)
         {
-            return await ArticleComments.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
-        }
-
-        public async Task AddArticleComment(ArticleComment articleComment)
-        {
-            await ArticleComments.InsertOneAsync(articleComment);
-        }
-
-        public async Task UpdateArticleComments(ArticleComment articleComment)
-        {
-            await ArticleComments.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(articleComment.ArticleId)), articleComment);
-        }
-
-        public async Task DeleteArticleComments(string id)
-        {
-            await ArticleComments.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
+            return await ArticleComments.Find(x => x.ArticleId == articleId).ToListAsync();
         }
     }
 }

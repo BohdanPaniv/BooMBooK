@@ -1,6 +1,8 @@
-﻿using BooMBooK.Models.Comment;
+﻿using BooMBooK.Models.ArticleComment;
+using BooMBooK.Models.Comment;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Services
@@ -18,19 +20,21 @@ namespace BooMBooK.Services
             await Comments.InsertOneAsync(comment);
         }
 
-        public async Task<Comment> GetComment(string id)
+        public async Task<List<Comment>> GetComments(List<ArticleComment> articleComments)
         {
-            return await Comments.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
-        }
+            List<Comment> comments = new List<Comment>();
 
-        public async Task AddComment(Comment comment)
-        {
-            await Comments.InsertOneAsync(comment);
-        }
+            foreach (var item in articleComments)
+            {
+                Comment findMatch = await Comments.Find(x => x.CommentId == item.CommentId).FirstOrDefaultAsync();
+                
+                if (findMatch != null)
+                {
+                    comments.Add(findMatch);
+                }
+            }
 
-        public async Task DeleteComment(string id)
-        {
-            await Comments.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
+            return comments;
         }
     }
 }

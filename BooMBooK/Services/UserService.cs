@@ -46,7 +46,6 @@ namespace BooMBooK.Services
         public async Task<User> ChangeUserData(string fieldName, string userId, string newData)
         {
             var filter = Builders<User>.Filter.Eq(x => x.UserId, userId);
-
             var update = Builders<User>.Update.Set(x => x.UserId, userId);
 
             switch (fieldName)

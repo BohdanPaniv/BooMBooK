@@ -1,6 +1,8 @@
 ﻿using BooMBooK.Models.ArticleComment;
+using BooMBooK.Models.Comment;
 using BooMBooK.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Controllers
@@ -10,25 +12,25 @@ namespace BooMBooK.Controllers
     public class ArticleCommentsController : Controller
     {
         private readonly ArticleCommentsService articleCommentsService;
-        public ArticleCommentsController(ArticleCommentsService articleCommentsService)
+        private readonly CommentService commentService;
+        public ArticleCommentsController(ArticleCommentsService articleCommentsService, CommentService commentService)
         {
             this.articleCommentsService = articleCommentsService;
+            this.commentService = commentService;
         }
 
-        public IActionResult Create()
+        [HttpPost("CreateArticleComment/")]
+        public async Task<ArticleComment> CreateArticleComment(ArticleComment articleComment)
         {
-            return View();
+            return await articleCommentsService.CreateArticleComment(articleComment);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(ArticleComment articleComment)
+        [HttpPut("UpdateArticleComment/{articleId}")]
+        public async Task<List<Comment>> UpdateArticleComment(string articleId)
         {
-            if (ModelState.IsValid)
-            {
-                await articleCommentsService.Create(articleComment);
-                return RedirectToAction("Index");
-            }
-            return View(articleComment);
+            List<ArticleComment> articleComment1 = await articleCommentsService.GetArticleComments(articleId);
+
+            return await commentService.GetComments(articleComment1);
         }
     }
 }
