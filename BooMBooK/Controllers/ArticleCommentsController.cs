@@ -25,8 +25,8 @@ namespace BooMBooK.Controllers
             return await articleCommentsService.CreateArticleComment(articleComment);
         }
 
-        [HttpPut("UpdateArticleComment/{articleId}")]
-        public async Task<List<Comment>> UpdateArticleComment(string articleId)
+        [HttpGet("GetCommentsByArticleId/{articleId}")]
+        public async Task<List<Comment>> GetCommentsByArticleId(string articleId)
         {
             List<ArticleComment> articleComment1 = await articleCommentsService.GetArticleComments(articleId);
 
