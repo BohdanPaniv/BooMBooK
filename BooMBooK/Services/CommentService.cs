@@ -2,6 +2,7 @@
 using BooMBooK.Models.Comment;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,9 +16,19 @@ namespace BooMBooK.Services
             Comments = DataBaseService.GetMongoCollection<Comment>("Comments");
         }
 
-        public async Task Create(Comment comment)
+        public async Task<Comment> Create(Comment comment)
         {
-            await Comments.InsertOneAsync(comment);
+            comment.CommentId = Guid.NewGuid().ToString();
+
+            Comment findMatch = await Comments.Find(x => x.UserId == comment.CommentId).FirstOrDefaultAsync();
+
+            if(findMatch != null)
+            {
+                await Comments.InsertOneAsync(comment);
+                return comment;
+            }
+
+            return new Comment();
         }
 
         public async Task<List<Comment>> GetComments(List<ArticleComment> articleComments)

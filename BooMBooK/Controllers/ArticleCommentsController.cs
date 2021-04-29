@@ -19,10 +19,11 @@ namespace BooMBooK.Controllers
             this.commentService = commentService;
         }
 
-        [HttpPost("CreateArticleComment/")]
-        public async Task<ArticleComment> CreateArticleComment(ArticleComment articleComment)
+        [HttpPost("CreateArticleComment/{articleId}")]
+        public async Task<ArticleComment> CreateArticleComment(string articleId, Comment comment)
         {
-            return await articleCommentsService.CreateArticleComment(articleComment);
+            Comment createdComment = await commentService.Create(comment);
+            return await articleCommentsService.CreateArticleComment(articleId, createdComment);
         }
 
         [HttpGet("GetCommentsByArticleId/{articleId}")]

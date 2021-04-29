@@ -16,12 +16,19 @@ namespace BooMBooK.Services
             ArticleComments = DataBaseService.GetMongoCollection<ArticleComment>("ArticleComments");
         }
 
-        public async Task<ArticleComment> CreateArticleComment(ArticleComment articleComment)
+        public async Task<ArticleComment> CreateArticleComment(string articleId, Comment comment)
         {
-            articleComment.ArticleId = Guid.NewGuid().ToString();
+            ArticleComment articleComment = new ArticleComment();
+            articleComment.ArticleId = articleId;
             ArticleComment findMatch = await ArticleComments.Find(x => x.ArticleId == articleComment.ArticleId).FirstOrDefaultAsync();
-            
-            return findMatch != null ? articleComment : new ArticleComment();
+
+            if (findMatch != null)
+            {
+                await ArticleComments.InsertOneAsync(articleComment);
+                return articleComment;
+            }
+
+            return new ArticleComment();
         }
 
         public async Task<List<ArticleComment>> GetArticleComments(string articleId)
