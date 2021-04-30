@@ -46,6 +46,22 @@ function CommentBlock({articleId}) {
         console.log(xhr)
     }, [])
 
+    function updateList(){
+        let xhr = new XMLHttpRequest()
+
+        xhr.open("get", "api/articlecomments/GetCommentsByArticleId/" + articleId, true)
+        xhr.setRequestHeader("Content-Type", "application/json")
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                let response = JSON.parse(xhr.responseText)
+                console.log(response)
+                setComments(response)
+            }
+        }
+        xhr.send()
+    }
+
     function addComment(){
 
         if (commentText.get() && commentText.get().length > 1){
@@ -64,6 +80,7 @@ function CommentBlock({articleId}) {
 
             xhr.onload = function () {
                 if (xhr.status === 200) {
+                    updateList()
                     let response = JSON.parse(xhr.responseText)
                     console.log(response)
                     setComments(response)
