@@ -31,6 +31,12 @@ namespace BooMBooK.Controllers
             return await userService.LogIn(login, password);
         }
 
+        [HttpGet("GetUserById/")]
+        public async Task<User> GetUserById(string userId)
+        {
+            return await userService.GetUserById(userId);
+        }
+
         [HttpPut]
         public async Task DeleteUser(string id)
         {
