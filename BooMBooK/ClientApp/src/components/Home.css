@@ -12,7 +12,6 @@
 
 .articleListArea {
     margin-top: 10px;
-    height: calc(100% - 90px);
     overflow-y: auto;
     overflow-x: hidden;
     text-align: -webkit-center;
