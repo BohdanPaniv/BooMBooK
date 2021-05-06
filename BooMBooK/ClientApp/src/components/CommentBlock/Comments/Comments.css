@@ -1,6 +1,14 @@
 .comment-list{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
     gap: 1rem;
+    padding: 15px;
+}
+
+.comments-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }

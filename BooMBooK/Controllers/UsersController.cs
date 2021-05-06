@@ -23,15 +23,13 @@ namespace BooMBooK.Controllers
             return await userService.Create(user);
         }
 
-
-         
         [HttpGet("{login},{password}")]
         public async Task<User> GetUser(string login, string password)
         {
             return await userService.LogIn(login, password);
         }
 
-        [HttpGet("GetUserById/")]
+        [HttpGet("GetUserById/{userId}")]
         public async Task<User> GetUserById(string userId)
         {
             return await userService.GetUserById(userId);
@@ -47,6 +45,12 @@ namespace BooMBooK.Controllers
         public async Task<User> ChangeUserData(string fieldName, string userId, string newData)
         {
             return await userService.ChangeUserData(fieldName, userId, newData);
+        }
+
+        [HttpPost("ChangeUserData/Image/")]
+        public async Task<User> ChangeUserData(User user)
+        {
+            return await userService.ChangeUserDataImage(user);
         }
     }
 }

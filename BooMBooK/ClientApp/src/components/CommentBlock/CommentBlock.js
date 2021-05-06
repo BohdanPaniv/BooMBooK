@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from "react"
 import {TextField} from "@material-ui/core"
 import "./CommentBlock.css"
-import Comment from "./Comments/Comment/Comment";
 import Comments from "./Comments/Comments";
 
 const useFormField = (initialValue) => {
@@ -9,7 +8,7 @@ const useFormField = (initialValue) => {
 
     const onChange = React.useCallback((e) => setValue(e.target.value), []);
 
-    return{
+    return {
         bind: {
             value,
             onChange
@@ -27,8 +26,7 @@ function CommentBlock({articleId}) {
     const commentText = useFormField()
 
     useEffect(() => {
-        userId.current = JSON.parse(JSON.parse(localStorage.getItem("User"))).userId
-        console.log(userId.current)
+        userId.current = JSON?.parse(JSON?.parse(localStorage?.getItem("User")))?.userId
 
         let xhr = new XMLHttpRequest()
 
@@ -46,7 +44,7 @@ function CommentBlock({articleId}) {
         console.log(xhr)
     }, [])
 
-    function updateList(){
+    function updateList() {
         let xhr = new XMLHttpRequest()
 
         xhr.open("get", "api/articlecomments/GetCommentsByArticleId/" + articleId, true)
@@ -62,9 +60,9 @@ function CommentBlock({articleId}) {
         xhr.send()
     }
 
-    function addComment(){
+    function addComment() {
 
-        if (commentText.get() && commentText.get().length > 1){
+        if (commentText.get() && commentText.get().length > 1) {
             let xhr = new XMLHttpRequest()
 
             let comment = JSON.stringify({
@@ -93,24 +91,32 @@ function CommentBlock({articleId}) {
 
     return (
         <div className="comments-block">
-            <div className="new-comment-container">
-                <TextField className="comment-input"
-                           placeholder="Comment text"
-                           multiline
-                           rowsMax={4}
-                           {...commentText.bind}/>
+            {userId.current && (
+                <div className="new-comment-container">
+                    <TextField className="comment-input"
+                               placeholder="Comment text"
+                               multiline
+                               rowsMax={4}
+                               {...commentText.bind}/>
 
-                <div className="comment-rating">
-                    <button onClick={()=>{setComments(-1)}}>-</button>
-                    <button onClick={()=>{setComments(1)}}>+</button>
+                    <div className="comment-rating">
+                        <button className={rating === -1 ? "selected" : ""} onClick={() => {
+                            setRating(-1)
+                        }}>-
+                        </button>
+                        <button className={rating === 1 ? "selected" : ""} onClick={() => {
+                            setRating(1)
+                        }}>+
+                        </button>
+                    </div>
+                    <button className="comment-add"
+                            onClick={addComment}>
+                        Add
+                    </button>
                 </div>
-                <button className="comment-add"
-                        onClick={addComment}>
-                    Add
-                </button>
-            </div>
+            )}
             <div className="comment-list-container">
-                <Comments comments = {comments}/>
+                <Comments userId={userId.current} comments={comments} updateList={updateList}/>
             </div>
         </div>
     )

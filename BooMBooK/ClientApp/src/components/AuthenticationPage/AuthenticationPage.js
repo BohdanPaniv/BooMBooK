@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import "./AuthenticationPage.css"
 
 const useFormField = (initialValue) => {
@@ -121,8 +121,8 @@ export function AuthenticationPage(){
 
                     xhr.onload = function () {
                         if (xhr.status === 200) {
-                            let responsedUser = JSON.stringify(xhr.responseText);
-                            saveUserToLocal(xhr,responsedUser);
+                            let responseUser = JSON.stringify(xhr.responseText);
+                            saveUserToLocal(xhr,responseUser);
                         }
                     };
 

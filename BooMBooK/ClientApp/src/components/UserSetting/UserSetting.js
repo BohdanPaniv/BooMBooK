@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./UserSetting.css"
+import nophoto from "./DefAvatar.jpg";
 
 const useFormField = (initialValue) => {
     const [value, setValue] = React.useState(initialValue);
@@ -17,26 +18,34 @@ const useFormField = (initialValue) => {
 };
 
 export function UserSetting() {
-    const [errorList, setErrorList] = React.useState({});
     const [user, setUser] = useState();
-    const [logo,setLogo] = useState();
+    const [logo, setLogo] = useState();
+    const [errorList, setErrorList] = React.useState({});
+
+    const EmailField = useFormField("");
+    const PasswordOldField = useFormField("");
+    const PasswordNewField = useFormField("");
+    const PasswordRField = useFormField("");
+    const FirstNameField = useFormField("");
+    const LastNameField = useFormField("");
 
     useEffect(() => {
-        if (!user) setUser(JSON.parse(JSON.parse(localStorage.getItem('User'))));
+        if (!user) {
+            let myUser = JSON.parse(JSON.parse(localStorage.getItem('User')));
+            EmailField.set(myUser.email);
+            FirstNameField.set(myUser.firstName);
+            LastNameField.set(myUser.lastName);
+            setUser(myUser);
+        };
     }, [user])
 
-    let EmailField = useFormField("");
-    let PasswordOldField = useFormField("");
-    let PasswordNewField = useFormField("");
-    let PasswordRField = useFormField("");
-    let FirstNameField = useFormField("");
-    let LastNameField = useFormField("");
+
 
     function saveUserToLocal(xhr, user) {
         let temp = JSON.parse(JSON.parse(user));
         if (temp.userId !== null) {
             localStorage.setItem("User", user);
-            // window.location.reload();
+            window.location.reload();
         } else {
             let errors = {};
             errors["PassOld"] = true;
@@ -60,81 +69,97 @@ export function UserSetting() {
         reader.readAsDataURL(file);
     }
 
-    // function errorsValidator(line) {
-    //     let errors = {};
-    //     if (!EmailField.get().trim()) errors["Email"] = true;
-    //     if (!PasswordOldField.get().trim()) errors["PassOld"] = true;
-    //     if (!PasswordNewField.get().trim()) errors["PassNew"] = true;
-    //     if (!PasswordRField.get().trim()) errors["PassR"] = true;
-    //     if (!FirstNameField.get().trim()) errors["FirstName"] = true;
-    //     if (!LastNameField.get().trim()) errors["LastName"] = true;
-    //     return errors;
-    // }
+    async function OldPassCheck(oldpass) {
+        return new Promise(function (resolve, reject) {
+            let xhr = new XMLHttpRequest();
 
-   async function OldPassCheck(oldpass) {
-       return new Promise(function (resolve, reject) {
-           let xhr = new XMLHttpRequest();
-           xhr.open("get", "api/users/" + user.login + "," + PasswordOldField.get(), true);
-           xhr.onload = function () {
-               if (this.status >= 200 && this.status < 300) {
-                   resolve(xhr.response);
-               } else {
-                   reject({
-                       status: this.status,
-                       statusText: xhr.statusText
-                   });
-               }
-           };
-           xhr.onerror = function () {
-               reject({
-                   status: this.status,
-                   statusText: xhr.statusText
-               });
-           };
-           xhr.send();
-       });
+            xhr.open("get", "api/users/" + user.login + "," + PasswordOldField.get(), true);
+            xhr.onload = function () {
+                if (this.status >= 200 && this.status < 300) {
+                    resolve(xhr.response);
+                } else {
+                    reject({
+                        status: this.status,
+                        statusText: xhr.statusText
+                    });
+                }
+            };
+            xhr.onerror = function () {
+                reject({
+                    status: this.status,
+                    statusText: xhr.statusText
+                });
+            };
+            xhr.send();
+        });
         // console.log(check);
     }
 
     function Change(user, field, value) {
-
-        let xhr = new XMLHttpRequest();
-        xhr.open("put", "api/users/ChangeUserData/" + field + "/" + user.userId + ", " + value, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                let responsedUser = JSON.stringify(xhr.responseText);
-                saveUserToLocal(xhr, responsedUser);
-            }
-        };
-        xhr.send();
+        if (field === "Image" && logo) {
+            user.image = logo;
+            let xhr = new XMLHttpRequest();
+            xhr.open('post', 'api/users/ChangeUserData/Image/');
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    let responsedUser = JSON.stringify(xhr.responseText);
+                    saveUserToLocal(xhr, responsedUser);
+                }
+            };
+            xhr.send(JSON.stringify(user));
+            console.log(xhr)
+        }
+        else {
+            let xhr = new XMLHttpRequest();
+            xhr.open("put", "api/users/ChangeUserData/" + field + "/" + user.userId + ", " + value, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    let responsedUser = JSON.stringify(xhr.responseText);
+                    saveUserToLocal(xhr, responsedUser);
+                }
+            };
+            console.log(xhr);
+            xhr.send();
+        }
     }
 
     async function handleSubmit(line) {
-
-        // let err = errorsValidator(line);
-        // setErrorList(err);
-
         switch (line) {
+            case "Avatar": {
+                Change(user, "Image", logo);
+                break;
+            }
             case "Email": {
-                Change(user, "Email", EmailField.get());
+                let err = await errorsValidator(line);
+                setErrorList(err);
+                if (Object.keys(err).length === 0)
+                    Change(user, "Email", EmailField.get());
+                console.log(err);
                 break;
             }
             case "Names": {
-                Change(user, "FirstName", FirstNameField.get());
-                Change(user, "LastName", LastNameField.get());
+                let err = await errorsValidator(line);
+                setErrorList(err);
+                if (Object.keys(err).length === 0) {
+                    Change(user, "FirstName", FirstNameField.get());
+                    Change(user, "LastName", LastNameField.get());
+                }
+                console.log(err);
                 break;
             }
             case "Password": {
-                let check = Boolean(JSON.parse(await OldPassCheck()).userId);
-
-                console.log(check);
-                if (check && (PasswordNewField.get() === PasswordRField.get())) {
+                let err = await errorsValidator(line);
+                setErrorList(err);
+                if (Object.keys(err).length === 0) {
                     Change(user, "Password", PasswordNewField.get());
-                    PasswordOldField.set("")
-                    PasswordNewField.set("")
-                    PasswordRField.set("")
+                    PasswordOldField.set("");
+                    PasswordNewField.set("");
+                    PasswordRField.set("");
                 }
+                console.log(err);
+
                 break;
             }
             default: {
@@ -143,91 +168,112 @@ export function UserSetting() {
         }
     }
 
-    console.log("rens")
+    async function errorsValidator(line) {
+        let errors = {};
+        switch (line) {
+            case "Email": {
+                if (!EmailField.get().trim()) errors["EmailEmpty"] = true;
+                return errors;
+            }
+            case "Names": {
+                if (!FirstNameField.get().trim()) errors["FirstName"] = true;
+                if (!LastNameField.get().trim()) errors["LastName"] = true;
+                return errors;
+            }
+            case "Password": {
+                if (!PasswordOldField.get().trim()) {
+                    errors["OldEmpty"] = true
+                } else {
+                    let check = Boolean(JSON.parse(await OldPassCheck()).userId);
+                    if (!check) errors["OldWrong"] = true
+                    else {
+                        if (!PasswordNewField.get().trim()) errors["NewEmpty"] = true;
+                        if (!PasswordRField.get().trim()) errors["RepEmpty"] = true;
+
+                        if (!errors["NewEmpty"] && !errors["RepEmpty"]) {
+                            if (PasswordRField.get() !== PasswordNewField.get()) errors["PassDif"] = true;
+                        }
+                    }
+                    return errors;
+                }
+            }
+        }
+        return errors;
+    }
+
+    console.log(user);
+
     return (
-        <div className="SettingsForm">
-            <div className="heading">Settings</div>
+        <div className="settingsBlock">
             <div className="avatarSet">
-                <img className="user-setting-avatar" src={ logo? logo : user?.image } alt="Logo"/>
-                <p/>
-                <input className="fileInput"
-                       type="file"
-                       onChange={event => imageSelect(event)}
-                /><br/>
-                <p/>
-                <p>
-                    <button onClick={() => {
-                        handleSubmit("Email")
-                    }}>
-                        Change avatar
-                    </button>
-                </p>
+                {
+                    (() => {
+                        if (logo)
+                            return <img className="settingsAvatar" src={logo} alt="Logo" />
+                        else if (user?.image)
+                            return <img className="settingsAvatar" src={user?.image} alt="Logo" />
+                        else {
+                            return <img className="settingsAvatar" src={nophoto} alt="Logo" />
+                        }
+                    })()
+                }
+                <input className="fileInput" type="file" onChange={event => imageSelect(event)} />
+                <button onClick={() => {
+                    handleSubmit("Avatar")
+                }}>
+                    ChangeAvatar
+                </button>
             </div>
             <div className="EmailSet">
                 Email
-                <br/>
+                <br />
                 {/*className={errorList["Email"] ? "notSetValue" : ""}*/}
                 <input name="Email"
-                       type="email" {...EmailField.bind}/>
-                <br/>
-                <p/>
-                <p>
-                    <button onClick={async () => {
-                        await handleSubmit("Email")
-                    }}>
-                        Change Email
-                    </button>
-                </p>
+                       type="email" {...EmailField.bind} />
+                {errorList["EmailEmpty"] ? <div className="emptyErrorTitle">Field is empty</div> : null}
+                <button onClick={async () => {
+                    await handleSubmit("Email")
+                }}>
+                    Change Email
+                </button>
             </div>
-            <br/>
+            <br />
             <div className="PasswordSet">
                 Old Password
-                <br/>
-                {/*className={errorList["PasswordOld"] ? "notSetValue" : ""}*/}
                 <input name="PasswordOld"
-                       type="text" {...PasswordOldField.bind}/>
-                <br/>
+                       type="password" {...PasswordOldField.bind} />
+                {errorList["OldEmpty"] ? <div className="emptyErrorTitle">Field is empty</div> : null}
+                {errorList["OldWrong"] ? <div className="emptyErrorTitle">Password is wrong</div> : null}
                 New Password
-                <br/>
-                {/*className={errorList["PasswordNew"] ? "notSetValue" : ""}*/}
                 <input name="PasswordNew"
-                       type="text" {...PasswordNewField.bind}/>
-                <br/>
+                       type="password" {...PasswordNewField.bind} />
+                {errorList["NewEmpty"] ? <div className="emptyErrorTitle">Field is empty</div> : null}
+                {errorList["PassDif"] ? <div className="emptyErrorTitle">Passwords is difference</div> : null}
                 Repeat Password
-                <br/>
                 <input name="PasswordR"
-                       type="text" {...PasswordRField.bind}/>
-                <br/>
-                <p/>
-                <p>
-                    <button onClick={async () => {
-                        await handleSubmit("Password")
-                    }}>
-                        Change Password
-                    </button>
-                </p>
+                       type="password" {...PasswordRField.bind} />
+                {errorList["RepEmpty"] ? <div className="emptyErrorTitle">Field is empty</div> : null}
+                <button onClick={async () => {
+                    await handleSubmit("Password")
+                }}>
+                    Change Password
+                </button>
             </div>
             <div className="NamesSet">
                 FirstName
-                <br/>
                 <input name="FirstName"
-                       type="text" {...FirstNameField.bind}/>
-                <br/>
+                       type="text" {...FirstNameField.bind} />
+                {errorList["FirstName"] ? <div className="emptyErrorTitle">Field is empty</div> : null}
                 SecondName
-                <br/>
                 <input name="LastName"
-                       type="text" {...LastNameField.bind}/>
-                <br/>
-                <p/>
-                <p>
-                    <button onClick={async () => {
-                        await handleSubmit("Names")
-                    }}>
-                        Change Names
-                    </button>
-                </p>
+                       type="text" {...LastNameField.bind} />
+                {errorList["LastName"] ? <div className="emptyErrorTitle">Field is empty</div> : null}
+                <button onClick={async () => {
+                    await handleSubmit("Names")
+                }}>
+                    Change Names
+                </button>
             </div>
-
 
         </div>
     );

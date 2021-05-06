@@ -1,28 +1,66 @@
-.SettingsForm{
-    font-family: -apple-system;
-    font-size: 20px;
-    height: 100%;
+.settingsBlock {
     overflow-y: auto;
+    height: 100%;
+    display: flex;
+    gap: 10px;
+}
+.settingsAvatar {
+    width: 300px;
+    height: 300px;
+    object-fit: fill;
+    border: black 1px solid;
+    border-radius: 5px;
 }
 
-.user-setting-avatar{
-    max-height: 10rem;
-    max-width: 10rem;
-    border: 1px grey solid;
-    border-radius: 10px;
+.settingsAvatar:hover{
+    transform: scale(1.015);
 }
 
-.SettingsForm input:not(.fileInput){
-   height: 2rem;
-    width: 10rem;
+.settingsBlock, .avatarSet,.PasswordSet,.NamesSet {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    align-content: center;
+    margin-bottom: 10px;
+}
+
+.EmailSet {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    align-content: center;
+    justify-content: center;
+}
+
+.settingsBlock button {
+    height: 30px;
+    width: 182px;
+    margin-top: 10px;
+    background: white;
     border: 1px gray solid;
     border-radius: 5px;
 }
 
-.SettingsForm button{
-    background: deepskyblue;
-    height: 2rem;
-    width: 10rem;
-    border: 1px gray solid;
+.fileInput{
+    width: 130px;
+    overflow: hidden;
+    margin-top: 10px;
+    background: white;
     border-radius: 5px;
+    outline: none;
+}
+
+.NamesSet{
+    margin-bottom: 30px;
+}
+
+@media (max-width:300px) {
+    .settingsAvatar{
+        height:auto;
+        width: calc(100%);
+    }
+    .settingsBlock, .avatarSet,.PasswordSet,.NamesSet {
+        width: calc(100%);
+    }
 }

@@ -11,6 +11,8 @@ export function ArticlePage() {
     const params = useParams().id
     const [articleBody, setArticleBody] = useState()
 
+    const [isChanged, setIsChanged] = useState(false)
+
     useEffect(() => {
         if (!article) {
             let xhr = new XMLHttpRequest()
@@ -48,7 +50,7 @@ export function ArticlePage() {
                                 {article.description}
                             </h4>
                             {ReactHtmlParser(article.body_Article)}
-                            <CommentBlock articleId = {article.articleId}/>
+                            <CommentBlock articleId = {article.articleId} isChanged={isChanged} setIsChanged={setIsChanged}/>
                         </div>
                 )
                 : (
