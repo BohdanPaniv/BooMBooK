@@ -16,5 +16,11 @@ namespace BooMBooK.Controllers
         {
             this.commentService = commentService;
         }
+
+        [HttpPut("DeleteComment/")]
+        public async Task DeleteComment(string commentId)
+        {
+            await commentService.DeleteComment(commentId);
+        }
     }
 }
