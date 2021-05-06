@@ -16,7 +16,6 @@ function Comments({comments}) {
                                          comment={comment}/>
                             )
                         })}
-                    }
                 </>
             )
             }

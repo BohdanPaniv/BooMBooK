@@ -5,7 +5,7 @@ function Comment({comment}){
     console.log(comment)
     return(
         <div className="comment">
-            {comment?.comentId}
+            {comment?.text}
         </div>
     )
 
