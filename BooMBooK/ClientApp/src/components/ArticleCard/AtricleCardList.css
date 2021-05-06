@@ -40,7 +40,6 @@
 
 .articleListArea {
     margin-top: 10px;
-    height: calc(100% - 39.6px);
     overflow-y: auto;
     overflow-x: hidden;
     text-align: -webkit-center;
@@ -51,8 +50,13 @@
 }
 .articleList{
     margin: auto;
-    columns: 2; /*:3;*/
     column-gap: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    margin-top: 0px;
 }
 
 @media (max-width: 808px /*1100px*/) {
@@ -74,17 +78,18 @@
     min-height: 188.8px;
     margin: 0 0 20px 0;
     display: flex;
-    /*padding: 10px;*/
+    /* padding: 10px; */
     background: #fff;
+    page-break-inside: avoid;
     break-inside: avoid;
-    width: calc(100% - 10px);
+    /* width: calc(100% - 10px); */
     transition: 0.3s;
-    overflow:hidden;
+    overflow: hidden;
     border-radius: 10px;
     text-align: center;
     background-color: #6c757d;
     justify-content: center;
-}
+    width: 450px;}
 
 .showMore:hover{
     background-color: lightslategray;
