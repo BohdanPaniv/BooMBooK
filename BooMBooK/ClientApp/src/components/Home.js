@@ -1,7 +1,7 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import ArticleCardList from "./ArticleCard/ArticleCardList";
 import "./Home.css";
-import {Spinner} from "reactstrap";
+import { Spinner } from "reactstrap";
 import SearchBar from "./SearchBar/SearchBar";
 
 
@@ -15,38 +15,65 @@ import SearchBar from "./SearchBar/SearchBar";
 export function Home() {
 
     const [input, setInput] = useState('');
+    const [articleList, setArticleList] = useState(null);
+    const limit = useRef(10)
+    const skip = useRef(0)
+    const count = useRef(0)
 
-    const [articleList,setArticleList] = useState();
+    
+    const getArticleArr = useCallback(async () => {
 
-    const getArticles = useCallback(()=>{
-        let xhr = new XMLHttpRequest();
-        let string;
-        if (articleList && articleList?.length !== 0)
-        {
-            string = "api/articles/0," + (parseInt(articleList.length,10) + 10);
+        return new Promise(async function (resolve, reject) {
+            try {
+                let xhr = new XMLHttpRequest();
+                xhr.open("GET", "api/articles/" + skip.current + "," + limit.current, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        resolve(xhr.responseText)
+                    }
+                }
+                xhr.send();
 
-        }else
-        {
-            string = "api/articles/0,11";
-        }
-        xhr.open("get",string, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                setArticleList(JSON.parse(xhr.responseText));
+            } catch (error) {
+                console.log("error" + error)
             }
-        };
-        xhr.send();
-        console.log(xhr);
-    },[articleList])
+        })
+    }, []
+    )
+    useEffect(() => {
+        getArticleArr().then(data => {
+            setArticleList(JSON.parse(data))
+        })
+    }, [])
 
-    useEffect(()=>{
-        if (!articleList) getArticles();
-    },[articleList,getArticles])
+    // const getArticles = useCallback(() => {
+    //     let xhr = new XMLHttpRequest();
+    //     let string;
+    //     if (articleList && articleList?.length !== 0) {
+    //         string = "api/articles/0," + (parseInt(articleList.length, 10) + 10);
+
+    //     } else {
+    //         string = "api/articles/0,11";
+    //     }
+    //     xhr.open("get", string, true);
+    //     xhr.setRequestHeader("Content-Type", "application/json");
+
+    //     xhr.onload = function () {
+    //         if (xhr.status === 200) {
+    //             setArticleList(JSON.parse(xhr.responseText));
+    //         }
+    //     };
+    //     xhr.send();
+    //     console.log(xhr);
+    // }, [articleList])
+
+    // useEffect(() => {
+    //     if (!articleList) getArticles();
+    // }, [articleList, getArticles])
 
     const updateInput = async (input) => {
-        if (input !== ""){
+        if (input !== "") {
             let xhr = new XMLHttpRequest();
             xhr.open("get", "api/articles/GetArticlesByTitle/" + input, true);
             xhr.setRequestHeader("Content-Type", "application/json");
@@ -60,7 +87,7 @@ export function Home() {
             console.log(xhr);
         }
         else {
-            getArticles();
+            getArticleArr();
         }
         setInput(input);
     }
@@ -72,13 +99,16 @@ export function Home() {
                 setKeyword={updateInput}
             />
             {
-                articleList 
+                articleList
                     ? (<div className="articleListArea">
-                            <ArticleCardList ArticleList={articleList}
-                                             getArticles={getArticles}
-                            />
-                        </div>)
-                    : (<Spinner/>)
+                        <ArticleCardList ArticleList={articleList}
+                            getArticleArr={getArticleArr}
+                            count = {count.current}
+                            limit = {limit.current}
+                            skip = {skip.current}
+                        />
+                    </div>)
+                    : (<Spinner />)
             }
 
         </div>
