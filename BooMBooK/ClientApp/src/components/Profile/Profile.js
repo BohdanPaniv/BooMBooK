@@ -21,22 +21,22 @@ export function Profile() {
 
     const getArticleArr = useCallback(async () => {
 
-            return new Promise(async function (resolve, reject) {
-                try {
-                    let xhr = new XMLHttpRequest();
-                    xhr.open("GET", "api/articles/" + skip.current + "," + limit.current, true);
-                    xhr.setRequestHeader("Content-Type", "application/json");
-                    xhr.onload = () => {
-                        if (xhr.status === 200) {
-                            resolve(xhr.responseText)
-                        }
+            try {
+                let xhr = new XMLHttpRequest();
+                xhr.open("GET", "api/articles/GetArticlesInfo/" + skip.current + "," + limit.current, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        const data = JSON.parse(xhr.responseText)
+                        count.current = data.Item1;
+                        setArticleList(data.Item2);
                     }
-                    xhr.send();
-
-                } catch (error) {
-                    console.log("error" + error)
                 }
-            })
+                xhr.send();
+
+            } catch (error) {
+                console.log("error" + error)
+            }
         }, []
     )
 
@@ -53,11 +53,11 @@ export function Profile() {
         const newsId = event.target.id || event.target.parentNode.id
 
         let xhr = new XMLHttpRequest();
-        xhr.open("delete", "api/articles/DeleteArticle/" + newsId,true);
+        xhr.open("delete", "api/articles/DeleteArticle/" + newsId, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = () => {
             if (xhr.status === 200) {
-                getArticleArr().then( data => setArticleList(JSON.parse(data)))
+                getArticleArr().then(data => setArticleList(JSON.parse(data)))
             }
         }
         xhr.send();
@@ -78,10 +78,8 @@ export function Profile() {
     }, [getArticleArr])
 
     useEffect(() => {
-        getArticleArr().then(data => {
-            setArticleList(JSON.parse(data))
-        })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        getArticleArr();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -124,8 +122,8 @@ export function Profile() {
                                                                     <TableRow key={index}>
                                                                         <TableCell>
                                                                             <Typography>
-                                                                                {article.title.length >= 15 ? article.title.slice(0, 10) : article.title}
-                                                                                {article.title.length >= 15 && (
+                                                                                {article.Title.length >= 15 ? article.Title.slice(0, 10) : article.Title}
+                                                                                {article.Title.length >= 15 && (
                                                                                     <label
                                                                                         className="article-title-dots">...</label>
                                                                                 )}

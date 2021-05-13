@@ -10,11 +10,11 @@ function ArticleCard(props) {
 
     return (
         <div className="box text-center">
-            <div className="cardTitle">{props.article.title}</div>
-            <div className="cardText">{props.article.description}</div>
+            <div className="cardTitle">{props.article.Title}</div>
+            <div className="cardText">{props.article.Description}</div>
             <p>
                 <Button onClick={() => {
-                    history.push(`/ArticlePage/${props.article.articleId}`);
+                    history.push(`/ArticlePage/${props.article.ArticleId}`);
                 }}>Читати...</Button>
             </p>
         </div>

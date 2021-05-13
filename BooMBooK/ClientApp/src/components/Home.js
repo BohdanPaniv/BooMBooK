@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import ArticleCardList from "./ArticleCard/ArticleCardList";
 import "./Home.css";
-import { Spinner } from "reactstrap";
+import {Spinner} from "reactstrap";
 import SearchBar from "./SearchBar/SearchBar";
 
 
@@ -20,18 +20,18 @@ export function Home() {
     const skip = useRef(0)
     const count = useRef(0)
 
-    
+
     const getArticleArr = useCallback(async () => {
 
-        return new Promise(async function (resolve, reject) {
             try {
                 let xhr = new XMLHttpRequest();
                 xhr.open("GET", "api/articles/GetArticlesInfo/" + skip.current + "," + limit.current, true);
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.onload = () => {
                     if (xhr.status === 200) {
-                        console.log(JSON.parse(xhr.responseText));
-                        //resolve(xhr.responseText)
+                        const data = JSON.parse(xhr.responseText)
+                        count.current = data.Item1;
+                        setArticleList(data.Item2);
                     }
                 }
                 xhr.send();
@@ -39,13 +39,10 @@ export function Home() {
             } catch (error) {
                 console.log("error" + error)
             }
-        })
-    }, []
+        }, []
     )
     useEffect(() => {
-        getArticleArr().then(data => {
-            setArticleList(JSON.parse(data))
-        })
+        getArticleArr();
     }, [])
 
     // const getArticles = useCallback(() => {
@@ -86,9 +83,8 @@ export function Home() {
             xhr.send();
 
             // console.log(xhr);
-        }
-        else {
-            getArticleArr();
+        } else {
+            await getArticleArr();
         }
         setInput(input);
     }
@@ -103,13 +99,13 @@ export function Home() {
                 articleList
                     ? (<div className="articleListArea">
                         <ArticleCardList ArticleList={articleList}
-                            getArticleArr={getArticleArr}
-                            count = {count.current}
-                            limit = {limit.current}
-                            skip = {skip.current}
+                                         getArticleArr={getArticleArr}
+                                         count={count.current}
+                                         limit={limit.current}
+                                         skip={skip.current}
                         />
                     </div>)
-                    : (<Spinner />)
+                    : (<Spinner/>)
             }
 
         </div>

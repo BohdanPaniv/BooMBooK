@@ -10,9 +10,6 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 // import {Grid, makeStyles} from "@material-ui/core";
 // import {Button, Card, CardBody, CardColumns, CardImg, CardSubtitle, CardText, CardTitle} from "reactstrap";
 
-
-
-
 function ArticleCardList({ ArticleList, getArticleArr, count, limit, skip }) {
     const backHandler = useCallback(async event => {
         event.preventDefault()
@@ -30,8 +27,9 @@ function ArticleCardList({ ArticleList, getArticleArr, count, limit, skip }) {
     return (
         <div className="articleList">
             {ArticleList.map((article, index) => {
+                // console.log(article)
                 return (
-                    <ArticleCard key={article.articleId}
+                    <ArticleCard key={article.ArticleId}
                         article={article}
                         index={index} />
                 )
@@ -49,42 +47,7 @@ function ArticleCardList({ ArticleList, getArticleArr, count, limit, skip }) {
                         fontSize={"large"} />
                 </button>
             </div>
-
-            {/* <div className="showMore" onClick={() => {getArticles()}} >
-                        <label className = "title">ShowMore</label>
-                 </div> */}
         </div>
-
-        // <div className="articleGrid">
-        //     <Grid container
-        //           spacing={2}
-        //           justify={"center"}
-        //           alignItems={"center"}>
-        //         {ArticleList.map((article, index) => {
-        //             return (
-        //                 <Grid item
-        //                       xs={12}
-        //                       xl={4}
-        //                       sm={12}
-        //                       md={6}
-        //                       key = {article.id}>
-        //                     <ArticleCard key = {article.id}
-        //                                  article = {article}
-        //                                  index = {index}/>
-        //                 </Grid>
-        //             )
-        //         })}
-        //     </Grid>
-        // </div>
-        // <CardColumns className="articleList">
-        //     {ArticleList.map((article, index) => {
-        //         return (
-        //             <ArticleCard key = {article.id}
-        //                          article = {article}
-        //                          index = {index}/>
-        //         )
-        //     })}
-        // </CardColumns>
     );
 }
 
