@@ -58,9 +58,12 @@
 @media (max-width:300px) {
     .settingsAvatar{
         height:auto;
-        width: calc(100%);
+        width: 90%;
     }
-    .settingsBlock, .avatarSet,.PasswordSet,.NamesSet {
-        width: calc(100%);
+    .settingsBlock{
+        width: 100%;
+    }
+    .avatarSet,.PasswordSet,.NamesSet {
+        width: 95%;
     }
 }

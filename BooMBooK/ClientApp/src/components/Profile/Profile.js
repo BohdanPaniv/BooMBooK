@@ -21,7 +21,7 @@ export function Profile() {
             string = "api/articles/GetArticlesByUserId/" + user.userId + ",0," + (parseInt(articleList.length, 10) + 10);
 
         } else {
-            string = "api/articles/GetArticlesByUserId/" + user.userId + ",0,1";
+            string = "api/articles/GetArticlesByUserId/" + user.userId + ",0,10";
         }
 
         xhr.open("get", string, true);
@@ -48,9 +48,9 @@ export function Profile() {
                     <div className="profile-box">
                         <div className="ProfileInfo">
                             <div className="heading">Profile</div>
-                            <img className="avatar" src={logo} alt="Logo" />
+                            <img className="avatar" src={ user?.image ? user.image : logo} alt="Logo" />
                             <div className="names">{user.firstName + ' ' + user.lastName}</div>
-                            <button onClick={() => { history.push("/Redactor/" + user.userId) }}>AddNews</button>
+                            <button onClick={() => { history.push("/Redactor/" + user.userId) }}>Add news</button>
                         </div>
                         <div className="your-articles">Your article`s</div>
                         <div className="articles-box">
@@ -70,16 +70,5 @@ export function Profile() {
             }
 
         </>
-
-        /*<div className="profile-box">
-            <div className ="heading">Profile</div>
-            <img className="avatar" src={logo} alt="Logo" />
-            <div className="names">{user.FirstName + ' ' + user.LastName}</div>
-            <div className="your-articles">Your article`s</div>
-            <div className="articleListArea">
-                <ArticleCardList ArticleList={articleList} />
-            </div>
-        </div>*/
     );
-
 }

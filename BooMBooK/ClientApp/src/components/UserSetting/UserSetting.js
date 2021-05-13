@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./UserSetting.css"
 import nophoto from "./DefAvatar.jpg";
 
@@ -36,9 +36,9 @@ export function UserSetting() {
             FirstNameField.set(myUser.firstName);
             LastNameField.set(myUser.lastName);
             setUser(myUser);
-        };
+        }
+        ;
     }, [user])
-
 
 
     function saveUserToLocal(xhr, user) {
@@ -56,17 +56,20 @@ export function UserSetting() {
 
     function imageSelect(e) {
         e.preventDefault();
+        try {
+            let reader = new FileReader();
+            let file = e.target.files[0];
 
-        let reader = new FileReader();
-        let file = e.target.files[0];
+            // console.log(reader.result);
 
-        // console.log(reader.result);
+            reader.onloadend = () => {
+                setLogo(reader.result);
+            }
 
-        reader.onloadend = () => {
-            setLogo(reader.result);
+            reader.readAsDataURL(file);
+        } catch (error) {
+
         }
-
-        reader.readAsDataURL(file);
     }
 
     async function OldPassCheck(oldpass) {
@@ -109,8 +112,7 @@ export function UserSetting() {
             };
             xhr.send(JSON.stringify(user));
             console.log(xhr)
-        }
-        else {
+        } else {
             let xhr = new XMLHttpRequest();
             xhr.open("put", "api/users/ChangeUserData/" + field + "/" + user.userId + ", " + value, true);
             xhr.setRequestHeader("Content-Type", "application/json");
@@ -209,15 +211,15 @@ export function UserSetting() {
                 {
                     (() => {
                         if (logo)
-                            return <img className="settingsAvatar" src={logo} alt="Logo" />
+                            return <img className="settingsAvatar" src={logo} alt="Logo"/>
                         else if (user?.image)
-                            return <img className="settingsAvatar" src={user?.image} alt="Logo" />
+                            return <img className="settingsAvatar" src={user?.image} alt="Logo"/>
                         else {
-                            return <img className="settingsAvatar" src={nophoto} alt="Logo" />
+                            return <img className="settingsAvatar" src={nophoto} alt="Logo"/>
                         }
                     })()
                 }
-                <input className="fileInput" type="file" onChange={event => imageSelect(event)} />
+                <input className="fileInput" type="file" onChange={event => imageSelect(event)}/>
                 <button onClick={() => {
                     handleSubmit("Avatar")
                 }}>
@@ -226,7 +228,7 @@ export function UserSetting() {
             </div>
             <div className="EmailSet">
                 Email
-                <br />
+                <br/>
                 {/*className={errorList["Email"] ? "notSetValue" : ""}*/}
                 <input name="Email"
                        type="email" {...EmailField.bind} />
@@ -237,7 +239,7 @@ export function UserSetting() {
                     Change Email
                 </button>
             </div>
-            <br />
+            <br/>
             <div className="PasswordSet">
                 Old Password
                 <input name="PasswordOld"

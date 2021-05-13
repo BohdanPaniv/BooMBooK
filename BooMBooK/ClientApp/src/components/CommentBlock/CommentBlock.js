@@ -62,7 +62,7 @@ function CommentBlock({articleId}) {
 
     function addComment() {
 
-        if (commentText.get() && commentText.get().length > 1) {
+        if (commentText.get() && commentText.get().trim().length > 1) {
             let xhr = new XMLHttpRequest()
 
             let comment = JSON.stringify({
