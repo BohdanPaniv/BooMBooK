@@ -217,7 +217,7 @@ export function UserSetting() {
                         }
                     })()
                 }
-                <input className="fileInput" type="file" onChange={event => imageSelect(event)} />
+                <input className="fileInput" type="file" onChange={event => imageSelect(event)} accept="image/*" />
                 <button onClick={() => {
                     handleSubmit("Avatar")
                 }}>
