@@ -70,5 +70,11 @@ namespace BooMBooK.Controllers
         {
             await articleService.DeleteArticle(articleId);
         }
+
+        [HttpGet("GetArticlesInfo/{firstNumber},{secondNumber}")]
+        public async Task GetArticlesInfo(string firstNumber, string secondNumber)
+        {
+            await articleService.GetArticlesInfo(firstNumber, secondNumber);
+        }
     }
 }
