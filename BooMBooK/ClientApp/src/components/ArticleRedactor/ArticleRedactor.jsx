@@ -326,6 +326,7 @@ function ArticleRedactor() {
                             <input className="fileInput"
                                 type="file"
                                 onChange={event => imageSelect(event)}
+                                accept="image/*"
                             />
                             <div className="redactor-buttons">
                                 <button onClick={() => {
@@ -344,6 +345,7 @@ function ArticleRedactor() {
                             <input className="fileInput"
                                 type="file"
                                 onChange={event => imageChange(event)}
+                                accept="image/*"
                             />
                             <div className="redactor-buttons">
                                 <button disabled={!changedImage} onClick={() => {
