@@ -38,7 +38,7 @@ export function UserSetting() {
             setUser(myUser);
         }
         ;
-    }, [user])
+    }, [user,EmailField,FirstNameField,LastNameField])
 
 
     function saveUserToLocal(xhr, user) {
@@ -199,11 +199,13 @@ export function UserSetting() {
                     return errors;
                 }
             }
+            // eslint-disable-next-line no-fallthrough
+            default: break;
         }
         return errors;
     }
 
-    console.log(user);
+    // console.log(user);
 
     return (
         <div className="settingsBlock">

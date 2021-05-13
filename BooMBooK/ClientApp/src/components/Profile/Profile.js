@@ -1,10 +1,9 @@
-﻿import React, { useCallback, useEffect, useRef, useState } from "react";
-import ArticleCardList from "./../ArticleCard/ArticleCardList.js";
+﻿import React, {useCallback, useEffect, useRef, useState} from "react";
 import "./Profile.css"
 import logo from './DefAvatar.jpg';
-import { Spinner } from "reactstrap";
-import { useHistory } from "react-router-dom";
-import { CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core"
+import {Spinner} from "reactstrap";
+import {useHistory} from "react-router-dom";
+import {Table, TableBody, TableCell, TableHead, TableRow, Typography} from "@material-ui/core"
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
@@ -15,70 +14,74 @@ export function Profile() {
     const [articleList, setArticleList] = useState(null);
     const history = useHistory();
     const [user, setUser] = useState();
-    const [newsArr, setNewsArr] = useState([])
 
     const limit = useRef(10)
     const skip = useRef(0)
     const count = useRef(0)
 
-    const getNewsArr = useCallback(async () => {
+    const getArticleArr = useCallback(async () => {
 
-        // return new Promise(async function (resolve, reject) {
-        try {
-            let xhr = new XMLHttpRequest();
-            xhr.open("post", "api/articles/" + limit.current + "," + skip.current, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.send();
-            if (xhr.status === 200) {
-                history.push("/Profile")
-                //DOROBUTU RESPONSIVE
-                //list i count (SetNewsArr)
-            }
-        } catch (error) {
-            console.log("error" + error)
-        }
-        // })
-    }, []
+            return new Promise(async function (resolve, reject) {
+                try {
+                    let xhr = new XMLHttpRequest();
+                    xhr.open("GET", "api/articles/" + skip.current + "," + limit.current, true);
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.onload = () => {
+                        if (xhr.status === 200) {
+                            resolve(xhr.responseText)
+                        }
+                    }
+                    xhr.send();
+
+                } catch (error) {
+                    console.log("error" + error)
+                }
+            })
+        }, []
     )
-    
-    const handleAddnews = useCallback(() => {
-        history.push("/admin/newsRedactor")
-    }, [history])
+
+    const handleAddArticle = useCallback(() => {
+        history.push("/Redactor/" + user.userId)
+    }, [history, user])
 
     const changeNewsHandler = useCallback(event => {
         const newsId = event.target.id || event.target.parentNode.id
-        history.push("/admin/newsRedactor/" + newsId)
+        history.push("/Redactor/" + newsId)
     }, [history])
 
     const deleteNewsHandler = useCallback(async (event) => {
         const newsId = event.target.id || event.target.parentNode.id
 
         let xhr = new XMLHttpRequest();
-        xhr.open("post", "api/articles/Delete" + newsId, true);
+        xhr.open("delete", "api/articles/DeleteArticle/" + newsId,true);
         xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send();
-        if (xhr.status === 200) {
+        xhr.onload = () => {
+            if (xhr.status === 200) {
+                getArticleArr().then( data => setArticleList(JSON.parse(data)))
+            }
         }
+        xhr.send();
 
-        //NJeponytna huyna
-        // await request("api/news/deleteNews", "DELETE", {newsId})
-        // await getNewsArr()
-    }, [getNewsArr])
+        // console.log(xhr)
+    }, [getArticleArr])
 
     const backHandler = useCallback(async event => {
         event.preventDefault()
         if (skip.current - limit.current >= 0) skip.current = skip.current - limit.current
-        await getNewsArr()
-    }, [getNewsArr])
+        await getArticleArr()
+    }, [getArticleArr])
 
     const forwardHandler = useCallback(async event => {
         event.preventDefault()
         skip.current = skip.current + limit.current
-        await getNewsArr()
-    }, [getNewsArr])
+        await getArticleArr()
+    }, [getArticleArr])
 
     useEffect(() => {
-        getNewsArr()
+        getArticleArr().then(data => {
+            setArticleList(JSON.parse(data))
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -94,9 +97,9 @@ export function Profile() {
                     <div className="profile-box">
                         <div className="ProfileInfo">
                             <div className="heading">Profile</div>
-                            <img className="avatar" src={ user?.image ? user.image : logo} alt="Logo" />
+                            <img className="avatar" src={user?.image ? user.image : logo} alt="Logo"/>
                             <div className="names">{user.firstName + ' ' + user.lastName}</div>
-                            <button onClick={() => { history.push("/Redactor/" + user.userId) }}>Add news</button>
+                            <button onClick={handleAddArticle}>Add news</button>
                         </div>
                         <div className="your-articles">Your article`s</div>
                         <div className="articles-box">
@@ -104,7 +107,7 @@ export function Profile() {
                                 articleList
                                     ? (
                                         <>
-                                            <div className="NewsTable">
+                                            <div className="ArticlesTable">
                                                 <Table>
                                                     <TableHead>
                                                         <TableRow>
@@ -116,29 +119,31 @@ export function Profile() {
                                                     </TableHead>
                                                     <TableBody>
                                                         {
-                                                            newsArr.map((news, index) => {
+                                                            articleList.map((article, index) => {
                                                                 return (
                                                                     <TableRow key={index}>
                                                                         <TableCell>
                                                                             <Typography>
-                                                                                {news.title.length >= 15 ? news.title.slice(0, 10) : news.title}
-                                                                                {news.title.length >= 15 && (
-                                                                                    <label className="news-title-dots">...</label>
+                                                                                {article.title.length >= 15 ? article.title.slice(0, 10) : article.title}
+                                                                                {article.title.length >= 15 && (
+                                                                                    <label
+                                                                                        className="article-title-dots">...</label>
                                                                                 )}
                                                                             </Typography>
                                                                         </TableCell>
                                                                         <TableCell
-                                                                            className="dateCell">{new Date(news.dateTime).toUTCString()}</TableCell>
+                                                                            className="dateCell">{new Date(article.dateTime).toUTCString()}</TableCell>
                                                                         <TableCell>
-                                                                            <div className="news-row-actions">
+                                                                            <div className="article-row-actions">
                                                                                 <CreateIcon className="icon-clickable"
-                                                                                    id={news._id}
-                                                                                    fontSize={"small"}
-                                                                                    onClick={changeNewsHandler} />
-                                                                                <DeleteForeverIcon className="icon-clickable"
-                                                                                    id={news._id}
+                                                                                            id={article.articleId}
+                                                                                            fontSize={"small"}
+                                                                                            onClick={changeNewsHandler}/>
+                                                                                <DeleteForeverIcon
+                                                                                    className="icon-clickable"
+                                                                                    id={article.articleId}
                                                                                     onClick={deleteNewsHandler}
-                                                                                    fontSize={"small"} />
+                                                                                    fontSize={"small"}/>
                                                                             </div>
                                                                         </TableCell>
                                                                     </TableRow>
@@ -150,22 +155,22 @@ export function Profile() {
                                             </div>
                                             <div className="table-control">
                                                 <button onClick={backHandler}
-                                                    disabled={skip.current - limit.current < 0}>
+                                                        disabled={skip.current - limit.current < 0}>
                                                     <ChevronLeftIcon className="icon-clickable"
-                                                        fontSize={"large"} />
+                                                                     fontSize={"large"}/>
                                                 </button>
-                                                <Typography>{skip.current + newsArr?.length}</Typography>
+                                                <Typography>{skip.current + articleList?.length}</Typography>
                                                 <button onClick={forwardHandler}
-                                                    disabled={skip.current + limit.current >= count.current}>
+                                                        disabled={skip.current + limit.current >= count.current}>
                                                     <ChevronRightIcon className="icon-clickable"
-                                                        fontSize={"large"} />
+                                                                      fontSize={"large"}/>
                                                 </button>
                                             </div>
 
                                         </>
 
                                     )
-                                    : (<Spinner />)
+                                    : (<Spinner/>)
                             }
                         </div>
                     </div>

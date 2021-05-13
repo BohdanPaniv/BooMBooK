@@ -184,47 +184,49 @@ function ArticleRedactor() {
         return new Promise(async function (resolve, reject) {
             try {
                 let xhr = new XMLHttpRequest();
-                xhr.open("post", "api/getArticleByArticleId/" + articleId, true);
+                xhr.open("get", "api/articles/GetArticleByArticleId/" + articleId, true)
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.onload = function () {
                     if (xhr.status === 200) {
-                        setArticle(JSON.parse(xhr.responseText));
-                        history.push("/Profile");
+                        resolve(JSON.parse(xhr.responseText))
                     }
                 };
+                xhr.send()
             } catch (error) {
+                history.push("/Profile");
             }
         })
     }, [history])
 
     const handleUpdateArticle = useCallback(async () => {
         try {
-            if (articleTitleField.get() !== "" && articleDescriptionField.get() !== "" && userId.current) {
+            if (articleTitleField.get() !== "" && articleDescriptionField.get() !== "" && userId.current && redactor.innerHTML.length > 35) {
 
                 const Article = {
-                    UserId: userId.current,
+                    ArticleId: article.articleId,
+                    UserId: article.userId,
                     DateTime: new Date().toJSON(),
                     Title: articleTitleField.get(),
-                    body: redactor.innerHTML,
-                    Body_Article: articleDescriptionField.get(),
-                    Status: false
+                    Body_Article: redactor.innerHTML,
+                    Description: articleDescriptionField.get(),
+                    Status: article.status,
                 }
+
                 let xhr = new XMLHttpRequest();
-                xhr.open("post", "/api/article/updateArticle/" + params.articleId, true);
+                xhr.open("put", "/api/articles/UpdateArticle/", true);
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.onload = function () {
                     if (xhr.status === 200) {
-                        setArticle(JSON.parse(xhr.responseText));
                         history.push("/Profile");
                     }
                 };
-                //xhr.send(Article);
+                xhr.send(JSON.stringify(Article));
             }
 
         } catch (error) {
             console.log(error)
         }
-    }, [articleTitleField, articleDescriptionField, redactor, params.articleId, history])
+    }, [articleTitleField, articleDescriptionField, redactor, article, history])
 
     useEffect(() => {
         try {
@@ -248,18 +250,18 @@ function ArticleRedactor() {
                 userId.current = data.userId
                 articleTitleField.set(data.title)
                 articleDescriptionField.set(data.description)
-                redactor.innerHTML = data.body
+                redactor.innerHTML = data.body_Article
 
                 for (let element of redactor.children) {
                     element.addEventListener("click", event => {
                         selectElement(event)
                     })
                 }
+                setArticle(data)
             })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params, redactor, getArticleById])
-
 
     return (
         <div className="article-redactor">
@@ -324,6 +326,7 @@ function ArticleRedactor() {
                             <input className="fileInput"
                                 type="file"
                                 onChange={event => imageSelect(event)}
+                                accept="image/*"
                             />
                             <div className="redactor-buttons">
                                 <button onClick={() => {
@@ -342,6 +345,7 @@ function ArticleRedactor() {
                             <input className="fileInput"
                                 type="file"
                                 onChange={event => imageChange(event)}
+                                accept="image/*"
                             />
                             <div className="redactor-buttons">
                                 <button disabled={!changedImage} onClick={() => {

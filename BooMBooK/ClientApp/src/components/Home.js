@@ -38,7 +38,7 @@ export function Home() {
             }
         };
         xhr.send();
-        console.log(xhr);
+        // console.log(xhr);
     },[articleList])
 
     useEffect(()=>{
@@ -57,7 +57,7 @@ export function Home() {
             };
             xhr.send();
 
-            console.log(xhr);
+            // console.log(xhr);
         }
         else {
             getArticles();

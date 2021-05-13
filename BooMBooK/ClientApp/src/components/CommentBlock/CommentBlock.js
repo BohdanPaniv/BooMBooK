@@ -42,7 +42,7 @@ function CommentBlock({articleId}) {
         }
         xhr.send()
         console.log(xhr)
-    }, [])
+    }, [articleId])
 
     function updateList() {
         let xhr = new XMLHttpRequest()
