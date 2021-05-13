@@ -12,11 +12,13 @@ namespace BooMBooK.Controllers
     public class ArticleCommentsController : Controller
     {
         private readonly ArticleCommentsService articleCommentsService;
+        private readonly ArticleService articleService;
         private readonly CommentService commentService;
-        public ArticleCommentsController(ArticleCommentsService articleCommentsService, CommentService commentService)
+        public ArticleCommentsController(ArticleCommentsService articleCommentsService, CommentService commentService, ArticleService articleService)
         {
             this.articleCommentsService = articleCommentsService;
             this.commentService = commentService;
+            this.articleService = articleService;
         }
 
         [HttpPost("CreateArticleComment/{articleId}")]
@@ -32,6 +34,14 @@ namespace BooMBooK.Controllers
             List<ArticleComment> articleComment1 = await articleCommentsService.GetArticleComments(articleId);
 
             return await commentService.GetComments(articleComment1);
+        }
+
+        [HttpDelete("DeleteArticle/{articleId}")]
+        public async Task DeleteArticle(string articleId)
+        {
+            await articleService.DeleteArticle(articleId);
+            List<ArticleComment> articleComments = await articleCommentsService.DeleteArticleComment(articleId);
+            await commentService.DeleteComment(articleComments);
         }
     }
 }

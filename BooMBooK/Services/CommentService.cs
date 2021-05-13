@@ -57,5 +57,13 @@ namespace BooMBooK.Services
         {
             await Comments.DeleteOneAsync(x => x.CommentId == commentId);
         }
+
+        public async Task DeleteComment(List<ArticleComment> articleComments)
+        {
+            foreach (ArticleComment articleComment in articleComments)
+            {
+                await Comments.DeleteOneAsync(x => x.CommentId == articleComment.CommentId);
+            }
+        }
     }
 }

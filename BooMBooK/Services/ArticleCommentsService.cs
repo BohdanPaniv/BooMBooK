@@ -37,5 +37,12 @@ namespace BooMBooK.Services
 
             return new List<ArticleComment>();
         }
+
+        public async Task<List<ArticleComment>> DeleteArticleComment(string articleId)
+        {
+            List<ArticleComment> articleComments = await ArticleComments.Find(x => x.ArticleId == articleId).ToListAsync();
+            await ArticleComments.DeleteManyAsync(x => x.ArticleId == articleId);
+            return articleComments;
+        }
     }
 }

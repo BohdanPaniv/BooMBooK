@@ -62,7 +62,7 @@ export function Profile() {
         }
         xhr.send();
 
-        console.log(xhr)
+        // console.log(xhr)
     }, [getArticleArr])
 
     const backHandler = useCallback(async event => {
@@ -81,6 +81,7 @@ export function Profile() {
         getArticleArr().then(data => {
             setArticleList(JSON.parse(data))
         })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -106,7 +107,7 @@ export function Profile() {
                                 articleList
                                     ? (
                                         <>
-                                            <div className="NewsTable">
+                                            <div className="ArticlesTable">
                                                 <Table>
                                                     <TableHead>
                                                         <TableRow>
@@ -126,14 +127,14 @@ export function Profile() {
                                                                                 {article.title.length >= 15 ? article.title.slice(0, 10) : article.title}
                                                                                 {article.title.length >= 15 && (
                                                                                     <label
-                                                                                        className="news-title-dots">...</label>
+                                                                                        className="article-title-dots">...</label>
                                                                                 )}
                                                                             </Typography>
                                                                         </TableCell>
                                                                         <TableCell
                                                                             className="dateCell">{new Date(article.dateTime).toUTCString()}</TableCell>
                                                                         <TableCell>
-                                                                            <div className="news-row-actions">
+                                                                            <div className="article-row-actions">
                                                                                 <CreateIcon className="icon-clickable"
                                                                                             id={article.articleId}
                                                                                             fontSize={"small"}

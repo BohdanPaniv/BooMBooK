@@ -1,4 +1,4 @@
-﻿import React, {useState, useEffect, useRef} from "react"
+﻿import React, {useEffect, useState} from "react"
 import "./ArticlePage.css"
 import {useParams} from "react-router-dom"
 import {Spinner} from "reactstrap"
@@ -9,7 +9,6 @@ export function ArticlePage() {
 
     const [article, setArticle] = useState()
     const params = useParams().id
-    const [articleBody, setArticleBody] = useState()
 
     const [isChanged, setIsChanged] = useState(false)
 
@@ -22,9 +21,6 @@ export function ArticlePage() {
 
             xhr.onload = function () {
                 if (xhr.status === 200) {
-
-                    let article = JSON.parse(xhr.responseText)
-
                     setArticle(JSON.parse(xhr.responseText))
                 }
             }
@@ -36,7 +32,7 @@ export function ArticlePage() {
     //     if (!articleBody) setArticleBody(document.getElementById("article-dynamic-body"))
     // }, [articleBody, setArticleBody])
     //
-    console.log(article)
+    // console.log(article)
 
     return (
         <>

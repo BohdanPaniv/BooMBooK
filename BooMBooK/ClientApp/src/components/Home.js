@@ -26,11 +26,12 @@ export function Home() {
         return new Promise(async function (resolve, reject) {
             try {
                 let xhr = new XMLHttpRequest();
-                xhr.open("GET", "api/articles/" + skip.current + "," + limit.current, true);
+                xhr.open("GET", "api/articles/GetArticlesInfo/" + skip.current + "," + limit.current, true);
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.onload = () => {
                     if (xhr.status === 200) {
-                        resolve(xhr.responseText)
+                        console.log(JSON.parse(xhr.responseText));
+                        //resolve(xhr.responseText)
                     }
                 }
                 xhr.send();
@@ -84,7 +85,7 @@ export function Home() {
             };
             xhr.send();
 
-            console.log(xhr);
+            // console.log(xhr);
         }
         else {
             getArticleArr();
