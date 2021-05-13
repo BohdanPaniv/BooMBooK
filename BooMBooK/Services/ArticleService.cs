@@ -75,9 +75,9 @@ namespace BooMBooK.Services
             await Articles.ReplaceOneAsync(x => x.ArticleId == article.ArticleId, article);
         }
 
-        public async Task DeleteArticle(string id)
+        public async Task DeleteArticle(string articleId)
         {
-            await Articles.DeleteOneAsync(x => x.ArticleId == id);
+            await Articles.DeleteOneAsync(x => x.ArticleId == articleId);
         }
     }
 }

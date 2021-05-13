@@ -58,5 +58,17 @@ namespace BooMBooK.Controllers
         {
             return await articleService.GetArticlesByTitle(title);
         }
+
+        [HttpPut("UpdateArticle/")]
+        public async Task UpdateArticle(Article article)
+        {
+            await articleService.UpdateArticle(article);
+        }
+
+        [HttpDelete("DeleteArticle/{articleId}")]
+        public async Task DeleteArticle(string articleId)
+        {
+            await articleService.DeleteArticle(articleId);
+        }
     }
 }
