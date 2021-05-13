@@ -28,13 +28,13 @@ function Comment({comment, userId, updateList}) {
             }
         };
         xhr.send(comment.commentId);
-    }, [comment.commentId]);
+    }, [comment.commentId, updateList]);
 
     return (
         <div className="comment">
-            <img className="comment-user-icon" src={userIcon} style={{margin: 0}} />
+            <img className="comment-user-icon" src={userIcon} alt="img" style={{margin: 0}}/>
             {comment?.text}
-            { userId === comment.userId && (
+            {userId === comment.userId && (
                 <label className="comment-remove" onClick={deleteCommentHandler}>&#128465;</label>
             )}
         </div>
