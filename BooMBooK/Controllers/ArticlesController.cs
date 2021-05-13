@@ -65,7 +65,7 @@ namespace BooMBooK.Controllers
             await articleService.UpdateArticle(article);
         }
 
-        [HttpDelete("DeleteArticle/")]
+        [HttpDelete("DeleteArticle/{articleId}")]
         public async Task DeleteArticle(string articleId)
         {
             await articleService.DeleteArticle(articleId);
