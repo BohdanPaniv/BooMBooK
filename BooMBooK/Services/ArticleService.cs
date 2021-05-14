@@ -78,7 +78,10 @@ namespace BooMBooK.Services
             int first = Convert.ToInt32(firstNumber);
             int second = Convert.ToInt32(secondNumber);
 
-            List<Article> articles = await Articles.Find(x => x.Title == title).Skip(first).Limit(second).ToListAsync();
+            Regex regex = new Regex(@$"[\s\S]*{title}[\s\S]*", RegexOptions.IgnoreCase);
+            var filter = Builders<Article>.Filter.Regex(x => x.Title, new BsonRegularExpression(regex));
+
+            List<Article> articles = await Articles.Find(filter).Skip(first).Limit(second).ToListAsync();
 
             var articleCount = (int)await Articles.Find(x => x.Title == title).CountDocumentsAsync();
             (int, List<Article>) tuple = (articleCount, articles);
@@ -104,6 +107,7 @@ namespace BooMBooK.Services
         {
             int first = Convert.ToInt32(firstNumber);
             int second = Convert.ToInt32(secondNumber);
+
 
             List<Article> articles = await Articles.Find(x => true).Skip(first).Limit(second).ToListAsync();
             var articleCount = (int)await Articles.Find(x => true).CountDocumentsAsync();
