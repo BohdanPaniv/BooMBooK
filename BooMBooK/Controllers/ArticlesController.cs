@@ -65,6 +65,13 @@ namespace BooMBooK.Controllers
             return await articleService.GetArticlesByTitle(title);
         }
 
+        [HttpGet("GetArticlesByTitleInfo/{title},{firstNumber},{secondNumber}")]
+        public async Task<string> GetArticlesByTitleInfo(string title, string firstNumber, string secondNumber)
+        {
+            return await articleService.GetArticlesByTitleInfo(title, firstNumber, secondNumber);
+        }
+
+
         [HttpPut("UpdateArticle/")]
         public async Task UpdateArticle(Article article)
         {
