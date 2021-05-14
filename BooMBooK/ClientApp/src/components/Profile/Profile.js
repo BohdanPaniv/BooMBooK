@@ -41,7 +41,7 @@ export function Profile() {
     )
 
     const handleAddArticle = useCallback(() => {
-        history.push("/Redactor/" + user.userId)
+        history.push("/Redactor/")
     }, [history, user])
 
     const changeNewsHandler = useCallback(event => {

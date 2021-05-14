@@ -1,4 +1,3 @@
-
 /*.card-columns{*/
 /*    padding-left: 1rem;*/
 /*    padding-right: 1rem;*/
@@ -44,11 +43,12 @@
     overflow-x: hidden;
     text-align: -webkit-center;
     padding: 15px;
-/*    display: flex;
-    justify-content: center;
-    align-items: center;*/
+    /*    display: flex;
+        justify-content: center;
+        align-items: center;*/
 }
-.articleList{
+
+.articleList {
     margin: auto;
     column-gap: 20px;
     display: flex;
@@ -59,19 +59,20 @@
     margin-top: 0px;
 }
 
-@media (max-width: 808px /*1100px*/) {
+@media (max-width: 808px /*1100px*/
+) {
     .articleList {
         columns: 1; /*:2;*/
     }
 }
 
 @media (max-width: 700px) {
-    .articleList{
+    .articleList {
         columns: 1;
     }
 }
 
-.showMore{
+.showMore {
     border: 1px solid #b8b8b8;
     min-width: 200px;
     max-height: 450px;
@@ -89,13 +90,14 @@
     text-align: center;
     background-color: #6c757d;
     justify-content: center;
-    width: 450px;}
+    width: 450px;
+}
 
-.showMore:hover{
+.showMore:hover {
     background-color: lightslategray;
 }
 
-.title{
+.title {
 
     text-shadow: 0px 0px 10px black;
     background-color: #fff;
@@ -107,12 +109,40 @@
     background: transparent;
 }
 
-.showMore:hover{
+.showMore:hover {
     transition: 0.3s;
     background-color: #6A696C;
     border: 1px solid black;
 }
 
-.showMore div{
+.showMore div {
     margin: auto;
+}
+
+.list-control {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+}
+
+.list-control > button {
+    display: flex;
+    height: auto;
+    width: auto;
+    border: 1px #bababa solid;
+    outline: none;
+    background: white;
+    justify-items: center;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.list-control > button *:active, .list-control > button *:focus {
+    background: white;
+    outline: none;
 }
