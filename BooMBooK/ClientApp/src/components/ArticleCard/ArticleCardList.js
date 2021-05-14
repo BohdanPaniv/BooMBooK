@@ -2,7 +2,7 @@ import React, {useCallback} from "react";
 import "./AtricleCardList.css";
 import ArticleCard from "./ArticleCard";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import { Typography } from "@material-ui/core";
+import {Typography} from "@material-ui/core";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 // import Button from "reactstrap/lib/Button";
@@ -10,48 +10,50 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 // import {Grid, makeStyles} from "@material-ui/core";
 // import {Button, Card, CardBody, CardColumns, CardImg, CardSubtitle, CardText, CardTitle} from "reactstrap";
 
-function ArticleCardList({ ArticleList, getArticleArr, count, limit, skip }) {
+function ArticleCardList({ArticleList, getArticleArr, count, limit, skip, input}) {
     const backHandler = useCallback(async event => {
         event.preventDefault()
-        if (skip - limit >= 0) skip = skip - limit
-        await getArticleArr()
+        if (skip.current - limit.current >= 0) skip.current = skip.current - limit.current
+        console.log(skip.current, limit.current)
+        await getArticleArr(input)
     }, [getArticleArr])
-    
+
     const forwardHandler = useCallback(async event => {
         event.preventDefault()
-        skip = skip + limit
-        await getArticleArr()
+        skip.current = skip.current + limit.current
+        console.log(skip.current, limit.current)
+        await getArticleArr(input)
     }, [getArticleArr])
-    
-    
+
+
     return (
-        <div className="articleList">
-            {ArticleList.map((article, index) => {
-                // console.log(article)
-                return (
-                    <ArticleCard key={article.ArticleId}
-                        article={article}
-                        index={index} />
-                )
-            })}
+        <>
+            <div className="articleList">
+                {ArticleList.map((article, index) => {
+                    // console.log(article)
+                    return (
+                        <ArticleCard key={article.ArticleId}
+                                     article={article}
+                                     index={index}/>
+                    )
+                })}
+            </div>
             <div className="list-control">
                 <button onClick={backHandler}
-                    disabled={skip - limit < 0}>
+                        disabled={skip.current - limit.current < 0}>
                     <ChevronLeftIcon className="icon-clickable"
-                        fontSize={"large"} />
+                                     fontSize={"large"} />
                 </button>
-                <Typography>{skip + ArticleList?.length}</Typography>
+                <Typography>{skip.current + ArticleList?.length}</Typography>
                 <button onClick={forwardHandler}
-                    disabled={skip + limit >= count}>
+                        disabled={skip.current + limit.current >= count.current}>
                     <ChevronRightIcon className="icon-clickable"
-                        fontSize={"large"} />
+                                      fontSize={"large"} />
                 </button>
             </div>
-        </div>
+        </>
     );
 }
-
-
 
 
 export default ArticleCardList;
