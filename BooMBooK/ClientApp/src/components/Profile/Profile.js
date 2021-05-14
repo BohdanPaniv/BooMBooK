@@ -23,7 +23,7 @@ export function Profile() {
 
             try {
                 let xhr = new XMLHttpRequest();
-                xhr.open("GET", "api/articles/GetArticlesInfo/" + skip.current + "," + limit.current, true);
+                xhr.open("GET", "api/articles/GetArticlesByUserIdInfo/" + user.userId + "," + skip.current + "," + limit.current, true);
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.onload = () => {
                     if (xhr.status === 200) {
@@ -37,7 +37,7 @@ export function Profile() {
             } catch (error) {
                 console.log("error" + error)
             }
-        }, []
+        }, [user]
     )
 
     const handleAddArticle = useCallback(() => {
@@ -57,7 +57,7 @@ export function Profile() {
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = () => {
             if (xhr.status === 200) {
-                getArticleArr().then(data => setArticleList(JSON.parse(data)))
+                getArticleArr().then(data => setArticleList(JSON.parse(data)));
             }
         }
         xhr.send();
@@ -78,15 +78,13 @@ export function Profile() {
     }, [getArticleArr])
 
     useEffect(() => {
-        getArticleArr();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-
-    useEffect(() => {
         if (!user) setUser(JSON.parse(JSON.parse(localStorage.getItem('User'))));
     }, [user])
 
+    useEffect(() => {
+        if (user) getArticleArr();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user])
 
     return (
         <>
@@ -130,7 +128,7 @@ export function Profile() {
                                                                             </Typography>
                                                                         </TableCell>
                                                                         <TableCell
-                                                                            className="dateCell">{new Date(article.dateTime).toUTCString()}</TableCell>
+                                                                            className="dateCell">{new Date(article.DateTime).toUTCString()}</TableCell>
                                                                         <TableCell>
                                                                             <div className="article-row-actions">
                                                                                 <CreateIcon className="icon-clickable"

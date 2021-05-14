@@ -16,7 +16,7 @@
     overflow-x: hidden;
     text-align: -webkit-center;
     padding: 15px;
-    height: 100%;
+    height: calc(100% - 45px);
 }
 
 

@@ -152,28 +152,34 @@ function ArticleRedactor() {
     }, [])
 
     const handleAddArticle = useCallback(async () => {
-        console.log(countOfElements.current);
-        console.log(articleTitleField.get());
-        console.log(articleDescriptionField.get());
-        console.log(userId.current);
+        // console.log(countOfElements.current);
+        // console.log(articleTitleField.get());
+        // console.log(articleDescriptionField.get());
+        // console.log(userId.current);
         if (articleTitleField.get() !== "" && articleDescriptionField.get() !== "" && countOfElements.current > 1 && userId.current) {
+            let date = new Date();
             const Article = {
                 UserId: userId.current,
-                DateTime: new Date().toJSON(),
+                DateTime: date.toJSON(),
                 Title: articleTitleField.get(),
                 Body_Article: redactor.innerHTML,
                 Description: articleDescriptionField.get(),
                 Status: false
             }
-            console.log(Article);
+
+            console.log(Article)
+
             try {
                 let xhr = new XMLHttpRequest();
                 xhr.open("post", "api/articles", true);
                 xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.send(JSON.stringify(Article));
-                if (xhr.status === 200) {
-                    history.push("/Profile")
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        history.push("/Profile")
+                    }
                 }
+                xhr.send(JSON.stringify(Article));
+
             } catch (error) {
                 console.log(error)
             }
