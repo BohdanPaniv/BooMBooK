@@ -57,7 +57,7 @@ export function Profile() {
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = () => {
             if (xhr.status === 200) {
-                getArticleArr().then(data => setArticleList(JSON.parse(data)));
+                getArticleArr().then();
             }
         }
         xhr.send();
@@ -132,12 +132,12 @@ export function Profile() {
                                                                         <TableCell>
                                                                             <div className="article-row-actions">
                                                                                 <CreateIcon className="icon-clickable"
-                                                                                            id={article.articleId}
+                                                                                            id={article.ArticleId}
                                                                                             fontSize={"small"}
                                                                                             onClick={changeNewsHandler}/>
                                                                                 <DeleteForeverIcon
                                                                                     className="icon-clickable"
-                                                                                    id={article.articleId}
+                                                                                    id={article.ArticleId}
                                                                                     onClick={deleteNewsHandler}
                                                                                     fontSize={"small"}/>
                                                                             </div>
