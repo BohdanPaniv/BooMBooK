@@ -7,7 +7,7 @@ namespace BooMBooK.Models.Comment
 {
     public class Comment
     {
-        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonId]
         public string CommentId { get; set; }
 
         public string UserId { get; set; }

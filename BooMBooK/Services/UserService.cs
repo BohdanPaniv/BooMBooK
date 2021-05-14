@@ -15,51 +15,101 @@ namespace BooMBooK.Services
             Users = DataBaseService.GetMongoCollection<User>("Users");
         }
 
-        //public async Task<User> GetUser(string id)
-        //{
-        //    return await Users.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
-        //}
-
-        public async Task Create(User user)
+        public async Task<User> Create(User user)
         {
-            string newId;
-
-            while(true)
+            user.UserId = Guid.NewGuid().ToString();
+            List<User> foundUser = await Users.Find(x => x.Login == user.Login ||
+                x.Email == user.Email).ToListAsync();
+            
+            if (foundUser.Count == 0)
             {
-                newId = Guid.NewGuid().ToString();
-                List<User> foundUser = await Users.Find(x => x.UserId == newId).ToListAsync();
-
-                if (foundUser.Count == 0)
-                {
-                    user.UserId = newId;
-                    break;
-                }
+                await Users.InsertOneAsync(user);
+                return user;
             }
 
-            await Users.InsertOneAsync(user);
+            return new User();
         }
 
-        public async Task<bool> LogIn(User user)
+        public async Task<User> GetUserById(string userId)
         {
-            List<User> foundUser = await Users.Find(x => x.Login == user.Login &&
-                x.Password == user.Password).ToListAsync();
+            return await Users.Find(x => x.UserId == userId).FirstOrDefaultAsync();
+        }
+
+        public async Task<User> LogIn(string login, string password)
+        {
+            List<User> foundUser = await Users.Find(x => x.Login == login &&
+                x.Password == password).ToListAsync();
 
             if (foundUser.Count == 0)
             {
-                return false;
+                return new User();
             }
 
-            return true;
+            return foundUser[0];
+        }
+
+        public async Task<User> ChangeUserData(string fieldName, string userId, string newData)
+        {
+            var filter = Builders<User>.Filter.Eq(x => x.UserId, userId);
+            var update = Builders<User>.Update.Set(x => x.UserId, userId);
+
+            switch (fieldName)
+            {
+                case "Email":
+                    update = update.Set(x => x.Email, newData);
+                    break;
+                case "Password":
+                    update = update.Set(x => x.Password, newData);
+                    break;
+                case "FirstName":
+                    update = update.Set(x => x.FirstName, newData);
+                    break;
+                case "LastName":
+                    update = update.Set(x => x.LastName, newData);
+                    break;
+            }
+
+            await Users.UpdateOneAsync(filter, update);
+
+            List<User> foundUser = await Users.Find(x => x.UserId == userId).ToListAsync();
+
+            if (foundUser.Count == 0)
+            {
+                return new User();
+            }
+
+            return foundUser[0];
+
+        }
+
+        public async Task<User> ChangeUserDataImage(User user)
+        {
+            var filter = Builders<User>.Filter.Eq(x => x.UserId, user.UserId);
+
+            var update = Builders<User>.Update.Set(x => x.UserId, user.UserId);
+
+            update = update.Set(x => x.Image, user.Image);
+
+            await Users.UpdateOneAsync(filter, update);
+
+            List<User> foundUser = await Users.Find(x => x.UserId == user.UserId).ToListAsync();
+
+            if (foundUser.Count == 0)
+            {
+                return new User();
+            }
+
+            return foundUser[0];
         }
 
         public async Task UpdateUser(User user)
         {
-            await Users.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(user.UserId)), user);
+            await Users.ReplaceOneAsync(x => x.UserId == user.UserId, user);
         }
 
         public async Task DeleteUser(string id)
         {
-            await Users.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
+            await Users.DeleteOneAsync(x => x.UserId == id);
         }
     }
 }

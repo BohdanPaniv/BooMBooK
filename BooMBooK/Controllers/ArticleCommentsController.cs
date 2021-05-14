@@ -1,6 +1,8 @@
 ﻿using BooMBooK.Models.ArticleComment;
+using BooMBooK.Models.Comment;
 using BooMBooK.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Controllers
@@ -10,25 +12,36 @@ namespace BooMBooK.Controllers
     public class ArticleCommentsController : Controller
     {
         private readonly ArticleCommentsService articleCommentsService;
-        public ArticleCommentsController(ArticleCommentsService articleCommentsService)
+        private readonly ArticleService articleService;
+        private readonly CommentService commentService;
+        public ArticleCommentsController(ArticleCommentsService articleCommentsService, CommentService commentService, ArticleService articleService)
         {
             this.articleCommentsService = articleCommentsService;
+            this.commentService = commentService;
+            this.articleService = articleService;
         }
 
-        public IActionResult Create()
+        [HttpPost("CreateArticleComment/{articleId}")]
+        public async Task<ArticleComment> CreateArticleComment(string articleId, Comment comment)
         {
-            return View();
+            Comment createdComment = await commentService.Create(comment);
+            return await articleCommentsService.CreateArticleComment(articleId, createdComment);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(ArticleComment articleComment)
+        [HttpGet("GetCommentsByArticleId/{articleId}")]
+        public async Task<List<Comment>> GetCommentsByArticleId(string articleId)
         {
-            if (ModelState.IsValid)
-            {
-                await articleCommentsService.Create(articleComment);
-                return RedirectToAction("Index");
-            }
-            return View(articleComment);
+            List<ArticleComment> articleComment1 = await articleCommentsService.GetArticleComments(articleId);
+
+            return await commentService.GetComments(articleComment1);
+        }
+
+        [HttpDelete("DeleteArticle/{articleId}")]
+        public async Task DeleteArticle(string articleId)
+        {
+            await articleService.DeleteArticle(articleId);
+            List<ArticleComment> articleComments = await articleCommentsService.DeleteArticleComment(articleId);
+            await commentService.DeleteComment(articleComments);
         }
     }
 }

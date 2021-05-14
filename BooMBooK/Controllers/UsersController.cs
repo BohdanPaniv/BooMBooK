@@ -1,6 +1,8 @@
 ﻿using BooMBooK.Models.User;
 using BooMBooK.Services;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Controllers
@@ -15,27 +17,40 @@ namespace BooMBooK.Controllers
             this.userService = userService;
         }
 
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-
         [HttpPost]
-        public async Task<IActionResult> Create(User user)
+        public async Task<User> Create(User user)
         {
-            if (ModelState.IsValid)
-            {
-                await userService.Create(user);
-                return RedirectToAction("Index");
-            }
-
-            return View(user);
+            return await userService.Create(user);
         }
 
-        [HttpGet]
-        public async Task<bool> Get(User user)
+        [HttpGet("{login},{password}")]
+        public async Task<User> GetUser(string login, string password)
         {
-            return await userService.LogIn(user); 
+            return await userService.LogIn(login, password);
+        }
+
+        [HttpGet("GetUserById/{userId}")]
+        public async Task<User> GetUserById(string userId)
+        {
+            return await userService.GetUserById(userId);
+        }
+
+        [HttpPut]
+        public async Task DeleteUser(string id)
+        {
+            await userService.DeleteUser(id);
+        }
+
+        [HttpPut("ChangeUserData/{fieldName}/{userId}, {newData}")]
+        public async Task<User> ChangeUserData(string fieldName, string userId, string newData)
+        {
+            return await userService.ChangeUserData(fieldName, userId, newData);
+        }
+
+        [HttpPost("ChangeUserData/Image/")]
+        public async Task<User> ChangeUserData(User user)
+        {
+            return await userService.ChangeUserDataImage(user);
         }
     }
 }

@@ -1,6 +1,5 @@
 
 .AuthenticationForm{
-    margin: auto;
     width: max-content;
     height: max-content;
     text-align: center;
@@ -8,9 +7,10 @@
     justify-content: center;
     flex-direction: column;
     vertical-align: center;
+    margin-top: auto;
 }
 
-button{
+button.nonActive, button.active{
     border: 1px gray groove;
     border-radius: 5px;
     margin-left: 2.5px;
@@ -20,14 +20,13 @@ button{
     transition-duration: 0.4s;
 }
 
-button.activeButton{
-    border: 1px gray groove;
+button.active{
     background: forestgreen;
     color: white;
-    transition-duration: 0.4s;
 }
 
-button:hover{
+
+button.nonActive:hover, button.active:hover{
     transform: scale(1.1);
 }
 
@@ -40,6 +39,10 @@ button:hover{
     height: 35px;
 }
 
-form{
-    margin-top: 5px;
+.AuthenticationForm form{
+    margin-top: 10px;
+}
+
+.AuthenticationForm p{
+    margin-bottom: 10px;
 }

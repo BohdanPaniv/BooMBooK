@@ -1,0 +1,27 @@
+﻿@media (max-width: 540px) {
+    .article-img {
+        width: 100%;
+    }
+}
+
+.article-body {
+    overflow-y: auto;
+    height: 100%;
+}
+
+.article-body h1 {
+    text-align: -webkit-center;
+}
+
+.article-body img {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    max-height: 400px;
+    max-width: 400px;
+}
+
+.article-body img:hover, .article-body label:hover {
+    opacity: 1;
+    border: none;
+}

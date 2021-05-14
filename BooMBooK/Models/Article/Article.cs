@@ -1,13 +1,11 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace BooMBooK.Models.Article
 {
     public class Article
     {
-        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonId]
         public string ArticleId { get; set; }
 
         public string UserId { get; set; }
@@ -17,7 +15,7 @@ namespace BooMBooK.Models.Article
         [BsonIgnoreIfNull]
         public int Rating { get; set; }
 
-        public byte[] Body_Article { get; set; }
+        public string Body_Article { get; set; }
 
         public bool Status { get; set; }
 
@@ -25,5 +23,7 @@ namespace BooMBooK.Models.Article
         public string CategoryId { get; set; }
 
         public string Title { get; set; }
+
+        public string Description { get; set; }
     }
 }

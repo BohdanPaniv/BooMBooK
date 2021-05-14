@@ -364,3 +364,5 @@ FodyWeavers.xsd
 
 # IntelliJ IDEA
 .idea/
+/BooMBooK/.vscode/launch.json
+/BooMBooK/.vscode/tasks.json

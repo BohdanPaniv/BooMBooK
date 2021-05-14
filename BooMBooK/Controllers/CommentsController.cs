@@ -1,6 +1,8 @@
-﻿using BooMBooK.Models.Comment;
+﻿using BooMBooK.Models.ArticleComment;
+using BooMBooK.Models.Comment;
 using BooMBooK.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Controllers
@@ -15,20 +17,10 @@ namespace BooMBooK.Controllers
             this.commentService = commentService;
         }
 
-        public IActionResult Create()
+        [HttpPut("DeleteComment/{commentId}")]
+        public async Task DeleteComment(string commentId)
         {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(Comment comment)
-        {
-            if (ModelState.IsValid)
-            {
-                await commentService.Create(comment);
-                return RedirectToAction("Index");
-            }
-            return View(comment);
+            await commentService.DeleteComment(commentId);
         }
     }
 }

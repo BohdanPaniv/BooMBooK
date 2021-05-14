@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace BooMBooK.Models.User
 {
@@ -13,7 +12,7 @@ namespace BooMBooK.Models.User
         public string LastName { get; set; }
 
         [BsonIgnoreIfNull]
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
 
         public string Login { get; set; }
 

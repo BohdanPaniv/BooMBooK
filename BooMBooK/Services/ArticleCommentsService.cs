@@ -1,6 +1,8 @@
 ﻿using BooMBooK.Models.ArticleComment;
-using MongoDB.Bson;
+using BooMBooK.Models.Comment;
 using MongoDB.Driver;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BooMBooK.Services
@@ -14,29 +16,33 @@ namespace BooMBooK.Services
             ArticleComments = DataBaseService.GetMongoCollection<ArticleComment>("ArticleComments");
         }
 
-        public async Task Create(ArticleComment articleComment)
+        public async Task<ArticleComment> CreateArticleComment(string articleId, Comment comment)
         {
+            ArticleComment articleComment = new ArticleComment();
+            articleComment.ArticleId = articleId;
+            articleComment.CommentId = comment.CommentId;
             await ArticleComments.InsertOneAsync(articleComment);
+
+            return articleComment;
         }
 
-        public async Task<ArticleComment> GetArticleComment(string id)
+        public async Task<List<ArticleComment>> GetArticleComments(string articleId)
         {
-            return await ArticleComments.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
+            List<ArticleComment> articleComments = await ArticleComments.Find(x => x.ArticleId == articleId).ToListAsync();
+
+            if (articleComments != null)
+            {
+                return articleComments;
+            }
+
+            return new List<ArticleComment>();
         }
 
-        public async Task AddArticleComment(ArticleComment articleComment)
+        public async Task<List<ArticleComment>> DeleteArticleComment(string articleId)
         {
-            await ArticleComments.InsertOneAsync(articleComment);
-        }
-
-        public async Task UpdateArticleComments(ArticleComment articleComment)
-        {
-            await ArticleComments.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(articleComment.ArticleId)), articleComment);
-        }
-
-        public async Task DeleteArticleComments(string id)
-        {
-            await ArticleComments.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
+            List<ArticleComment> articleComments = await ArticleComments.Find(x => x.ArticleId == articleId).ToListAsync();
+            await ArticleComments.DeleteManyAsync(x => x.ArticleId == articleId);
+            return articleComments;
         }
     }
 }
