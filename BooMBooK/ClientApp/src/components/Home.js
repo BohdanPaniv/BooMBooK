@@ -12,6 +12,8 @@ export function Home() {
     const skip = useRef(0)
     const count = useRef(0)
 
+    const check = useRef(false)
+
     const getArticleArr = useCallback(async () => {
             try {
                 let xhr = new XMLHttpRequest();
@@ -30,18 +32,22 @@ export function Home() {
             } catch (error) {
                 console.log("error" + error)
             }
-        }, []
+        }, [check]
     )
 
     const getArticleArrByTitle = useCallback(async (input) => {
+        if (!check.current) {
+            limit.current = 10;
+            skip.current = 0;
+        }
         let xhr = new XMLHttpRequest();
         xhr.open("get", `api/articles/GetArticlesByTitleInfo/${input},${skip.current},${limit.current}`, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = function () {
             if (xhr.status === 200) {
                 const data = JSON.parse(xhr.responseText)
-                console.log(data)
                 count.current = data.Item1;
+                check.current = true;
                 setArticleList(data.Item2);
             }
         };
@@ -56,6 +62,9 @@ export function Home() {
         if (input !== "") {
             await getArticleArrByTitle(input);
         } else {
+            limit.current = 10;
+            skip.current = 0;
+            check.current = false;
             await getArticleArr();
         }
         setInput(input);

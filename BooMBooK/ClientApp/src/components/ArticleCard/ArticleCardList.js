@@ -11,6 +11,9 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 // import {Button, Card, CardBody, CardColumns, CardImg, CardSubtitle, CardText, CardTitle} from "reactstrap";
 
 function ArticleCardList({ArticleList, getArticleArr, count, limit, skip, input}) {
+
+
+
     const backHandler = useCallback(async event => {
         event.preventDefault()
         if (skip.current - limit.current >= 0) skip.current = skip.current - limit.current
@@ -25,6 +28,7 @@ function ArticleCardList({ArticleList, getArticleArr, count, limit, skip, input}
         await getArticleArr(input)
     }, [getArticleArr])
 
+    console.log(count)
 
     return (
         <>
