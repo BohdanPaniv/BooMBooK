@@ -83,7 +83,7 @@ namespace BooMBooK.Services
 
             List<Article> articles = await Articles.Find(filter).Skip(first).Limit(second).ToListAsync();
 
-            var articleCount = (int)await Articles.Find(x => x.Title == title).CountDocumentsAsync();
+            var articleCount = (int)await Articles.Find(filter).CountDocumentsAsync();
             (int, List<Article>) tuple = (articleCount, articles);
             var test = JsonConvert.SerializeObject(tuple);
 
