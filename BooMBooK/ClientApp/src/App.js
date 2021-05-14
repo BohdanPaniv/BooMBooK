@@ -19,6 +19,7 @@ export default class App extends Component {
                 <Route exact path='/Settings' component={UserSetting}/>
                 <Route exact path='/ArticlePage/:id' component={ArticlePage}/>
                 <Route exact path='/Profile' component={Profile}/>
+                <Route exact path='/Redactor/' component={ArticleRedactor}/>
                 <Route exact path='/Redactor/:articleId' component={ArticleRedactor}/>
             </Layout>
         );
