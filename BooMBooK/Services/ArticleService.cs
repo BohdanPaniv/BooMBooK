@@ -59,6 +59,20 @@ namespace BooMBooK.Services
             return await Articles.Find(x => x.UserId == userId).Skip(first).Limit(second - first).ToListAsync();
         }
 
+        public async Task<string> GetArticlesByUserIdInfo(string userId, string firstNumber, string secondNumber)
+        {
+            int first = Convert.ToInt32(firstNumber);
+            int second = Convert.ToInt32(secondNumber);
+
+            List<Article> articles = await Articles.Find(x => x.UserId == userId).Skip(first).Limit(second - first).ToListAsync();
+
+            var articleCount = (int)await Articles.Find(x => x.UserId == userId).CountDocumentsAsync();
+            (int, List<Article>) tuple = (articleCount, articles);
+            var test = JsonConvert.SerializeObject(tuple);
+
+            return test;
+        }
+
         public async Task<List<Article>> GetArticles()
         {
             return await Articles.Find(x => true).ToListAsync();
