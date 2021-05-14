@@ -1,9 +1,9 @@
-﻿import React, {useCallback, useEffect, useRef, useState} from "react";
+﻿import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./Profile.css"
 import logo from './DefAvatar.jpg';
-import {Spinner} from "reactstrap";
-import {useHistory} from "react-router-dom";
-import {Table, TableBody, TableCell, TableHead, TableRow, Typography} from "@material-ui/core"
+import { Spinner } from "reactstrap";
+import { useHistory } from "react-router-dom";
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core"
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
@@ -21,23 +21,23 @@ export function Profile() {
 
     const getArticleArr = useCallback(async () => {
 
-            try {
-                let xhr = new XMLHttpRequest();
-                xhr.open("GET", "api/articles/GetArticlesByUserIdInfo/" + user.userId + "," + skip.current + "," + limit.current, true);
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.onload = () => {
-                    if (xhr.status === 200) {
-                        const data = JSON.parse(xhr.responseText)
-                        count.current = data.Item1;
-                        setArticleList(data.Item2);
-                    }
+        try {
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "api/articles/GetArticlesByUserIdInfo/" + user.userId + "," + skip.current + "," + limit.current, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    const data = JSON.parse(xhr.responseText)
+                    count.current = data.Item1;
+                    setArticleList(data.Item2);
                 }
-                xhr.send();
-
-            } catch (error) {
-                console.log("error" + error)
             }
-        }, [user]
+            xhr.send();
+
+        } catch (error) {
+            console.log("error" + error)
+        }
+    }, [user]
     )
 
     const handleAddArticle = useCallback(() => {
@@ -57,7 +57,7 @@ export function Profile() {
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = () => {
             if (xhr.status === 200) {
-                getArticleArr().then(data => setArticleList(JSON.parse(data)));
+                getArticleArr().then();
             }
         }
         xhr.send();
@@ -78,13 +78,27 @@ export function Profile() {
     }, [getArticleArr])
 
     useEffect(() => {
-        if (!user) setUser(JSON.parse(JSON.parse(localStorage.getItem('User'))));
+        if (!user) {
+            let xhr = new XMLHttpRequest();
+            xhr.open("get", "api/users/GetUserById/" + JSON.parse(JSON.parse(localStorage.getItem('User'))).userId, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    setUser(JSON.parse(xhr.responseText));
+                }
+            }
+            console.log(xhr);
+            xhr.send();
+        }
     }, [user])
 
     useEffect(() => {
         if (user) getArticleArr();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user])
+
+
+    console.log(user)
 
     return (
         <>
@@ -93,7 +107,7 @@ export function Profile() {
                     <div className="profile-box">
                         <div className="ProfileInfo">
                             <div className="heading">Profile</div>
-                            <img className="avatar" src={user?.image ? user.image : logo} alt="Logo"/>
+                            <img className="avatar" src={user?.image ? user.image : logo} alt="Logo" />
                             <div className="names">{user.firstName + ' ' + user.lastName}</div>
                             <button onClick={handleAddArticle}>Add news</button>
                         </div>
@@ -132,14 +146,14 @@ export function Profile() {
                                                                         <TableCell>
                                                                             <div className="article-row-actions">
                                                                                 <CreateIcon className="icon-clickable"
-                                                                                            id={article.articleId}
+                                                                                            id={article.ArticleId}
                                                                                             fontSize={"small"}
                                                                                             onClick={changeNewsHandler}/>
                                                                                 <DeleteForeverIcon
                                                                                     className="icon-clickable"
-                                                                                    id={article.articleId}
+                                                                                    id={article.ArticleId}
                                                                                     onClick={deleteNewsHandler}
-                                                                                    fontSize={"small"}/>
+                                                                                    fontSize={"small"} />
                                                                             </div>
                                                                         </TableCell>
                                                                     </TableRow>
@@ -151,22 +165,22 @@ export function Profile() {
                                             </div>
                                             <div className="table-control">
                                                 <button onClick={backHandler}
-                                                        disabled={skip.current - limit.current < 0}>
+                                                    disabled={skip.current - limit.current < 0}>
                                                     <ChevronLeftIcon className="icon-clickable"
-                                                                     fontSize={"large"}/>
+                                                        fontSize={"large"} />
                                                 </button>
                                                 <Typography>{skip.current + articleList?.length}</Typography>
                                                 <button onClick={forwardHandler}
-                                                        disabled={skip.current + limit.current >= count.current}>
+                                                    disabled={skip.current + limit.current >= count.current}>
                                                     <ChevronRightIcon className="icon-clickable"
-                                                                      fontSize={"large"}/>
+                                                        fontSize={"large"} />
                                                 </button>
                                             </div>
 
                                         </>
 
                                     )
-                                    : (<Spinner/>)
+                                    : (<Spinner />)
                             }
                         </div>
                     </div>
