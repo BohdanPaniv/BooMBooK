@@ -5,6 +5,8 @@ function Comment({comment, userId, updateList}) {
 
     const [userIcon, setUserIcon] = useState();
 
+    console.log(comment.userId, userId)
+
     useEffect(() => {
         let xhr = new XMLHttpRequest();
         xhr.open("get", "api/users/GetUserById/" + comment.userId, true);
