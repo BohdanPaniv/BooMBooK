@@ -64,7 +64,7 @@ namespace BooMBooK.Services
             int first = Convert.ToInt32(firstNumber);
             int second = Convert.ToInt32(secondNumber);
 
-            List<Article> articles = await Articles.Find(x => x.UserId == userId).Skip(first).Limit(second - first).ToListAsync();
+            List<Article> articles = await Articles.Find(x => x.UserId == userId).Skip(first).Limit(second).ToListAsync();
 
             var articleCount = (int)await Articles.Find(x => x.UserId == userId).CountDocumentsAsync();
             (int, List<Article>) tuple = (articleCount, articles);
@@ -91,7 +91,7 @@ namespace BooMBooK.Services
             int first = Convert.ToInt32(firstNumber);
             int second = Convert.ToInt32(secondNumber);
 
-            List<Article> articles = await Articles.Find(x => true).Skip(first).Limit(second - first).ToListAsync();
+            List<Article> articles = await Articles.Find(x => true).Skip(first).Limit(second).ToListAsync();
             var articleCount = (int)await Articles.Find(x => true).CountDocumentsAsync();
             (int, List<Article>) tuple = (articleCount, articles);
             var test = JsonConvert.SerializeObject(tuple);
